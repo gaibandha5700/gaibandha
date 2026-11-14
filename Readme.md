@@ -1,0 +1,1 @@
+Gaibandha District is a northern district in Bangladesh's Rangpur Division, spanning 2,179.27 sq km with a population of over 2.56 million. Established in 1984 and divided into 7 upazilas, it sits along the Jamuna and Teesta rivers. Its economy relies mainly on agriculture, growing paddy, jute, and sugarcane.
