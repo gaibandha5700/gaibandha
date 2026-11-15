@@ -19,8 +19,12 @@ const categories = [
 
 export default async function Home() {
   const upazilas = await getUpazilas();
-  const unionGroups = await Promise.all(upazilas.map((upazila) => getUnionsByUpazila(upazila.id)));
+  const [unionGroups, municipalityGroups] = await Promise.all([
+    Promise.all(upazilas.map((upazila) => getUnionsByUpazila(upazila.id))),
+    Promise.all(upazilas.map((upazila) => getMunicipalitiesByUpazila(upazila.id))),
+  ]);
   const unionCount = unionGroups.reduce((total, unions) => total + unions.length, 0);
+  const municipalityCount = municipalityGroups.reduce((total, municipalities) => total + municipalities.length, 0);
 
   return (
     <main>
