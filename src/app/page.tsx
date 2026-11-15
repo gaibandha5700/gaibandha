@@ -83,7 +83,7 @@ export default async function Home() {
               <Link className="upazila-card" href={`/upazila/${item.slug}`} key={item.slug}>
                 <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
                   <span className="upazila-icon"><Building2 size={20} /></span>
-                  <div><strong>{item.name_bn}</strong><span>{item.name_en ?? item.description ?? "উপজেলার বিস্তারিত তথ্য দেখুন"}</span></div>
+                  <div><strong>{item.name_bn}</strong><span>{item.description ?? "উপজেলার বিস্তারিত তথ্য দেখুন"}</span></div>
                 </div>
                 <ArrowRight size={17} color="#8a9a91" />
               </Link>
