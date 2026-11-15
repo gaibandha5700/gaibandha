@@ -225,3 +225,82 @@ body { font-family:"Hind Siliguri","Noto Sans Bengali",sans-serif; }
 .site-brand-footer .site-brand-image { width:176px; }
 @media (max-width:900px) { .site-brand-image { width:140px; } }
 @media (max-width:480px) { .site-brand-image { width:124px; } .site-brand-footer .site-brand-image { width:160px; } }
+
+
+/* Dedicated Bengali display face for the master wordmark */
+@import url('https://fonts.googleapis.com/css2?family=Galada&display=swap');
+.site-brand {
+  display: inline-flex;
+  align-items: center;
+  width: 176px;
+  min-width: 0;
+  white-space: nowrap;
+}
+.site-brand-wordmark {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  justify-content: center;
+  width: 100%;
+  padding: 0 1px 5px 0;
+  line-height: 1;
+  font-family: "Galada", "Hind Siliguri", sans-serif;
+  letter-spacing: 0;
+}
+.site-brand-top {
+  display: block;
+  margin: 0 2px -3px 0;
+  color: #08764f;
+  font-family: "Galada", "Hind Siliguri", sans-serif;
+  font-size: 23px;
+  font-weight: 400;
+  line-height: 1.15;
+}
+.site-brand-bottom {
+  display: flex;
+  align-items: baseline;
+  justify-content: flex-end;
+  width: 100%;
+  color: #07583d;
+  line-height: 1.05;
+}
+.site-brand-ga {
+  display: inline-block;
+  margin-right: -1px;
+  font-size: 48px;
+  line-height: .98;
+}
+.site-brand-rest {
+  display: inline-block;
+  font-size: 33px;
+  line-height: 1.05;
+}
+.site-brand-flourish {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  width: 70%;
+  height: 2px;
+  border-radius: 4px;
+  background: linear-gradient(90deg, transparent, #0b8055 35%, #c8a45a);
+}
+.site-brand-footer { width: 205px; }
+.site-brand-footer .site-brand-top { color: #c4dfd0; font-size: 25px; }
+.site-brand-footer .site-brand-bottom { color: #fff; }
+.site-brand-footer .site-brand-ga { font-size: 55px; }
+.site-brand-footer .site-brand-rest { font-size: 37px; }
+.site-brand-footer .site-brand-flourish { background: linear-gradient(90deg,transparent,#80c6a0 35%,#d8b66a); }
+@media(max-width:900px) {
+  .site-brand { width: 158px; }
+  .site-brand-top { font-size: 21px; }
+  .site-brand-ga { font-size: 44px; }
+  .site-brand-rest { font-size: 30px; }
+}
+@media(max-width:480px) {
+  .site-brand { width: 142px; }
+  .site-brand-top { font-size: 19px; }
+  .site-brand-ga { font-size: 40px; }
+  .site-brand-rest { font-size: 27px; }
+  .site-brand-footer { width: 190px; }
+}
