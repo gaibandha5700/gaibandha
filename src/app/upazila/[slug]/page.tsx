@@ -3,6 +3,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getSiteUrl } from "@/lib/site-url";
 import { getMunicipalitiesByUpazila, getUpazilaBySlug, getUpazilas, getUnionsByUpazila } from "@/lib/directory";
+import { SiteHeader, SiteFooter } from "@/components/site-chrome";
 
 export const revalidate = 60;
 export const dynamicParams = true;
@@ -52,12 +53,7 @@ export default async function UpazilaDetailPage({ params }: PageProps) {
   return (
     <main className="min-h-screen bg-slate-50 text-slate-900">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd).replace(/</g, "\\u003c") }} />
-      <header className="border-b border-slate-200 bg-white">
-        <div className="mx-auto flex max-w-5xl items-center justify-between px-4 py-5">
-          <Link href="/" className="text-xl font-extrabold text-emerald-800">গাইবান্ধা</Link>
-          <Link href="/upazila" className="text-sm font-semibold text-emerald-800">সকল উপজেলা</Link>
-        </div>
-      </header>
+      <SiteHeader />
       <section className="mx-auto max-w-5xl px-4 py-12">
         <nav aria-label="Breadcrumb" className="mb-5 text-sm text-slate-500">
           <Link href="/" className="hover:text-emerald-700">হোম</Link> /
@@ -102,6 +98,7 @@ export default async function UpazilaDetailPage({ params }: PageProps) {
           প্রশাসনিক নাম ও জিও-কোডের উৎস: বাংলাদেশ পরিসংখ্যান ব্যুরো, জনশুমারি ও গৃহগণনা ২০২২, কমিউনিটি রিপোর্ট: গাইবান্ধা।
         </p>
       </section>
-    </main>
+    <SiteFooter />
+      </main>
   );
 }
