@@ -2,7 +2,14 @@ import Link from "next/link";
 
 export function SiteHeader() {
   return (
-    <header className="site-header">
+    <>
+      <div className="topbar">
+        <div className="container topbar-inner">
+          <span>গাইবান্ধা জেলার ডিজিটাল তথ্যভান্ডার</span>
+          <span>রংপুর বিভাগ, বাংলাদেশ</span>
+        </div>
+      </div>
+      <header className="site-header">
       <div className="site-header-inner">
         <Link href="/" className="site-brand"><span className="site-brand-mark">গা</span><span>আমাদের গাইবান্ধা</span></Link>
         <nav className="site-nav" aria-label="প্রধান নেভিগেশন">
@@ -10,7 +17,8 @@ export function SiteHeader() {
         </nav>
         <details className="site-mobile-nav"><summary>মেনু</summary><div className="site-mobile-panel"><Link href="/">হোম</Link><Link href="/upazila">উপজেলা</Link><Link href="/municipality">পৌরসভা</Link><Link href="/directory">তথ্যভান্ডার</Link><Link href="/search">তথ্য খুঁজুন</Link><Link href="/submit">তথ্য জমা দিন</Link></div></details>
       </div>
-    </header>
+      </header>
+    </>
   );
 }
 
