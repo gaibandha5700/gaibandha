@@ -5,6 +5,7 @@ import {
   getDirectoryEntries,
   getUpazilas,
   getUnionsByUpazila,
+  getVillagesByUnion,
 } from "@/lib/directory";
 
 export const revalidate = 60;
@@ -35,6 +36,16 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
         changeFrequency: "monthly",
         priority: 0.7,
       });
+
+      const villages = await getVillagesByUnion(union.id);
+      for (const village of villages) {
+        entries.push({
+          url: new URL(`/upazila/${upazila.slug}/${union.slug}/${village.slug}`, siteUrl).toString(),
+          lastModified: village.updated_at ? new Date(village.updated_at) : now,
+          changeFrequency: "monthly",
+          priority: 0.65,
+        });
+      }
     }
   }
 
