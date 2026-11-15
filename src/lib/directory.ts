@@ -253,3 +253,33 @@ export async function getEducationInstitution(
   );
   return rows[0] ?? null;
 }
+
+export type Municipality = {
+  id: string;
+  upazila_id: string;
+  name_bn: string;
+  name_en: string | null;
+  slug: string;
+  municipality_code: string | null;
+  wards_count: number | null;
+  households_total_2022: number | null;
+  population_total_2022: number | null;
+  population_male_2022: number | null;
+  population_female_2022: number | null;
+  population_hijra_2022: number | null;
+  sex_ratio_2022: number | null;
+  census_source_name: string | null;
+  census_source_url: string | null;
+  updated_at: string;
+};
+
+const municipalitySelect = "id,upazila_id,name_bn,name_en,slug,municipality_code,wards_count,households_total_2022,population_total_2022,population_male_2022,population_female_2022,population_hijra_2022,sex_ratio_2022,census_source_name,census_source_url,updated_at";
+
+export async function getMunicipalitiesByUpazila(upazilaId: string): Promise<Municipality[]> {
+  return directoryFetch<Municipality[]>(`municipalities?select=${municipalitySelect}&upazila_id=eq.${encodeURIComponent(upazilaId)}&is_published=eq.true&is_verified=eq.true&order=name_bn.asc`);
+}
+
+export async function getMunicipalityBySlug(slug: string): Promise<Municipality | null> {
+  const rows = await directoryFetch<Municipality[]>(`municipalities?select=${municipalitySelect}&slug=eq.${encodeURIComponent(slug)}&is_published=eq.true&is_verified=eq.true&limit=1`);
+  return rows[0] ?? null;
+}
