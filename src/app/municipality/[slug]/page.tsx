@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { SiteHeader, SiteFooter } from "@/components/site-chrome";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getMunicipalityBySlug, getWardsByMunicipality } from "@/lib/directory";
@@ -20,7 +21,7 @@ export default async function MunicipalityPage({ params }: Props) {
   const wards = await getWardsByMunicipality(municipality.id);
   return (
     <main className="min-h-screen bg-slate-50 text-slate-900">
-      <header className="border-b border-slate-200 bg-white"><div className="mx-auto flex max-w-5xl items-center justify-between px-4 py-5"><Link href="/" className="text-xl font-extrabold text-emerald-800">গাইবান্ধা</Link><Link href="/upazila" className="text-sm font-semibold text-emerald-800">উপজেলা</Link></div></header>
+      <SiteHeader />
       <article className="mx-auto max-w-5xl px-4 py-12">
         <nav className="mb-5 text-sm text-slate-500"><Link href="/">হোম</Link> / পৌরসভা</nav>
         <p className="text-sm font-bold text-emerald-700">গাইবান্ধা জেলার স্থানীয় প্রশাসন</p>
@@ -32,6 +33,7 @@ export default async function MunicipalityPage({ params }: Props) {
         {wards.length === 0 && <p className="mt-4 rounded-xl border border-dashed bg-white p-5 text-sm text-slate-600">এখনো কোনো প্রকাশিত ও যাচাইকৃত ওয়ার্ডের তথ্য নেই।</p>}
         {municipality.census_source_url && <p className="mt-6 text-xs text-slate-500">তথ্যসূত্র: <a href={municipality.census_source_url} target="_blank" rel="noreferrer" className="text-emerald-700 underline">জনশুমারি ২০২২</a></p>}
       </article>
-    </main>
+    <SiteFooter />
+</main>
   );
 }
