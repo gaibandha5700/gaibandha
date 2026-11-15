@@ -99,8 +99,8 @@ export default async function Home() {
             <Link className="text-link" href="/directory">সব বিভাগ <ArrowRight size={16} /></Link>
           </div>
           <div className="category-grid">
-            {categories.map(({ title, desc, icon: Icon }) => (
-              <Link className="category-card" href="/directory" key={title}>
+            {categories.map(({ slug, title, desc, icon: Icon }) => (
+              <Link className="category-card" href={`/directory/${slug}`} key={slug}>
                 <span className="category-icon"><Icon size={22} /></span>
                 <h3>{title}</h3>
                 <p>{desc}</p>
