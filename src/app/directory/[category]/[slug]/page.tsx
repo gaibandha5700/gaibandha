@@ -3,6 +3,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getSiteUrl } from "@/lib/site-url";
 import { DIRECTORY_CATEGORIES, getDirectoryEntries, getDirectoryEntry, getEducationInstitution, isDirectoryCategory } from "@/lib/directory";
+import { SiteHeader, SiteFooter } from "@/components/site-chrome";
 
 export const revalidate = 60;
 export const dynamicParams = true;
@@ -61,12 +62,7 @@ export default async function DirectoryEntryPage({ params }: PageProps) {
   return (
     <main className="min-h-screen bg-slate-50 text-slate-900">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd).replace(/</g, "\\u003c") }} />
-      <header className="border-b border-slate-200 bg-white">
-        <div className="mx-auto flex max-w-4xl items-center justify-between px-4 py-5">
-          <Link href="/" className="text-xl font-extrabold text-emerald-800">গাইবান্ধা</Link>
-          <Link href={`/directory/${slug}`} className="text-sm font-semibold text-emerald-800">{category.label}</Link>
-        </div>
-      </header>
+      <SiteHeader />
       <article className="mx-auto max-w-4xl px-4 py-12">
         <nav aria-label="Breadcrumb" className="mb-6 text-sm text-slate-500">
           <Link href="/" className="hover:text-emerald-700">হোম</Link> /
@@ -107,6 +103,7 @@ export default async function DirectoryEntryPage({ params }: PageProps) {
         )}
         <p className="mt-8 text-xs leading-6 text-slate-500">এই পৃষ্ঠায় কেবল প্রকাশিত ও যাচাইকৃত তথ্য দেখানো হয়। কোনো তথ্য ভুল হলে সংশোধনের জন্য যোগাযোগ করুন।</p>
       </article>
-    </main>
+    <SiteFooter />
+      </main>
   );
 }
