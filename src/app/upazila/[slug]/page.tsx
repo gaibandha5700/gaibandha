@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getSiteUrl } from "@/lib/site-url";
-import { getUpazilaBySlug, getUpazilas, getUnionsByUpazila } from "@/lib/directory";
+import { getMunicipalitiesByUpazila, getUpazilaBySlug, getUpazilas, getUnionsByUpazila } from "@/lib/directory";
 
 export const revalidate = 60;
 export const dynamicParams = true;
@@ -37,7 +37,7 @@ export default async function UpazilaDetailPage({ params }: PageProps) {
   const upazila = await getUpazilaBySlug(slug);
   if (!upazila) notFound();
 
-  const unions = await getUnionsByUpazila(upazila.id);
+  const [unions, municipalities] = await Promise.all([getUnionsByUpazila(upazila.id), getMunicipalitiesByUpazila(upazila.id)]);
   const url = new URL(`/upazila/${upazila.slug}`, getSiteUrl());
   const jsonLd = {
     "@context": "https://schema.org",
@@ -68,7 +68,7 @@ export default async function UpazilaDetailPage({ params }: PageProps) {
         <p className="mt-4 max-w-2xl leading-8 text-slate-600">
           {upazila.name_bn} উপজেলার ইউনিয়ন পরিষদগুলোর তালিকা ও স্থানীয় প্রশাসনিক এলাকার তথ্য। প্রতিটি ইউনিয়ন নির্বাচন করে বিস্তারিত দেখুন।
         </p>
-        <div className="mt-8 grid gap-3 sm:grid-cols-3">
+        <div className="mt-8 grid gap-3 sm:grid-cols-4">
           <div className="rounded-2xl border border-emerald-100 bg-emerald-50 p-5">
             <p className="text-sm text-emerald-900">ইউনিয়ন পরিষদ</p>
             <p className="mt-1 text-3xl font-extrabold text-emerald-800">{unions.length.toLocaleString("bn-BD")}</p>
@@ -87,6 +87,7 @@ export default async function UpazilaDetailPage({ params }: PageProps) {
             জনশুমারি ২০২২-এর তথ্যসূত্র: <a className="text-emerald-700 underline" href={upazila.census_source_url} target="_blank" rel="noreferrer">BBS Community Report ↗</a>
           </p>
         )}
+        {municipalities.length > 0 && (<section className="mt-10"><h2 className="text-2xl font-bold">পৌরসভাসমূহ</h2><div className="mt-5 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">{municipalities.map((municipality) => (<Link key={municipality.id} href={`/municipality/${municipality.slug}`} className="rounded-xl border border-slate-200 bg-white p-5 font-semibold transition hover:border-emerald-300 hover:shadow-sm">{municipality.name_bn} পৌরসভা<span className="mt-1 block text-xs font-normal text-slate-500">{municipality.wards_count?.toLocaleString("bn-BD") ?? "তথ্য"}টি ওয়ার্ড</span></Link>))}</div></section>)}
         <h2 className="mt-10 text-2xl font-bold">ইউনিয়নসমূহ</h2>
         <div className="mt-5 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
           {unions.map((union) => (
