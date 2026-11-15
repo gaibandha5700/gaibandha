@@ -17,8 +17,7 @@ export default async function MunicipalityPage({ params }: Props) {
   const { slug } = await params;
   const municipality = await getMunicipalityBySlug(slug);
   if (!municipality) notFound();
-  const [wards, upazilas] = await Promise.all([getWardsByMunicipality(municipality.id), Promise.resolve(null)]);
-  const upazila = await getUpazilaBySlug((await import("@/lib/directory")).getUpazilas ? "" : "");
+  const wards = await getWardsByMunicipality(municipality.id);
   return (
     <main className="min-h-screen bg-slate-50 text-slate-900">
       <header className="border-b border-slate-200 bg-white"><div className="mx-auto flex max-w-5xl items-center justify-between px-4 py-5"><Link href="/" className="text-xl font-extrabold text-emerald-800">গাইবান্ধা</Link><Link href="/upazila" className="text-sm font-semibold text-emerald-800">উপজেলা</Link></div></header>
