@@ -68,10 +68,25 @@ export default async function UpazilaDetailPage({ params }: PageProps) {
         <p className="mt-4 max-w-2xl leading-8 text-slate-600">
           {upazila.name_bn} উপজেলার ইউনিয়ন পরিষদগুলোর তালিকা ও স্থানীয় প্রশাসনিক এলাকার তথ্য। প্রতিটি ইউনিয়ন নির্বাচন করে বিস্তারিত দেখুন।
         </p>
-        <div className="mt-8 rounded-2xl border border-emerald-100 bg-emerald-50 p-5">
-          <p className="text-sm text-emerald-900">ইউনিয়ন পরিষদ</p>
-          <p className="mt-1 text-3xl font-extrabold text-emerald-800">{unions.length}</p>
+        <div className="mt-8 grid gap-3 sm:grid-cols-3">
+          <div className="rounded-2xl border border-emerald-100 bg-emerald-50 p-5">
+            <p className="text-sm text-emerald-900">ইউনিয়ন পরিষদ</p>
+            <p className="mt-1 text-3xl font-extrabold text-emerald-800">{unions.length.toLocaleString("bn-BD")}</p>
+          </div>
+          <div className="rounded-2xl border border-slate-200 bg-white p-5">
+            <p className="text-sm text-slate-500">জনসংখ্যা · ২০২২</p>
+            <p className="mt-1 text-2xl font-extrabold">{upazila.population_total_2022 == null ? "তথ্য নেই" : upazila.population_total_2022.toLocaleString("bn-BD")}</p>
+          </div>
+          <div className="rounded-2xl border border-slate-200 bg-white p-5">
+            <p className="text-sm text-slate-500">খানা · ২০২২</p>
+            <p className="mt-1 text-2xl font-extrabold">{upazila.households_total_2022 == null ? "তথ্য নেই" : upazila.households_total_2022.toLocaleString("bn-BD")}</p>
+          </div>
         </div>
+        {upazila.census_source_url && (
+          <p className="mt-3 text-xs text-slate-500">
+            জনশুমারি ২০২২-এর তথ্যসূত্র: <a className="text-emerald-700 underline" href={upazila.census_source_url} target="_blank" rel="noreferrer">BBS Community Report ↗</a>
+          </p>
+        )}
         <h2 className="mt-10 text-2xl font-bold">ইউনিয়নসমূহ</h2>
         <div className="mt-5 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
           {unions.map((union) => (
