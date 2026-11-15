@@ -30,6 +30,9 @@ export async function POST(request: Request) {
   if (!submissionType || itemName.length < 2 || message.length < 10 || body.consent !== true) {
     return NextResponse.json({ error: "প্রতিষ্ঠানের নাম, কমপক্ষে ১০ অক্ষরের বিবরণ এবং সম্মতি প্রয়োজন।" }, { status: 400 });
   }
+  if (submissionType === "new_entry" && !category) {
+    return NextResponse.json({ error: "নতুন তথ্যের জন্য বিভাগ নির্বাচন করুন।" }, { status: 400 });
+  }
   if (category && !categories.has(category)) {
     return NextResponse.json({ error: "বিভাগ নির্বাচন সঠিক নয়।" }, { status: 400 });
   }
