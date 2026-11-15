@@ -1,3 +1,4 @@
+@import url('https://fonts.googleapis.com/css2?family=Galada&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&family=Noto+Serif+Bengali:wght@500;600;700;800&display=swap');
 
 @tailwind base;
@@ -228,7 +229,6 @@ body { font-family:"Hind Siliguri","Noto Sans Bengali",sans-serif; }
 
 
 /* Dedicated Bengali display face for the master wordmark */
-@import url('https://fonts.googleapis.com/css2?family=Galada&display=swap');
 .site-brand {
   display: inline-flex;
   align-items: center;
