@@ -161,3 +161,60 @@ body { font-family:"Hind Siliguri","Noto Sans Bengali",sans-serif; }
 @media(max-width:760px) { .site-header-inner{min-height:72px}.site-nav{display:none}.site-mobile-nav{display:block}.site-footer-inner{grid-template-columns:1fr 1fr;gap:30px 22px}.site-footer-about{grid-column:1/-1} }
 @media(max-width:480px) { .site-topbar-inner{width:calc(100% - 28px);min-height:30px;font-size:10px}.site-header-inner{width:calc(100% - 28px);min-height:68px}.site-brand-symbol{width:43px;height:43px}.site-brand-wordmark span{font-size:13px}.site-brand-wordmark strong{font-size:20px}.site-mobile-nav summary{padding:9px 10px;font-size:13px}.site-footer{margin-top:52px;padding:40px 16px 18px}.site-footer-inner{grid-template-columns:1fr 1fr;gap:26px 16px}.site-footer-links strong{font-size:15px}.site-footer-links a{font-size:13px}.site-footer-bottom{flex-direction:column;gap:6px;margin-top:28px} }
 @media(prefers-reduced-motion:reduce) { .site-nav a,.site-submit-link,.site-footer-links a{transition:none} }
+
+
+/* Bengali-first brand wordmark: same typographic lockup in header and footer */
+.site-brand {
+  display: inline-flex;
+  align-items: center;
+  flex: 0 0 auto;
+  color: #073d2d;
+  white-space: nowrap;
+}
+.site-brand-wordmark {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 1px 0 7px;
+  line-height: 1;
+  font-family: "Noto Serif Bengali", "Hind Siliguri", serif;
+  letter-spacing: -.45px;
+}
+.site-brand-top {
+  margin-left: 3px;
+  color: #597666;
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1.1;
+}
+.site-brand-wordmark strong {
+  display: block;
+  margin-top: 1px;
+  color: #07563c;
+  font-size: 29px;
+  font-weight: 800;
+  line-height: 1.22;
+  letter-spacing: -.7px;
+}
+.site-brand-flourish {
+  position: absolute;
+  bottom: 0;
+  left: 2px;
+  width: 62%;
+  height: 2px;
+  border-radius: 4px;
+  background: linear-gradient(90deg,#c8a45a,#0b8055 78%,transparent);
+}
+.site-brand-footer .site-brand-wordmark { padding-bottom: 8px; }
+.site-brand-footer .site-brand-top { color: #b8d4c4; }
+.site-brand-footer .site-brand-wordmark strong { color: #fff; font-size: 31px; }
+.site-brand-footer .site-brand-flourish { background: linear-gradient(90deg,#d8b66a,#80c6a0 78%,transparent); }
+@media(max-width:900px) {
+  .site-brand-wordmark strong { font-size: 26px; }
+}
+@media(max-width:480px) {
+  .site-brand-top { font-size: 12px; }
+  .site-brand-wordmark strong { font-size: 23px; }
+  .site-brand-footer .site-brand-wordmark strong { font-size: 27px; }
+}
