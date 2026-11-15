@@ -46,6 +46,35 @@ export type Union = {
   updated_at: string;
 };
 
+export type Ward = {
+  id: string;
+  union_id: string | null;
+  municipality_id: string | null;
+  ward_code: string | null;
+  ward_number: number;
+  name_bn: string;
+  name_en: string | null;
+  households_total_2022: number | null;
+  households_general_2022: number | null;
+  households_institutional_2022: number | null;
+  households_other_2022: number | null;
+  population_total_2022: number | null;
+  population_male_2022: number | null;
+  population_female_2022: number | null;
+  population_hijra_2022: number | null;
+  sex_ratio_2022: number | null;
+  census_source_name: string | null;
+  census_source_url: string | null;
+  census_source_page: string | null;
+  census_checked_at: string | null;
+  source_name: string | null;
+  source_url: string | null;
+  source_checked_at: string | null;
+  source_note: string | null;
+  is_published: boolean;
+  is_verified: boolean;
+};
+
 async function directoryFetch<T>(resource: string): Promise<T> {
   if (!supabaseUrl || !supabaseKey) {
     throw new Error("Supabase public environment variables are not configured.");
@@ -62,6 +91,21 @@ async function directoryFetch<T>(resource: string): Promise<T> {
   }
 
   return response.json() as Promise<T>;
+}
+
+const wardSelect =
+  "id,union_id,municipality_id,ward_code,ward_number,name_bn,name_en,households_total_2022,households_general_2022,households_institutional_2022,households_other_2022,population_total_2022,population_male_2022,population_female_2022,population_hijra_2022,sex_ratio_2022,census_source_name,census_source_url,census_source_page,census_checked_at,source_name,source_url,source_checked_at,source_note,is_published,is_verified";
+
+export async function getWardsByUnion(unionId: string): Promise<Ward[]> {
+  return directoryFetch<Ward[]>(
+    `wards?select=${wardSelect}&union_id=eq.${encodeURIComponent(unionId)}&is_published=eq.true&is_verified=eq.true&order=ward_number.asc`,
+  );
+}
+
+export async function getWardsByMunicipality(municipalityId: string): Promise<Ward[]> {
+  return directoryFetch<Ward[]>(
+    `wards?select=${wardSelect}&municipality_id=eq.${encodeURIComponent(municipalityId)}&is_published=eq.true&is_verified=eq.true&order=ward_number.asc`,
+  );
 }
 
 export async function getUpazilas(): Promise<Upazila[]> {
@@ -139,7 +183,7 @@ export type DirectoryEntry = {
   upazila_id: string | null;
   union_id: string | null;
   municipality_id: string | null;
-  municipality_ward_id: string | null;
+  ward_id: string | null;
   official_code: string | null;
   source_name: string | null;
   source_url: string | null;
@@ -167,7 +211,7 @@ export function isDirectoryCategory(value: string): value is DirectoryCategory {
 }
 
 const directoryEntrySelect =
-  "id,category,upazila_id,union_id,municipality_id,municipality_ward_id,official_code,source_name,source_url,source_checked_at,source_note,name_bn,slug,summary,description,address,phone,email,website_url,image_url,latitude,longitude,meta_title,meta_description,updated_at";
+  "id,category,upazila_id,union_id,municipality_id,ward_id,official_code,source_name,source_url,source_checked_at,source_note,name_bn,slug,summary,description,address,phone,email,website_url,image_url,latitude,longitude,meta_title,meta_description,updated_at";
 
 export async function getDirectoryEntries(options: {
   category?: DirectoryCategory;
@@ -183,7 +227,7 @@ export async function getDirectoryEntries(options: {
     `limit=${options.limit ?? 500}`,
   ];
   if (options.category) filters.push(`category=eq.${options.category}`);
-  if (options.unionId) filters.push(`union_id=eq.${encodeURIComponent(options.unionId)}`);
+  if (options.unionId) filters.push(`union_id=eq.${encodeURIComponent(options.unionId)}`);\n  if (options.wardId) filters.push(`ward_id=eq.${encodeURIComponent(options.wardId)}`);
   if (options.upazilaId) filters.push(`upazila_id=eq.${encodeURIComponent(options.upazilaId)}`);
 
   return directoryFetch<DirectoryEntry[]>(`directory_entries?${filters.join("&")}`);
