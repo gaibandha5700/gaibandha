@@ -211,7 +211,7 @@ export function isDirectoryCategory(value: string): value is DirectoryCategory {
 }
 
 const directoryEntrySelect =
-  "id,category,upazila_id,union_id,municipality_id,ward_id,official_code,source_name,source_url,source_checked_at,source_note,name_bn,slug,summary,description,address,phone,email,website_url,image_url,latitude,longitude,meta_title,meta_description,updated_at";
+  "id,category,upazila_id,union_id,municipality_id,ward_id,official_code,source_name,source_url,source_checked_at,source_note,name_bn,name_en,slug,summary,description,address,phone,email,website_url,image_url,latitude,longitude,meta_title,meta_description,updated_at";
 
 export async function getDirectoryEntries(options: {
   category?: DirectoryCategory;
