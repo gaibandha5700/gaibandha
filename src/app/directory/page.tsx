@@ -40,7 +40,7 @@ export default async function DirectoryPage() {
             </Link>
           ))}
         </div>
-        <p className="mt-8 text-xs leading-6 text-slate-500">এই ডিরেক্টরিতে কেবল প্রকাশিত ও যাচাইকৃত তথ্য দেখানো হয়। নতুন তথ্য যাচাই সম্পন্ন হলে এখানে যুক্ত হবে।</p>
+        <div className="mt-8 flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-emerald-100 bg-emerald-50 p-5"><p className="text-sm leading-6 text-emerald-900">আপনার জানা কোনো প্রতিষ্ঠান তালিকায় নেই?</p><Link href="/submit" className="rounded-xl bg-emerald-700 px-4 py-2.5 text-sm font-bold text-white">নতুন তথ্য জমা দিন</Link></div>
       </section>
     <SiteFooter />
       </main>
