@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import {
-import { SiteHeader, SiteFooter } from "@/components/site-chrome";
   DIRECTORY_CATEGORIES,
   getDirectoryEntries,
   getMunicipalitiesByUpazila,
@@ -10,6 +9,7 @@ import { SiteHeader, SiteFooter } from "@/components/site-chrome";
   getUpazilas,
   isDirectoryCategory,
 } from "@/lib/directory";
+import { SiteHeader, SiteFooter } from "@/components/site-chrome";
 
 export const revalidate = 60;
 export const dynamicParams = true;
