@@ -8,7 +8,7 @@ export function SiteHeader() {
         <nav className="site-nav" aria-label="প্রধান নেভিগেশন">
           <Link href="/">হোম</Link><Link href="/upazila">উপজেলা</Link><Link href="/municipality">পৌরসভা</Link><Link href="/directory">তথ্যভান্ডার</Link><Link href="/search">খুঁজুন</Link>
         </nav>
-        <details className="site-mobile-nav"><summary>মেনু</summary><div className="site-mobile-panel"><Link href="/">হোম</Link><Link href="/upazila">উপজেলা</Link><Link href="/municipality">পৌরসভা</Link><Link href="/directory">তথ্যভান্ডার</Link><Link href="/search">তথ্য খুঁজুন</Link></div></details>
+        <details className="site-mobile-nav"><summary>মেনু</summary><div className="site-mobile-panel"><Link href="/">হোম</Link><Link href="/upazila">উপজেলা</Link><Link href="/municipality">পৌরসভা</Link><Link href="/directory">তথ্যভান্ডার</Link><Link href="/search">তথ্য খুঁজুন</Link><Link href="/submit">তথ্য জমা দিন</Link></div></details>
       </div>
     </header>
   );
