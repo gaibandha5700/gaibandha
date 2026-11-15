@@ -1,19 +1,10 @@
 import Link from "next/link";
+import { getUpazilas, getUnionsByUpazila } from "@/lib/directory";
 import {
-  ArrowRight, BookOpen, Building2, Bus, GraduationCap, HeartPulse,
+  ArrowRight, Building2, Bus, GraduationCap, HeartPulse,
   Landmark, MapPin, MapPinned, Search, ShieldCheck, ShoppingBag,
   Trees, Users, Waves
 } from "lucide-react";
-
-const upazilas = [
-  { name: "গাইবান্ধা সদর", slug: "gaibandha-sadar", note: "জেলা সদর" },
-  { name: "সাদুল্লাপুর", slug: "sadullapur", note: "উপজেলা" },
-  { name: "পলাশবাড়ী", slug: "palashbari", note: "উপজেলা" },
-  { name: "সাঘাটা", slug: "saghata", note: "উপজেলা" },
-  { name: "গোবিন্দগঞ্জ", slug: "gobindaganj", note: "উপজেলা" },
-  { name: "ফুলছড়ি", slug: "fulchhari", note: "উপজেলা" },
-  { name: "সুন্দরগঞ্জ", slug: "sundarganj", note: "উপজেলা" }
-];
 
 const categories = [
   { title: "শিক্ষা প্রতিষ্ঠান", desc: "স্কুল, কলেজ, মাদ্রাসা ও কারিগরি প্রতিষ্ঠানের তথ্য", icon: GraduationCap },
@@ -26,7 +17,11 @@ const categories = [
   { title: "কমিউনিটি", desc: "সামাজিক সংগঠন ও স্বেচ্ছাসেবী উদ্যোগ", icon: Users }
 ];
 
-export default function Home() {
+export default async function Home() {
+  const upazilas = await getUpazilas();
+  const unionGroups = await Promise.all(upazilas.map((upazila) => getUnionsByUpazila(upazila.id)));
+  const unionCount = unionGroups.reduce((total, unions) => total + unions.length, 0);
+
   return (
     <main>
       <div className="topbar">
@@ -65,8 +60,8 @@ export default function Home() {
 
       <div className="container">
         <section className="stats" aria-label="গাইবান্ধা জেলার পরিচিতি">
-          <div className="stat"><div className="stat-label">উপজেলা</div><div className="stat-value">০৭</div><small>জেলার প্রশাসনিক উপজেলা</small></div>
-          <div className="stat"><div className="stat-label">বিভাগ</div><div className="stat-value">রংপুর</div><small>রংপুর বিভাগ, বাংলাদেশ</small></div>
+          <div className="stat"><div className="stat-label">উপজেলা</div><div className="stat-value">{upazilas.length.toLocaleString("bn-BD", { minimumIntegerDigits: 2 })}</div><small>জেলার প্রশাসনিক উপজেলা</small></div>
+          <div className="stat"><div className="stat-label">ইউনিয়ন</div><div className="stat-value">{unionCount.toLocaleString("bn-BD")}</div><small>উপজেলাভিত্তিক ইউনিয়ন</small></div>
           <div className="stat"><div className="stat-label">প্রধান নদী</div><div className="stat-value">যমুনা</div><small>তিস্তা, ব্রহ্মপুত্রসহ নদীবিধৌত জনপদ</small></div>
           <div className="stat"><div className="stat-label">প্ল্যাটফর্ম</div><div className="stat-value">ডিজিটাল</div><small>তথ্য ও স্থানীয় সেবার এক ঠিকানা</small></div>
         </section>
