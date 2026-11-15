@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getSiteUrl } from "@/lib/site-url";
-import { DIRECTORY_CATEGORIES, getDirectoryEntries, getDirectoryEntry, getEducationInstitution, isDirectoryCategory } from "@/lib/directory";
+import { DIRECTORY_CATEGORIES, getDirectoryEntries, getDirectoryEntry, getEducationInstitution, getMunicipalityById, getUpazilaById, getUnionById, isDirectoryCategory } from "@/lib/directory";
 import { SiteHeader, SiteFooter } from "@/components/site-chrome";
 
 export const revalidate = 60;
@@ -41,7 +41,7 @@ export default async function DirectoryEntryPage({ params }: PageProps) {
   const category = DIRECTORY_CATEGORIES.find((item) => item.slug === slug)!;
   const entry = await getDirectoryEntry(slug, entrySlug);
   if (!entry) notFound();
-  const education = slug === "education" ? await getEducationInstitution(entry.id) : null;
+  const [education, upazila, union, municipality] = await Promise.all([\n    slug === "education" ? getEducationInstitution(entry.id) : Promise.resolve(null),\n    entry.upazila_id ? getUpazilaById(entry.upazila_id) : Promise.resolve(null),\n    entry.union_id ? getUnionById(entry.union_id) : Promise.resolve(null),\n    entry.municipality_id ? getMunicipalityById(entry.municipality_id) : Promise.resolve(null),\n  ]);
 
   const url = new URL(`/directory/${slug}/${entry.slug}`, getSiteUrl());
   const jsonLd = {
@@ -98,10 +98,23 @@ export default async function DirectoryEntryPage({ params }: PageProps) {
           {entry.email && <div><dt className="text-sm text-slate-500">ইমেইল</dt><dd className="mt-1 font-semibold"><a href={`mailto:${entry.email}`}>{entry.email}</a></dd></div>}
           {entry.website_url && <div><dt className="text-sm text-slate-500">ওয়েবসাইট</dt><dd className="mt-1 font-semibold"><a href={entry.website_url} rel="nofollow noopener noreferrer" target="_blank">অফিশিয়াল ওয়েবসাইট ↗</a></dd></div>}
         </dl>
+        {(upazila || union || municipality) && (
+          <section className="mt-6 rounded-2xl border border-slate-200 bg-white p-6">
+            <h2 className="text-lg font-bold">প্রশাসনিক অবস্থান</h2>
+            <dl className="mt-4 grid gap-3 sm:grid-cols-3">
+              {upazila && <div><dt className="text-sm text-slate-500">উপজেলা</dt><dd className="mt-1 font-semibold">{upazila.name_bn}</dd></div>}
+              {union && <div><dt className="text-sm text-slate-500">ইউনিয়ন</dt><dd className="mt-1 font-semibold">{union.name_bn}</dd></div>}
+              {municipality && <div><dt className="text-sm text-slate-500">পৌরসভা</dt><dd className="mt-1 font-semibold">{municipality.name_bn}</dd></div>}
+            </dl>
+            {union && upazila && <Link className="mt-4 inline-block text-sm font-semibold text-emerald-700" href={`/upazila/${upazila.slug}/${union.slug}`}>ইউনিয়নের তথ্য দেখুন →</Link>}
+            {municipality && <Link className="mt-4 inline-block text-sm font-semibold text-emerald-700" href={`/municipality/${municipality.slug}`}>পৌরসভার তথ্য দেখুন →</Link>}
+          </section>
+        )}
+        {entry.source_name && <p className="mt-6 text-xs text-slate-500">তথ্যসূত্র: {entry.source_url ? <a className="font-semibold text-emerald-700 underline" href={entry.source_url} target="_blank" rel="noopener noreferrer">{entry.source_name} ↗</a> : entry.source_name}{entry.source_checked_at ? ` · যাচাই: ${new Date(entry.source_checked_at).toLocaleDateString("bn-BD")}` : ""}</p>}
         {entry.latitude !== null && entry.longitude !== null && (
           <p className="mt-5 text-sm"><a className="font-semibold text-emerald-700" href={`https://www.google.com/maps?q=${entry.latitude},${entry.longitude}`} target="_blank" rel="noopener noreferrer">গুগল ম্যাপে অবস্থান দেখুন ↗</a></p>
         )}
-        <p className="mt-8 text-xs leading-6 text-slate-500">এই পৃষ্ঠায় কেবল প্রকাশিত ও যাচাইকৃত তথ্য দেখানো হয়। কোনো তথ্য ভুল হলে সংশোধনের জন্য যোগাযোগ করুন।</p>
+        <p className="mt-8 text-xs leading-6 text-slate-500">এই পৃষ্ঠায় কেবল প্রকাশিত ও যাচাইকৃত তথ্য দেখানো হয়। কোনো তথ্য ভুল মনে হলে সংশোধনের অনুরোধ জানানোর আগে তথ্যসূত্র মিলিয়ে নিন।</p>
       </article>
     <SiteFooter />
       </main>
