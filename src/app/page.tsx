@@ -37,12 +37,12 @@ export default async function Home() {
           <span>গাইবান্ধা</span>
         </Link>
         <nav className="nav-links" aria-label="প্রধান নেভিগেশন">
-          <Link href="#upazila">উপজেলা</Link>
+          <Link href="#upazila">উপজেলা</Link><Link href="/municipality">পৌরসভা</Link>
           <Link href="#categories">সেবাসমূহ</Link>
           <Link href="/search">তথ্য খুঁজুন</Link><Link href="#about">আমাদের সম্পর্কে</Link>
         </nav>
         <Link className="admin-link desktop-directory-link" href="/directory">তথ্যভান্ডার</Link>
-        <details className="mobile-menu"><summary aria-label="মেনু খুলুন">মেনু</summary><div className="mobile-menu-panel"><Link href="#upazila">উপজেলা</Link><Link href="#categories">সেবাসমূহ</Link><Link href="/directory">তথ্যভান্ডার</Link><Link href="/search">তথ্য খুঁজুন</Link><Link href="#about">আমাদের সম্পর্কে</Link></div></details>
+        <details className="mobile-menu"><summary aria-label="মেনু খুলুন">মেনু</summary><div className="mobile-menu-panel"><Link href="#upazila">উপজেলা</Link><Link href="/municipality">পৌরসভা</Link><Link href="#categories">সেবাসমূহ</Link><Link href="/directory">তথ্যভান্ডার</Link><Link href="/search">তথ্য খুঁজুন</Link><Link href="#about">আমাদের সম্পর্কে</Link></div></details>
       </header>
 
       <section className="hero">
