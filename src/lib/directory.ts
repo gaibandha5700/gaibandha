@@ -218,6 +218,7 @@ export async function getDirectoryEntries(options: {
   unionId?: string;
   upazilaId?: string;
   limit?: number;
+  wardId?: string;
 } = {}): Promise<DirectoryEntry[]> {
   const filters = [
     `select=${directoryEntrySelect}`,
