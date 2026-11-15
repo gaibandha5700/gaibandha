@@ -7,7 +7,7 @@ import {
   getUnionsByUpazila,
 } from "@/lib/directory";
 
-export const revalidate = 3600;
+export const revalidate = 60;
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const siteUrl = getSiteUrl();
