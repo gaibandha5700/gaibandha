@@ -39,7 +39,7 @@ export default async function UpazilaIndexPage() {
             <Link key={upazila.id} href={`/upazila/${upazila.slug}`}
               className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm transition hover:-translate-y-1 hover:border-emerald-300 hover:shadow-md">
               <h2 className="text-xl font-bold text-slate-900">{upazila.name_bn}</h2>
-              <p className="mt-2 text-sm text-slate-500">{upazila.name_en ?? "Gaibandha, Bangladesh"}</p>
+              <p className="mt-2 text-sm text-slate-500">{upazila.description ?? "উপজেলার বিস্তারিত তথ্য দেখুন"}</p>
               <span className="mt-5 inline-flex text-sm font-bold text-emerald-700">ইউনিয়ন ও বিস্তারিত দেখুন →</span>
             </Link>
           ))}
