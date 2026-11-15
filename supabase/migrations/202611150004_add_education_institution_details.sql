@@ -58,7 +58,7 @@ select de.id, de.name_en,
     then 'college' else 'school_college' end,
   case when lower(coalesce(de.name_en,'')) like '%govt.%'
       or lower(coalesce(de.name_en,'')) like '%government%'
-    then 'government' else 'private' end,
+    then 'government' else null end,
   case when lower(coalesce(de.name_en,'')) like '%girls%'
       or lower(coalesce(de.name_bn,'')) like '%বালিকা%'
       or lower(coalesce(de.name_bn,'')) like '%মহিলা%'
