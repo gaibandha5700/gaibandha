@@ -9,6 +9,18 @@ export type Upazila = {
   name_en: string | null;
   slug: string;
   description: string | null;
+  households_total_2022: number | null;
+  households_general_2022: number | null;
+  households_institutional_2022: number | null;
+  households_other_2022: number | null;
+  population_total_2022: number | null;
+  population_male_2022: number | null;
+  population_female_2022: number | null;
+  population_hijra_2022: number | null;
+  sex_ratio_2022: number | null;
+  census_source_name: string | null;
+  census_source_url: string | null;
+  census_checked_at: string | null;
   updated_at: string;
 };
 
@@ -19,6 +31,18 @@ export type Union = {
   name_en: string | null;
   slug: string;
   description: string | null;
+  households_total_2022: number | null;
+  households_general_2022: number | null;
+  households_institutional_2022: number | null;
+  households_other_2022: number | null;
+  population_total_2022: number | null;
+  population_male_2022: number | null;
+  population_female_2022: number | null;
+  population_hijra_2022: number | null;
+  sex_ratio_2022: number | null;
+  census_source_name: string | null;
+  census_source_url: string | null;
+  census_checked_at: string | null;
   updated_at: string;
 };
 
@@ -104,20 +128,20 @@ async function directoryFetch<T>(resource: string): Promise<T> {
 
 export async function getUpazilas(): Promise<Upazila[]> {
   return directoryFetch<Upazila[]>(
-    "upazilas?select=id,name_bn,name_en,slug,description,updated_at&is_published=eq.true&is_verified=eq.true&order=name_bn.asc",
+    "upazilas?select=id,name_bn,name_en,slug,description,households_total_2022,households_general_2022,households_institutional_2022,households_other_2022,population_total_2022,population_male_2022,population_female_2022,population_hijra_2022,sex_ratio_2022,census_source_name,census_source_url,census_checked_at,updated_at&is_published=eq.true&is_verified=eq.true&order=name_bn.asc",
   );
 }
 
 export async function getUpazilaBySlug(slug: string): Promise<Upazila | null> {
   const rows = await directoryFetch<Upazila[]>(
-    `upazilas?select=id,name_bn,name_en,slug,description,updated_at&slug=eq.${encodeURIComponent(slug)}&is_published=eq.true&is_verified=eq.true&limit=1`,
+    `upazilas?select=id,name_bn,name_en,slug,description,households_total_2022,households_general_2022,households_institutional_2022,households_other_2022,population_total_2022,population_male_2022,population_female_2022,population_hijra_2022,sex_ratio_2022,census_source_name,census_source_url,census_checked_at,updated_at&slug=eq.${encodeURIComponent(slug)}&is_published=eq.true&is_verified=eq.true&limit=1`,
   );
   return rows[0] ?? null;
 }
 
 export async function getUnionsByUpazila(upazilaId: string): Promise<Union[]> {
   return directoryFetch<Union[]>(
-    `unions?select=id,upazila_id,name_bn,name_en,slug,description,updated_at&upazila_id=eq.${encodeURIComponent(upazilaId)}&is_published=eq.true&is_verified=eq.true&order=name_bn.asc`,
+    `unions?select=id,upazila_id,name_bn,name_en,slug,description,households_total_2022,households_general_2022,households_institutional_2022,households_other_2022,population_total_2022,population_male_2022,population_female_2022,population_hijra_2022,sex_ratio_2022,census_source_name,census_source_url,census_checked_at,updated_at&upazila_id=eq.${encodeURIComponent(upazilaId)}&is_published=eq.true&is_verified=eq.true&order=name_bn.asc`,
   );
 }
 
@@ -126,7 +150,7 @@ export async function getUnionBySlug(
   slug: string,
 ): Promise<Union | null> {
   const rows = await directoryFetch<Union[]>(
-    `unions?select=id,upazila_id,name_bn,name_en,slug,description,updated_at&upazila_id=eq.${encodeURIComponent(upazilaId)}&slug=eq.${encodeURIComponent(slug)}&is_published=eq.true&is_verified=eq.true&limit=1`,
+    `unions?select=id,upazila_id,name_bn,name_en,slug,description,households_total_2022,households_general_2022,households_institutional_2022,households_other_2022,population_total_2022,population_male_2022,population_female_2022,population_hijra_2022,sex_ratio_2022,census_source_name,census_source_url,census_checked_at,updated_at&upazila_id=eq.${encodeURIComponent(upazilaId)}&slug=eq.${encodeURIComponent(slug)}&is_published=eq.true&is_verified=eq.true&limit=1`,
   );
   return rows[0] ?? null;
 }
