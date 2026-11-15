@@ -73,8 +73,8 @@ export default async function UpazilaDetailPage({ params }: PageProps) {
             <p className="text-sm text-emerald-900">ইউনিয়ন পরিষদ</p>
             <p className="mt-1 text-3xl font-extrabold text-emerald-800">{unions.length.toLocaleString("bn-BD")}</p>
           </div>
-          <div className="rounded-2xl border border-slate-200 bg-white p-5">
-            <p className="text-sm text-slate-500">জনসংখ্যা · ২০২২</p>
+          <div className="rounded-2xl border border-emerald-100 bg-emerald-50 p-5"><p className="text-sm text-emerald-900">পৌরসভা</p><p className="mt-1 text-3xl font-extrabold text-emerald-800">{municipalities.length.toLocaleString("bn-BD")}</p></div>
+          <div className="rounded-2xl border border-slate-200 bg-white p-5"><p className="text-sm text-slate-500">জনসংখ্যা · ২০২২</p>
             <p className="mt-1 text-2xl font-extrabold">{upazila.population_total_2022 == null ? "তথ্য নেই" : upazila.population_total_2022.toLocaleString("bn-BD")}</p>
           </div>
           <div className="rounded-2xl border border-slate-200 bg-white p-5">
