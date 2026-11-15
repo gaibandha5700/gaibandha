@@ -77,8 +77,7 @@ export default async function DirectoryEntryPage({ params }: PageProps) {
         </nav>
         <p className="text-sm font-bold text-emerald-700">{category.label} · গাইবান্ধা জেলা</p>
         <h1 className="mt-2 text-3xl font-extrabold sm:text-4xl">{entry.name_bn}</h1>
-        {entry.name_en && <p className="mt-2 text-slate-500">{entry.name_en}</p>}
-        {entry.summary && <p className="mt-5 text-lg leading-8 text-slate-700">{entry.summary}</p>}
+                {entry.summary && <p className="mt-5 text-lg leading-8 text-slate-700">{entry.summary}</p>}
         {entry.description && <div className="mt-5 whitespace-pre-line leading-8 text-slate-700">{entry.description}</div>}
         {education && (
           <section className="mt-8 rounded-2xl border border-emerald-100 bg-white p-6">
