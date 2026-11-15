@@ -1,4 +1,3 @@
-import Image from "next/image";
 import Link from "next/link";
 
 const navigation = [
@@ -12,14 +11,11 @@ const navigation = [
 function BrandLogo({ footer = false }: { footer?: boolean }) {
   return (
     <Link href="/" className={footer ? "site-brand site-brand-footer" : "site-brand"} aria-label="আমাদের গাইবান্ধা — হোম">
-      <Image
-        src="/brand/gaibandha-logo.svg"
-        alt="আমাদের গাইবান্ধা"
-        width={footer ? 176 : 154}
-        height={footer ? 64 : 56}
-        priority={!footer}
-        className="site-brand-image"
-      />
+      <span className="site-brand-wordmark" aria-hidden="true">
+        <span className="site-brand-top">আমাদের</span>
+        <span className="site-brand-bottom"><span className="site-brand-ga">গা</span><span className="site-brand-rest">ইবান্ধা</span></span>
+        <span className="site-brand-flourish" />
+      </span>
     </Link>
   );
 }
