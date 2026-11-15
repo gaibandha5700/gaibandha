@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { getUpazilas, getUnionsByUpazila } from "@/lib/directory";
+import { DIRECTORY_CATEGORIES, getUpazilas, getUnionsByUpazila } from "@/lib/directory";
 import {
   ArrowRight, Building2, Bus, GraduationCap, HeartPulse,
   Landmark, MapPin, MapPinned, Search, ShieldCheck, ShoppingBag,
@@ -7,14 +7,14 @@ import {
 } from "lucide-react";
 
 const categories = [
-  { title: "শিক্ষা প্রতিষ্ঠান", desc: "স্কুল, কলেজ, মাদ্রাসা ও কারিগরি প্রতিষ্ঠানের তথ্য", icon: GraduationCap },
-  { title: "হাসপাতাল ও স্বাস্থ্যসেবা", desc: "হাসপাতাল, ক্লিনিক, ডায়াগনস্টিক ও জরুরি সেবা", icon: HeartPulse },
-  { title: "থানা ও আইনশৃঙ্খলা", desc: "থানা, পুলিশ ফাঁড়ি ও প্রয়োজনীয় যোগাযোগ", icon: ShieldCheck },
-  { title: "সরকারি অফিস", desc: "জেলা ও উপজেলা পর্যায়ের সরকারি দপ্তর", icon: Landmark },
-  { title: "ব্যবসা ও প্রতিষ্ঠান", desc: "স্থানীয় ব্যবসা, দোকান, ব্যাংক ও সেবাদাতা", icon: ShoppingBag },
-  { title: "দর্শনীয় স্থান", desc: "নদী, চর, ঐতিহাসিক ও ভ্রমণের জায়গা", icon: Trees },
-  { title: "পরিবহন", desc: "বাস কাউন্টার ও স্থানীয় যাতায়াতের তথ্য", icon: Bus },
-  { title: "কমিউনিটি", desc: "সামাজিক সংগঠন ও স্বেচ্ছাসেবী উদ্যোগ", icon: Users }
+  { slug: "education", title: "শিক্ষা প্রতিষ্ঠান", desc: "স্কুল, কলেজ, মাদ্রাসা ও কারিগরি প্রতিষ্ঠানের তথ্য", icon: GraduationCap },
+  { slug: "health", title: "হাসপাতাল ও স্বাস্থ্যসেবা", desc: "হাসপাতাল, ক্লিনিক, ডায়াগনস্টিক ও জরুরি সেবা", icon: HeartPulse },
+  { slug: "police", title: "থানা ও আইনশৃঙ্খলা", desc: "থানা, পুলিশ ফাঁড়ি ও প্রয়োজনীয় যোগাযোগ", icon: ShieldCheck },
+  { slug: "government", title: "সরকারি অফিস", desc: "জেলা ও উপজেলা পর্যায়ের সরকারি দপ্তর", icon: Landmark },
+  { slug: "business", title: "ব্যবসা ও প্রতিষ্ঠান", desc: "স্থানীয় ব্যবসা, দোকান, ব্যাংক ও সেবাদাতা", icon: ShoppingBag },
+  { slug: "tourism", title: "দর্শনীয় স্থান", desc: "নদী, চর, ঐতিহাসিক ও ভ্রমণের জায়গা", icon: Trees },
+  { slug: "transport", title: "পরিবহন", desc: "বাস কাউন্টার ও স্থানীয় যাতায়াতের তথ্য", icon: Bus },
+  { slug: "community", title: "কমিউনিটি", desc: "সামাজিক সংগঠন ও স্বেচ্ছাসেবী উদ্যোগ", icon: Users }
 ];
 
 export default async function Home() {
@@ -41,7 +41,7 @@ export default async function Home() {
           <Link href="#categories">সেবাসমূহ</Link>
           <Link href="#about">আমাদের সম্পর্কে</Link>
         </nav>
-        <Link className="admin-link" href="mailto:admin@gaibandha.local">যোগাযোগ</Link>
+        <Link className="admin-link" href="/directory">তথ্যভান্ডার</Link>
       </header>
 
       <section className="hero">
@@ -109,7 +109,7 @@ export default async function Home() {
         <div className="container">
           <div className="info-banner">
             <div><h2>আপনার এলাকার তথ্য যোগ করতে চান?</h2><p>প্রতিষ্ঠান বা সেবার সঠিক তথ্য আমাদের জানান। যাচাইয়ের পর তথ্যভান্ডারে যুক্ত করা হবে।</p></div>
-            <Link className="banner-button" href="mailto:admin@gaibandha.local">তথ্য জমা দিন <ArrowRight size={16} /></Link>
+            <Link className="banner-button" href="/directory">তথ্যভান্ডার দেখুন <ArrowRight size={16} /></Link>
           </div>
         </div>
       </section>
