@@ -2,9 +2,9 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getSiteUrl } from "@/lib/site-url";
-import { DIRECTORY_CATEGORIES, getDirectoryEntries, getUpazilaBySlug, getUpazilas, getUnionBySlug, getUnionsByUpazila } from "@/lib/directory";
+import { DIRECTORY_CATEGORIES, getDirectoryEntries, getUpazilaBySlug, getUpazilas, getUnionBySlug, getUnionsByUpazila, getVillagesByUnion } from "@/lib/directory";
 
-export const revalidate = 3600;
+export const revalidate = 60;
 export const dynamicParams = true;
 
 type PageProps = { params: Promise<{ slug: string; unionSlug: string }> };
@@ -44,7 +44,7 @@ export default async function UnionDetailPage({ params }: PageProps) {
   if (!upazila) notFound();
   const union = await getUnionBySlug(upazila.id, unionSlug);
   if (!union) notFound();
-  const localEntries = await getDirectoryEntries({ unionId: union.id });
+  const [localEntries, villages] = await Promise.all([getDirectoryEntries({ unionId: union.id }), getVillagesByUnion(union.id)]);
 
   const url = new URL(`/upazila/${upazila.slug}/${union.slug}`, getSiteUrl());
   const jsonLd = {
@@ -81,6 +81,22 @@ export default async function UnionDetailPage({ params }: PageProps) {
         <p className="mt-4 leading-8 text-slate-600">
           {union.name_bn} ইউনিয়ন গাইবান্ধা জেলার {upazila.name_bn} উপজেলার অন্তর্গত একটি ইউনিয়ন পরিষদ। এই পৃষ্ঠায় ইউনিয়নটির প্রশাসনিক পরিচিতি ও যাচাইকৃত স্থানীয় তথ্য পর্যায়ক্রমে যুক্ত করা হবে।
         </p>
+        <section className="mt-10">
+          <h2 className="text-2xl font-bold">এই ইউনিয়নের গ্রামসমূহ</h2>
+          {villages.length ? (
+            <div className="mt-5 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+              {villages.map((village) => (
+                <Link key={village.id} href={`/upazila/${upazila.slug}/${union.slug}/${village.slug}`}
+                  className="rounded-xl border border-slate-200 bg-white p-4 font-semibold transition hover:border-emerald-300 hover:shadow-sm">
+                  {village.name_bn}
+                  {village.name_en && <span className="mt-1 block text-xs font-normal text-slate-500">{village.name_en}</span>}
+                </Link>
+              ))}
+            </div>
+          ) : (
+            <p className="mt-3 rounded-xl border border-dashed border-slate-300 bg-white p-5 text-sm leading-7 text-slate-600">এই ইউনিয়নের গ্রামের যাচাইকৃত তালিকা এখনো যুক্ত করা হয়নি।</p>
+          )}
+        </section>
         <section className="mt-10">
           <h2 className="text-2xl font-bold">এই ইউনিয়নের প্রতিষ্ঠান ও সেবা</h2>
           {localEntries.length ? (
