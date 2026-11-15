@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { getUpazilas, getUnionsByUpazila } from "@/lib/directory";
+import { getMunicipalitiesByUpazila, getUpazilas, getUnionsByUpazila } from "@/lib/directory";
 import {
   ArrowRight, Building2, Bus, GraduationCap, HeartPulse,
   Landmark, MapPin, MapPinned, Search, ShieldCheck, ShoppingBag,
@@ -63,8 +63,8 @@ export default async function Home() {
         <section className="stats" aria-label="গাইবান্ধা জেলার পরিচিতি">
           <div className="stat"><div className="stat-label">উপজেলা</div><div className="stat-value">{upazilas.length.toLocaleString("bn-BD", { minimumIntegerDigits: 2 })}</div><small>জেলার প্রশাসনিক উপজেলা</small></div>
           <div className="stat"><div className="stat-label">ইউনিয়ন</div><div className="stat-value">{unionCount.toLocaleString("bn-BD")}</div><small>উপজেলাভিত্তিক ইউনিয়ন</small></div>
-          <div className="stat"><div className="stat-label">প্রধান নদী</div><div className="stat-value">যমুনা</div><small>তিস্তা, ব্রহ্মপুত্রসহ নদীবিধৌত জনপদ</small></div>
-          <div className="stat"><div className="stat-label">প্ল্যাটফর্ম</div><div className="stat-value">ডিজিটাল</div><small>তথ্য ও স্থানীয় সেবার এক ঠিকানা</small></div>
+          <div className="stat"><div className="stat-label">পৌরসভা</div><div className="stat-value">{municipalityCount.toLocaleString("bn-BD")}</div><small>প্রকাশিত ও যাচাইকৃত পৌরসভা</small></div>
+          <div className="stat"><div className="stat-label">তথ্যভান্ডার</div><div className="stat-value">যাচাইকৃত</div><small>প্রকাশিত তথ্য নিয়মিত হালনাগাদ</small></div>
         </section>
       </div>
 
