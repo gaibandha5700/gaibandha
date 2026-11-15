@@ -133,11 +133,18 @@ export default async function UnionDetailPage({ params }: PageProps) {
           )}
         </section>
         <dl className="mt-8 grid gap-4 rounded-2xl border border-slate-200 bg-white p-6 sm:grid-cols-2">
+          <div><dt className="text-sm text-slate-500">জনসংখ্যা · জনশুমারি ২০২২</dt><dd className="mt-1 font-bold">{union.population_total_2022 == null ? "তথ্য পাওয়া যায়নি" : union.population_total_2022.toLocaleString("bn-BD")}</dd></div>
+          <div><dt className="text-sm text-slate-500">খানা · ২০২২</dt><dd className="mt-1 font-bold">{union.households_total_2022 == null ? "তথ্য পাওয়া যায়নি" : union.households_total_2022.toLocaleString("bn-BD")}</dd></div>
+          <div><dt className="text-sm text-slate-500">পুরুষ · ২০২২</dt><dd className="mt-1 font-bold">{union.population_male_2022 == null ? "তথ্য পাওয়া যায়নি" : union.population_male_2022.toLocaleString("bn-BD")}</dd></div>
+          <div><dt className="text-sm text-slate-500">নারী · ২০২২</dt><dd className="mt-1 font-bold">{union.population_female_2022 == null ? "তথ্য পাওয়া যায়নি" : union.population_female_2022.toLocaleString("bn-BD")}</dd></div>
+          <div><dt className="text-sm text-slate-500">হিজড়া · ২০২২</dt><dd className="mt-1 font-bold">{union.population_hijra_2022 == null ? "তথ্য পাওয়া যায়নি" : union.population_hijra_2022.toLocaleString("bn-BD")}</dd></div>
+          <div><dt className="text-sm text-slate-500">লিঙ্গ অনুপাত · ২০২২</dt><dd className="mt-1 font-bold">{union.sex_ratio_2022 == null ? "তথ্য পাওয়া যায়নি" : union.sex_ratio_2022.toLocaleString("bn-BD")}</dd></div>
           <div><dt className="text-sm text-slate-500">ইউনিয়নের নাম</dt><dd className="mt-1 font-bold">{union.name_bn}</dd></div>
           <div><dt className="text-sm text-slate-500">ইংরেজি নাম</dt><dd className="mt-1 font-bold">{union.name_en}</dd></div>
           <div><dt className="text-sm text-slate-500">উপজেলা</dt><dd className="mt-1 font-bold">{upazila.name_bn}</dd></div>
           <div><dt className="text-sm text-slate-500">জেলা</dt><dd className="mt-1 font-bold">গাইবান্ধা</dd></div>
         </dl>
+        {union.census_source_url && <p className="mt-5 text-xs text-slate-500">জনশুমারি ২০২২-এর তথ্যসূত্র: <a className="text-emerald-700 underline" href={union.census_source_url} target="_blank" rel="noreferrer">BBS Community Report ↗</a></p>}
         <p className="mt-7 text-xs leading-6 text-slate-500">
           প্রশাসনিক নাম ও জিও-কোডের উৎস: বাংলাদেশ পরিসংখ্যান ব্যুরো, জনশুমারি ও গৃহগণনা ২০২২, কমিউনিটি রিপোর্ট: গাইবান্ধা।
         </p>
