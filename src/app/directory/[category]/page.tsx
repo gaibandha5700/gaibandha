@@ -57,7 +57,6 @@ export default async function DirectoryCategoryPage({ params, searchParams }: Pa
       };
     }));
   const areas = areaGroups.flatMap((group) => [...group.unions, ...group.municipalities]);
-  const areaOption = areas.find((item) => item.value === area);
   let entries = allEntries;
   if (area.startsWith("union:")) entries = entries.filter((item) => item.union_id === area.slice(6));
   if (area.startsWith("municipality:")) entries = entries.filter((item) => item.municipality_id === area.slice(12));
@@ -88,8 +87,7 @@ export default async function DirectoryCategoryPage({ params, searchParams }: Pa
             {entries.map((entry) => (
               <Link key={entry.id} href={`/directory/${slug}/${entry.slug}`} className="rounded-2xl border border-slate-200 bg-white p-5 transition hover:border-emerald-300 hover:shadow-sm">
                 <h2 className="font-bold">{entry.name_bn}</h2>
-                {entry.name_en && <p className="mt-1 text-sm text-slate-500">{entry.name_en}</p>}
-                {entry.summary && <p className="mt-3 text-sm leading-6 text-slate-600">{entry.summary}</p>}
+                                {entry.summary && <p className="mt-3 text-sm leading-6 text-slate-600">{entry.summary}</p>}
                 {entry.address && <p className="mt-3 text-xs text-slate-500">{entry.address}</p>}
                 <span className="mt-4 block text-sm font-semibold text-emerald-700">বিস্তারিত →</span>
               </Link>
