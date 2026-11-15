@@ -81,6 +81,7 @@ export default async function UnionDetailPage({ params }: PageProps) {
         <p className="mt-4 leading-8 text-slate-600">
           {union.name_bn} ইউনিয়ন গাইবান্ধা জেলার {upazila.name_bn} উপজেলার অন্তর্গত একটি ইউনিয়ন পরিষদ। এই পৃষ্ঠায় ইউনিয়নটির প্রশাসনিক পরিচিতি ও যাচাইকৃত স্থানীয় তথ্য পর্যায়ক্রমে যুক্ত করা হবে।
         </p>
+        <section className="mt-10"><h2 className="text-2xl font-bold">ওয়ার্ডসমূহ</h2><p className="mt-2 text-sm text-slate-600">প্রকাশিত ও যাচাইকৃত ওয়ার্ডের তালিকা।</p><div className="mt-4 grid grid-cols-3 gap-3 sm:grid-cols-5 lg:grid-cols-9">{wards.map((ward) => (<Link key={ward.id} href={`/upazila/${upazila.slug}/${union.slug}/ward/${ward.ward_number}`} className="rounded-xl border border-slate-200 bg-white p-4 text-center transition hover:border-emerald-300 hover:shadow-sm"><span className="block text-xs text-slate-500">ওয়ার্ড</span><strong className="mt-1 block text-xl text-emerald-800">{ward.ward_number.toLocaleString("bn-BD")}</strong></Link>))}</div>{wards.length === 0 && <p className="mt-3 text-sm text-slate-500">এখনো কোনো প্রকাশিত ও যাচাইকৃত ওয়ার্ডের তথ্য নেই।</p>}</section>
         <section className="mt-10">
           <h2 className="text-2xl font-bold">এই ইউনিয়নের প্রতিষ্ঠান ও সেবা</h2>
           {localEntries.length ? (
