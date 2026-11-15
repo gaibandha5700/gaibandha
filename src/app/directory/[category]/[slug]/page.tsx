@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getSiteUrl } from "@/lib/site-url";
-import { DIRECTORY_CATEGORIES, getDirectoryEntries, getDirectoryEntry, isDirectoryCategory } from "@/lib/directory";
+import { DIRECTORY_CATEGORIES, getDirectoryEntries, getDirectoryEntry, getEducationInstitution, isDirectoryCategory } from "@/lib/directory";
 
 export const revalidate = 60;
 export const dynamicParams = true;
@@ -40,6 +40,7 @@ export default async function DirectoryEntryPage({ params }: PageProps) {
   const category = DIRECTORY_CATEGORIES.find((item) => item.slug === slug)!;
   const entry = await getDirectoryEntry(slug, entrySlug);
   if (!entry) notFound();
+  const education = slug === "education" ? await getEducationInstitution(entry.id) : null;
 
   const url = new URL(`/directory/${slug}/${entry.slug}`, getSiteUrl());
   const jsonLd = {
@@ -78,6 +79,23 @@ export default async function DirectoryEntryPage({ params }: PageProps) {
         {entry.name_en && <p className="mt-2 text-slate-500">{entry.name_en}</p>}
         {entry.summary && <p className="mt-5 text-lg leading-8 text-slate-700">{entry.summary}</p>}
         {entry.description && <div className="mt-5 whitespace-pre-line leading-8 text-slate-700">{entry.description}</div>}
+        {education && (
+          <section className="mt-8 rounded-2xl border border-emerald-100 bg-white p-6">
+            <h2 className="text-xl font-bold">শিক্ষাপ্রতিষ্ঠানের তথ্য</h2>
+            <dl className="mt-4 grid gap-4 sm:grid-cols-2">
+              {education.eiin && <div><dt className="text-sm text-slate-500">EIIN</dt><dd className="mt-1 font-semibold">{education.eiin}</dd></div>}
+              <div><dt className="text-sm text-slate-500">প্রতিষ্ঠানের ধরন</dt><dd className="mt-1 font-semibold">{({ school: "স্কুল", college: "কলেজ", school_college: "স্কুল অ্যান্ড কলেজ", madrasa: "মাদ্রাসা", technical: "কারিগরি", university: "বিশ্ববিদ্যালয়", other: "অন্যান্য" } as Record<string, string>)[education.institution_type] ?? "অন্যান্য"}</dd></div>
+              {education.education_level && <div><dt className="text-sm text-slate-500">শিক্ষার স্তর</dt><dd className="mt-1 font-semibold">{education.education_level}</dd></div>}
+              {education.management_type && <div><dt className="text-sm text-slate-500">পরিচালনা</dt><dd className="mt-1 font-semibold">{({ government: "সরকারি", private: "বেসরকারি", non_government: "বেসরকারি", autonomous: "স্বায়ত্তশাসিত", other: "অন্যান্য" } as Record<string, string>)[education.management_type] ?? education.management_type}</dd></div>}
+              {education.gender_type && <div><dt className="text-sm text-slate-500">শিক্ষার্থী</dt><dd className="mt-1 font-semibold">{({ boys: "বালক", girls: "বালিকা", co_education: "সহশিক্ষা", other: "অন্যান্য" } as Record<string, string>)[education.gender_type] ?? education.gender_type}</dd></div>}
+              {education.mpo_status && <div><dt className="text-sm text-slate-500">MPO অবস্থা</dt><dd className="mt-1 font-semibold">{education.mpo_status}</dd></div>}
+              {education.education_board && <div><dt className="text-sm text-slate-500">শিক্ষা বোর্ড</dt><dd className="mt-1 font-semibold">{education.education_board}</dd></div>}
+              {education.established_year && <div><dt className="text-sm text-slate-500">প্রতিষ্ঠাকাল</dt><dd className="mt-1 font-semibold">{education.established_year.toLocaleString("bn-BD")}</dd></div>}
+              {education.recognition_source && <div><dt className="text-sm text-slate-500">তথ্যসূত্র</dt><dd className="mt-1 font-semibold">{education.recognition_source}</dd></div>}
+            </dl>
+            {education.recognition_url && <a className="mt-4 inline-block text-sm font-semibold text-emerald-700 underline" href={education.recognition_url} target="_blank" rel="noreferrer">সরকারি উৎস দেখুন ↗</a>}
+          </section>
+        )}
         <dl className="mt-8 grid gap-4 rounded-2xl border border-slate-200 bg-white p-6 sm:grid-cols-2">
           {entry.address && <div><dt className="text-sm text-slate-500">ঠিকানা</dt><dd className="mt-1 font-semibold">{entry.address}</dd></div>}
           {entry.phone && <div><dt className="text-sm text-slate-500">ফোন</dt><dd className="mt-1 font-semibold"><a href={`tel:${entry.phone}`}>{entry.phone}</a></dd></div>}
