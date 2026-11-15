@@ -1,6 +1,11 @@
 import type { MetadataRoute } from "next";
 import { getSiteUrl } from "@/lib/site-url";
-import { getUpazilas, getUnionsByUpazila } from "@/lib/directory";
+import {
+  DIRECTORY_CATEGORIES,
+  getDirectoryEntries,
+  getUpazilas,
+  getUnionsByUpazila,
+} from "@/lib/directory";
 
 export const revalidate = 3600;
 
@@ -8,18 +13,9 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const siteUrl = getSiteUrl();
   const now = new Date();
   const entries: MetadataRoute.Sitemap = [
-    {
-      url: siteUrl.toString(),
-      lastModified: now,
-      changeFrequency: "weekly",
-      priority: 1,
-    },
-    {
-      url: new URL("/upazila", siteUrl).toString(),
-      lastModified: now,
-      changeFrequency: "weekly",
-      priority: 0.9,
-    },
+    { url: siteUrl.toString(), lastModified: now, changeFrequency: "weekly", priority: 1 },
+    { url: new URL("/upazila", siteUrl).toString(), lastModified: now, changeFrequency: "weekly", priority: 0.9 },
+    { url: new URL("/directory", siteUrl).toString(), lastModified: now, changeFrequency: "weekly", priority: 0.9 },
   ];
 
   const upazilas = await getUpazilas();
@@ -38,6 +34,25 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
         lastModified: union.updated_at ? new Date(union.updated_at) : now,
         changeFrequency: "monthly",
         priority: 0.7,
+      });
+    }
+  }
+
+  for (const category of DIRECTORY_CATEGORIES) {
+    entries.push({
+      url: new URL(`/directory/${category.slug}`, siteUrl).toString(),
+      lastModified: now,
+      changeFrequency: "weekly",
+      priority: 0.7,
+    });
+
+    const directoryEntries = await getDirectoryEntries({ category: category.slug });
+    for (const item of directoryEntries) {
+      entries.push({
+        url: new URL(`/directory/${category.slug}/${item.slug}`, siteUrl).toString(),
+        lastModified: item.updated_at ? new Date(item.updated_at) : now,
+        changeFrequency: "monthly",
+        priority: 0.6,
       });
     }
   }
