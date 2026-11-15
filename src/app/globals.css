@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&family=Noto+Serif+Bengali:wght@500;600;700;800&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -112,3 +114,50 @@ button, input { font: inherit; }
 
 .site-submit-link { padding: 10px 14px; border-radius: 9px; background: #08764f; color: #fff !important; font-size: 13px; font-weight: 800; }
 .site-submit-link:hover { background: #07583d; }
+
+
+/* Brand typography and unified public-site chrome */
+:root { --brand-forest:#073d2d; --brand-green:#087b52; --brand-mint:#d9f2e5; --brand-gold:#d8b66a; }
+body { font-family:"Hind Siliguri","Noto Sans Bengali",sans-serif; }
+.site-topbar { color:#d8eee2; background:linear-gradient(90deg,#062f23,#0b513a); font-size:12px; letter-spacing:.1px; }
+.site-topbar-inner { width:min(1160px,calc(100% - 40px)); min-height:32px; margin:0 auto; display:flex; align-items:center; justify-content:space-between; gap:16px; }
+.site-header { position:sticky; top:0; z-index:50; border-bottom:1px solid #e5eee8; background:rgba(255,255,255,.94); backdrop-filter:blur(16px); box-shadow:0 5px 22px rgba(8,48,33,.045); }
+.site-header-inner { width:min(1160px,calc(100% - 40px)); min-height:88px; margin:0 auto; display:flex; align-items:center; justify-content:space-between; gap:28px; }
+.site-brand { display:inline-flex; align-items:center; gap:11px; flex:0 0 auto; color:var(--brand-forest); }
+.site-brand-symbol { width:52px; height:52px; object-fit:contain; filter:drop-shadow(0 3px 5px rgba(4,66,43,.12)); }
+.site-brand-wordmark { display:flex; flex-direction:column; align-items:flex-start; gap:0; line-height:1.02; font-family:"Noto Serif Bengali","Hind Siliguri",serif; letter-spacing:-.35px; }
+.site-brand-wordmark span { font-size:15px; font-weight:600; color:#587264; }
+.site-brand-wordmark strong { margin-top:3px; font-size:25px; font-weight:800; color:#07563c; }
+.site-nav { display:flex; align-items:center; justify-content:flex-end; gap:clamp(13px,2vw,27px); color:#40584b; font-size:15px; font-weight:600; }
+.site-nav > a:not(.site-submit-link) { position:relative; padding:10px 0; transition:color .18s ease; }
+.site-nav > a:not(.site-submit-link):after { position:absolute; right:50%; bottom:3px; left:50%; height:2px; content:""; background:var(--brand-green); transition:left .18s ease,right .18s ease; }
+.site-nav > a:not(.site-submit-link):hover { color:var(--brand-green); }
+.site-nav > a:not(.site-submit-link):hover:after { right:0; left:0; }
+.site-submit-link { display:inline-flex; align-items:center; gap:8px; padding:12px 17px; border:1px solid #087b52; border-radius:10px; color:white!important; background:linear-gradient(135deg,#0a8559,#066443); box-shadow:0 5px 13px rgba(7,112,73,.17); font-size:14px; font-weight:700; transition:transform .18s ease,box-shadow .18s ease; }
+.site-submit-link:hover { transform:translateY(-1px); box-shadow:0 8px 18px rgba(7,112,73,.23); }
+.site-mobile-nav { display:none; position:relative; }
+.site-mobile-nav summary { display:flex; align-items:center; gap:8px; padding:10px 12px; list-style:none; cursor:pointer; border:1px solid #dce9e0; border-radius:10px; color:#07563c; background:#f8fcf9; font-size:14px; font-weight:700; }
+.site-mobile-nav summary::-webkit-details-marker { display:none; }
+.site-menu-icon { display:grid; gap:4px; width:17px; }
+.site-menu-icon i { display:block; height:2px; border-radius:3px; background:#087b52; }
+.site-mobile-panel { position:absolute; top:calc(100% + 10px); right:0; z-index:60; display:grid; gap:3px; width:min(280px,calc(100vw - 28px)); padding:10px; border:1px solid #e1ebe4; border-radius:14px; background:white; box-shadow:0 18px 48px rgba(8,48,33,.17); }
+.site-mobile-panel a { padding:12px 13px; border-radius:9px; color:#294538; font-size:15px; font-weight:600; }
+.site-mobile-panel a:hover { color:#087b52; background:#f0f8f3; }
+.site-mobile-panel .site-mobile-submit { margin-top:4px; color:white; background:#087b52; text-align:center; }
+.site-footer { margin-top:76px; padding:52px 20px 20px; color:#d9e9df; background:radial-gradient(ellipse at 12% 0%,rgba(25,120,80,.28),transparent 35%),linear-gradient(130deg,#062d22,#083b2b 60%,#062c21); }
+.site-footer-inner { display:grid; grid-template-columns:1.65fr .8fr 1fr; gap:clamp(24px,5vw,72px); width:min(1160px,100%); margin:0 auto; }
+.site-brand-footer { gap:13px; color:#fff; }
+.site-brand-footer .site-brand-symbol { width:58px; height:58px; }
+.site-brand-footer .site-brand-wordmark span { color:#b8d4c4; }
+.site-brand-footer .site-brand-wordmark strong { color:#fff; font-size:27px; }
+.site-footer-about p,.site-footer-links p { max-width:410px; margin:17px 0 0; color:#b4cbbd; font-size:14px; line-height:1.9; }
+.site-footer-links { display:flex; flex-direction:column; align-items:flex-start; gap:11px; }
+.site-footer-links strong { margin:4px 0 7px; color:#fff; font-family:"Noto Serif Bengali",serif; font-size:17px; font-weight:700; }
+.site-footer-links a { color:#c4d9cc; font-size:14px; transition:color .18s ease,transform .18s ease; }
+.site-footer-links a:hover { transform:translateX(3px); color:#fff; }
+.site-footer-links p { margin:0; font-size:13px; }
+.site-footer-bottom { display:flex; justify-content:space-between; gap:18px; width:min(1160px,100%); margin:38px auto 0; padding-top:17px; border-top:1px solid rgba(226,245,234,.16); color:#9fbdab; font-size:12px; }
+@media(max-width:900px) { .site-header-inner{min-height:78px}.site-nav{gap:14px;font-size:14px}.site-brand-symbol{width:47px;height:47px}.site-brand-wordmark strong{font-size:22px}.site-submit-link{padding:10px 12px} }
+@media(max-width:760px) { .site-header-inner{min-height:72px}.site-nav{display:none}.site-mobile-nav{display:block}.site-footer-inner{grid-template-columns:1fr 1fr;gap:30px 22px}.site-footer-about{grid-column:1/-1} }
+@media(max-width:480px) { .site-topbar-inner{width:calc(100% - 28px);min-height:30px;font-size:10px}.site-header-inner{width:calc(100% - 28px);min-height:68px}.site-brand-symbol{width:43px;height:43px}.site-brand-wordmark span{font-size:13px}.site-brand-wordmark strong{font-size:20px}.site-mobile-nav summary{padding:9px 10px;font-size:13px}.site-footer{margin-top:52px;padding:40px 16px 18px}.site-footer-inner{grid-template-columns:1fr 1fr;gap:26px 16px}.site-footer-links strong{font-size:15px}.site-footer-links a{font-size:13px}.site-footer-bottom{flex-direction:column;gap:6px;margin-top:28px} }
+@media(prefers-reduced-motion:reduce) { .site-nav a,.site-submit-link,.site-footer-links a{transition:none} }
