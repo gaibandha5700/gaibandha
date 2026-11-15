@@ -130,6 +130,26 @@ export const DIRECTORY_CATEGORIES = [
 
 export type DirectoryCategory = (typeof DIRECTORY_CATEGORIES)[number]["slug"];
 
+export type EducationInstitution = {
+  id: string;
+  directory_entry_id: string;
+  official_name: string | null;
+  eiin: string | null;
+  institution_type: string;
+  education_level: string | null;
+  management_type: string | null;
+  gender_type: string | null;
+  mpo_status: string | null;
+  academic_shift: string | null;
+  curriculum: string | null;
+  education_board: string | null;
+  established_year: number | null;
+  recognition_source: string | null;
+  recognition_url: string | null;
+  source_checked_at: string | null;
+  additional_details: Record<string, unknown>;
+};
+
 export type DirectoryEntry = {
   id: string;
   category: DirectoryCategory;
@@ -186,6 +206,15 @@ export async function getDirectoryEntry(
 ): Promise<DirectoryEntry | null> {
   const rows = await directoryFetch<DirectoryEntry[]>(
     `directory_entries?select=${directoryEntrySelect}&category=eq.${category}&slug=eq.${encodeURIComponent(slug)}&is_published=eq.true&is_verified=eq.true&limit=1`,
+  );
+  return rows[0] ?? null;
+}
+
+export async function getEducationInstitution(
+  directoryEntryId: string,
+): Promise<EducationInstitution | null> {
+  const rows = await directoryFetch<EducationInstitution[]>(
+    `education_institutions?select=id,directory_entry_id,official_name,eiin,institution_type,education_level,management_type,gender_type,mpo_status,academic_shift,curriculum,education_board,established_year,recognition_source,recognition_url,source_checked_at,additional_details&directory_entry_id=eq.${encodeURIComponent(directoryEntryId)}&limit=1`,
   );
   return rows[0] ?? null;
 }
