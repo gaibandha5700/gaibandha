@@ -1,3 +1,4 @@
+import Link from "next/link";
 import {
   ArrowRight, BookOpen, Building2, Bus, GraduationCap, HeartPulse,
   Landmark, MapPin, MapPinned, Search, ShieldCheck, ShoppingBag,
@@ -36,16 +37,16 @@ export default function Home() {
       </div>
 
       <header className="container nav">
-        <a className="brand" href="/" aria-label="গাইবান্ধা হোম">
+        <Link className="brand" href="/" aria-label="গাইবান্ধা হোম">
           <span className="brand-mark"><MapPinned size={23} /></span>
           <span>গাইবান্ধা</span>
-        </a>
+        </Link>
         <nav className="nav-links" aria-label="প্রধান নেভিগেশন">
-          <a href="#upazila">উপজেলা</a>
-          <a href="#categories">সেবাসমূহ</a>
-          <a href="#about">আমাদের সম্পর্কে</a>
+          <Link href="#upazila">উপজেলা</Link>
+          <Link href="#categories">সেবাসমূহ</Link>
+          <Link href="#about">আমাদের সম্পর্কে</Link>
         </nav>
-        <a className="admin-link" href="mailto:admin@gaibandha.local">যোগাযোগ</a>
+        <Link className="admin-link" href="mailto:admin@gaibandha.local">যোগাযোগ</Link>
       </header>
 
       <section className="hero">
@@ -75,17 +76,17 @@ export default function Home() {
         <div className="container">
           <div className="section-head">
             <div><div className="kicker">জেলা পরিচিতি</div><h2>গাইবান্ধার ৭টি উপজেলা</h2><p className="section-sub">আপনার এলাকার তথ্য খুঁজতে উপজেলা নির্বাচন করুন।</p></div>
-            <a className="text-link" href="/upazila">সব উপজেলা <ArrowRight size={16} /></a>
+            <Link className="text-link" href="/upazila">সব উপজেলা <ArrowRight size={16} /></Link>
           </div>
           <div className="grid-7">
             {upazilas.map((item) => (
-              <a className="upazila-card" href={`/upazila/${item.slug}`} key={item.slug}>
+              <Link className="upazila-card" href={`/upazila/${item.slug}`} key={item.slug}>
                 <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
                   <span className="upazila-icon"><Building2 size={20} /></span>
                   <div><strong>{item.name}</strong><span>{item.note}</span></div>
                 </div>
                 <ArrowRight size={17} color="#8a9a91" />
-              </a>
+              </Link>
             ))}
           </div>
         </div>
@@ -95,15 +96,15 @@ export default function Home() {
         <div className="container">
           <div className="section-head">
             <div><div className="kicker">এক জায়গায় প্রয়োজনীয় সেবা</div><h2>তথ্য খুঁজুন বিভাগ অনুযায়ী</h2><p className="section-sub">দৈনন্দিন প্রয়োজনের গুরুত্বপূর্ণ তথ্য সহজে খুঁজে নিন।</p></div>
-            <a className="text-link" href="/directory">সব বিভাগ <ArrowRight size={16} /></a>
+            <Link className="text-link" href="/directory">সব বিভাগ <ArrowRight size={16} /></Link>
           </div>
           <div className="category-grid">
             {categories.map(({ title, desc, icon: Icon }) => (
-              <a className="category-card" href="/directory" key={title}>
+              <Link className="category-card" href="/directory" key={title}>
                 <span className="category-icon"><Icon size={22} /></span>
                 <h3>{title}</h3>
                 <p>{desc}</p>
-              </a>
+              </Link>
             ))}
           </div>
         </div>
@@ -113,7 +114,7 @@ export default function Home() {
         <div className="container">
           <div className="info-banner">
             <div><h2>আপনার এলাকার তথ্য যোগ করতে চান?</h2><p>প্রতিষ্ঠান বা সেবার সঠিক তথ্য আমাদের জানান। যাচাইয়ের পর তথ্যভান্ডারে যুক্ত করা হবে।</p></div>
-            <a className="banner-button" href="mailto:admin@gaibandha.local">তথ্য জমা দিন <ArrowRight size={16} /></a>
+            <Link className="banner-button" href="mailto:admin@gaibandha.local">তথ্য জমা দিন <ArrowRight size={16} /></Link>
           </div>
         </div>
       </section>
@@ -121,9 +122,9 @@ export default function Home() {
       <footer className="footer">
         <div className="container">
           <div className="footer-grid">
-            <div><a className="brand" href="/"><span className="brand-mark"><Waves size={22} /></span><span>গাইবান্ধা</span></a><p>গাইবান্ধা জেলার মানুষ ও এলাকার জন্য একটি উন্মুক্ত ডিজিটাল তথ্যভান্ডার গড়ে তোলার উদ্যোগ।</p></div>
-            <div><h4>দ্রুত লিংক</h4><a href="#upazila">উপজেলা পরিচিতি</a><a href="#categories">তথ্য বিভাগ</a><a href="#about">তথ্য জমা দিন</a></div>
-            <div><h4>গুরুত্বপূর্ণ বিভাগ</h4><a href="/directory">শিক্ষা ও স্বাস্থ্য</a><a href="/directory">সরকারি অফিস</a><a href="/directory">ব্যবসা ও কমিউনিটি</a></div>
+            <div><Link className="brand" href="/"><span className="brand-mark"><Waves size={22} /></span><span>গাইবান্ধা</span></Link><p>গাইবান্ধা জেলার মানুষ ও এলাকার জন্য একটি উন্মুক্ত ডিজিটাল তথ্যভান্ডার গড়ে তোলার উদ্যোগ।</p></div>
+            <div><h4>দ্রুত লিংক</h4><Link href="#upazila">উপজেলা পরিচিতি</Link><Link href="#categories">তথ্য বিভাগ</Link><Link href="#about">তথ্য জমা দিন</Link></div>
+            <div><h4>গুরুত্বপূর্ণ বিভাগ</h4><Link href="/directory">শিক্ষা ও স্বাস্থ্য</Link><Link href="/directory">সরকারি অফিস</Link><Link href="/directory">ব্যবসা ও কমিউনিটি</Link></div>
           </div>
           <div className="footer-bottom">© {new Date().getFullYear()} গাইবান্ধা। সর্বস্বত্ব সংরক্ষিত। তথ্য যাচাই ও হালনাগাদের কাজ চলমান।</div>
         </div>
