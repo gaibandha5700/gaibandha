@@ -9,7 +9,7 @@ type Props = { params: Promise<{ slug: string; wardNumber: string }> };
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug, wardNumber } = await params;
   const municipality = await getMunicipalityBySlug(slug);
-  return { title: municipality ? `${municipality.name_bn} পৌরসভার ${wardNumber} নম্বর ওয়ার্ড` : "ওয়ার্ড পাওয়া যায়নি", robots: { index: false, follow: true } };
+  return { title: municipality ? `${municipality.name_bn} পৌরসভার ${wardNumber} নম্বর ওয়ার্ড` : "ওয়ার্ড পাওয়া যায়নি", alternates: { canonical: `/municipality/${slug}/ward/${wardNumber}` } };
 }
 export default async function MunicipalityWardPage({ params }: Props) {
   const { slug, wardNumber } = await params;
