@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { DIRECTORY_CATEGORIES, getUpazilas, getUnionsByUpazila } from "@/lib/directory";
+import { getUpazilas, getUnionsByUpazila } from "@/lib/directory";
 import {
   ArrowRight, Building2, Bus, GraduationCap, HeartPulse,
   Landmark, MapPin, MapPinned, Search, ShieldCheck, ShoppingBag,
@@ -41,7 +41,8 @@ export default async function Home() {
           <Link href="#categories">সেবাসমূহ</Link>
           <Link href="#about">আমাদের সম্পর্কে</Link>
         </nav>
-        <Link className="admin-link" href="/directory">তথ্যভান্ডার</Link>
+        <Link className="admin-link desktop-directory-link" href="/directory">তথ্যভান্ডার</Link>
+        <details className="mobile-menu"><summary aria-label="মেনু খুলুন">মেনু</summary><div className="mobile-menu-panel"><Link href="#upazila">উপজেলা</Link><Link href="#categories">সেবাসমূহ</Link><Link href="/directory">তথ্যভান্ডার</Link><Link href="/search">তথ্য খুঁজুন</Link><Link href="#about">আমাদের সম্পর্কে</Link></div></details>
       </header>
 
       <section className="hero">
