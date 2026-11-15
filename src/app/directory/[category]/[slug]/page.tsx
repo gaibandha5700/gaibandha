@@ -4,7 +4,7 @@ import { notFound } from "next/navigation";
 import { getSiteUrl } from "@/lib/site-url";
 import { DIRECTORY_CATEGORIES, getDirectoryEntries, getDirectoryEntry, isDirectoryCategory } from "@/lib/directory";
 
-export const revalidate = 3600;
+export const revalidate = 60;
 export const dynamicParams = true;
 
 type PageProps = { params: Promise<{ category: string; slug: string }> };
