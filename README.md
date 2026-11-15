@@ -48,3 +48,28 @@ After deployment, verify `/robots.txt` and `/sitemap.xml`, then submit `sitemap.
 The initial responsive Bengali homepage and technical SEO foundation are in place. Directory data, Supabase schema, public detail pages, authentication, and admin workflows are next.
 
 **Data quality:** Public directory entries should be reviewed and verified before publication.
+
+
+## Supabase database setup
+
+The first database migration is available at:
+
+`supabase/migrations/202611150001_initial_public_directory.sql`
+
+To apply it:
+1. Open your Supabase project.
+2. Go to **SQL Editor** → **New query**.
+3. Copy the complete migration file into the editor and run it.
+4. In **Table Editor**, confirm that `upazilas`, `unions`, and `directory_entries` exist.
+
+### Publication and security rules
+- New records default to `is_published = false` and `is_verified = false`.
+- Anonymous and authenticated visitors can only SELECT records where both flags are true.
+- Public INSERT, UPDATE, and DELETE policies are intentionally absent.
+- Admin write operations must be implemented behind server-side authentication and authorization.
+- Never put the Supabase `service_role` key in a `NEXT_PUBLIC_*` variable or browser code.
+
+### Directory categories
+`directory_entries.category` supports: `education`, `health`, `police`, `government`, `business`, `tourism`, `transport`, and `community`.
+
+The migration creates the data foundation only. It does not insert unverified directory data or publish empty detail pages. Public SEO routes and the dynamic sitemap should be connected after the Supabase project credentials are configured and real records are added and verified.
