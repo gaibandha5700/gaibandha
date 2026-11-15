@@ -29,13 +29,6 @@ export default async function Home() {
 
   return (
     <main>
-      <div className="topbar">
-        <div className="container topbar-inner">
-          <span>গাইবান্ধা জেলার ডিজিটাল তথ্যভান্ডার</span>
-          <span>রংপুর বিভাগ, বাংলাদেশ</span>
-        </div>
-      </div>
-
       <SiteHeader />
 
       <section className="hero">
