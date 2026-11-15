@@ -228,7 +228,8 @@ export async function getDirectoryEntries(options: {
     `limit=${options.limit ?? 500}`,
   ];
   if (options.category) filters.push(`category=eq.${options.category}`);
-  if (options.unionId) filters.push(`union_id=eq.${encodeURIComponent(options.unionId)}`);\n  if (options.wardId) filters.push(`ward_id=eq.${encodeURIComponent(options.wardId)}`);
+  if (options.unionId) filters.push(`union_id=eq.${encodeURIComponent(options.unionId)}`);
+  if (options.wardId) filters.push(`ward_id=eq.${encodeURIComponent(options.wardId)}`);
   if (options.upazilaId) filters.push(`upazila_id=eq.${encodeURIComponent(options.upazilaId)}`);
 
   return directoryFetch<DirectoryEntry[]>(`directory_entries?${filters.join("&")}`);
