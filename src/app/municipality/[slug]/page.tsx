@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { getMunicipalityBySlug, getUpazilaBySlug, getWardsByMunicipality } from "@/lib/directory";
+import { getMunicipalityBySlug, getWardsByMunicipality } from "@/lib/directory";
 
 export const revalidate = 60;
 type Props = { params: Promise<{ slug: string }> };
