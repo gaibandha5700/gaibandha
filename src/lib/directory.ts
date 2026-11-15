@@ -57,7 +57,8 @@ async function directoryFetch<T>(resource: string): Promise<T> {
   });
 
   if (!response.ok) {
-    throw new Error(`Directory request failed: ${response.status}`);
+    const errorBody = await response.text();
+    throw new Error(`Directory request failed: ${response.status}: ${errorBody.slice(0, 300)}`);
   }
 
   return response.json() as Promise<T>;
