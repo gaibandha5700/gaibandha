@@ -29,15 +29,7 @@ export default async function Home() {
 
   return (
     <main>
-      <div className="topbar">
-        <div className="container topbar-inner">
-          <span>গাইবান্ধা জেলার ডিজিটাল তথ্যভান্ডার</span>
-          <span>রংপুর বিভাগ, বাংলাদেশ</span>
-        </div>
-      </div>
-
       <SiteHeader />
-
       <section className="hero">
         <div className="container hero-content">
           <span className="eyebrow"><MapPin size={14} /> রংপুর বিভাগের একটি ঐতিহ্যবাহী জেলা</span>
@@ -107,7 +99,6 @@ export default async function Home() {
           </div>
         </div>
       </section>
-
       <SiteFooter />
     </main>
   );
