@@ -2,7 +2,7 @@ import type { MetadataRoute } from "next";
 import { getSiteUrl } from "@/lib/site-url";
 import {
   DIRECTORY_CATEGORIES,
-  getDirectoryEntries,
+  getDirectoryEntries,\n  getMunicipalitiesByUpazila,\n  getWardsByUnion,
   getUpazilas,
   getUnionsByUpazila,
 } from "@/lib/directory";
@@ -27,7 +27,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       priority: 0.8,
     });
 
-    const unions = await getUnionsByUpazila(upazila.id);
+    const [unions, municipalities] = await Promise.all([getUnionsByUpazila(upazila.id), getMunicipalitiesByUpazila(upazila.id)]);
     for (const union of unions) {
       entries.push({
         url: new URL(`/upazila/${upazila.slug}/${union.slug}`, siteUrl).toString(),
