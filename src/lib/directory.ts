@@ -139,6 +139,11 @@ export type DirectoryEntry = {
   union_id: string | null;
   municipality_id: string | null;
   municipality_ward_id: string | null;
+  official_code: string | null;
+  source_name: string | null;
+  source_url: string | null;
+  source_checked_at: string | null;
+  source_note: string | null;
   name_bn: string;
   name_en: string | null;
   slug: string;
@@ -161,7 +166,7 @@ export function isDirectoryCategory(value: string): value is DirectoryCategory {
 }
 
 const directoryEntrySelect =
-  "id,category,upazila_id,union_id,municipality_id,municipality_ward_id,name_bn,name_en,slug,summary,description,address,phone,email,website_url,image_url,latitude,longitude,meta_title,meta_description,updated_at";
+  "id,category,upazila_id,union_id,municipality_id,municipality_ward_id,official_code,source_name,source_url,source_checked_at,source_note,name_bn,slug,summary,description,address,phone,email,website_url,image_url,latitude,longitude,meta_title,meta_description,updated_at";
 
 export async function getDirectoryEntries(options: {
   category?: DirectoryCategory;
