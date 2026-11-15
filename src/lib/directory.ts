@@ -285,3 +285,18 @@ export async function getMunicipalityBySlug(slug: string): Promise<Municipality 
   const rows = await directoryFetch<Municipality[]>(`municipalities?select=${municipalitySelect}&slug=eq.${encodeURIComponent(slug)}&is_published=eq.true&is_verified=eq.true&limit=1`);
   return rows[0] ?? null;
 }
+
+export async function getUpazilaById(id: string): Promise<Upazila | null> {
+  const rows = await directoryFetch<Upazila[]>(`upazilas?select=id,name_bn,name_en,slug,description,households_total_2022,households_general_2022,households_institutional_2022,households_other_2022,population_total_2022,population_male_2022,population_female_2022,population_hijra_2022,sex_ratio_2022,census_source_name,census_source_url,census_checked_at,updated_at&id=eq.${encodeURIComponent(id)}&is_published=eq.true&is_verified=eq.true&limit=1`);
+  return rows[0] ?? null;
+}
+
+export async function getUnionById(id: string): Promise<Union | null> {
+  const rows = await directoryFetch<Union[]>(`unions?select=id,upazila_id,name_bn,name_en,slug,description,households_total_2022,households_general_2022,households_institutional_2022,households_other_2022,population_total_2022,population_male_2022,population_female_2022,population_hijra_2022,sex_ratio_2022,census_source_name,census_source_url,census_checked_at,updated_at&id=eq.${encodeURIComponent(id)}&is_published=eq.true&is_verified=eq.true&limit=1`);
+  return rows[0] ?? null;
+}
+
+export async function getMunicipalityById(id: string): Promise<Municipality | null> {
+  const rows = await directoryFetch<Municipality[]>(`municipalities?select=${municipalitySelect}&id=eq.${encodeURIComponent(id)}&is_published=eq.true&is_verified=eq.true&limit=1`);
+  return rows[0] ?? null;
+}
