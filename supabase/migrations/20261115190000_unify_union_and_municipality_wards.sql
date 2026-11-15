@@ -51,8 +51,6 @@ create table public.wards (
 create unique index wards_union_number_unique on public.wards(union_id, ward_number) where union_id is not null;
 create unique index wards_municipality_number_unique on public.wards(municipality_id, ward_number) where municipality_id is not null;
 create unique index wards_municipality_code_unique on public.wards(municipality_id, ward_code) where municipality_id is not null and ward_code is not null;
-create index wards_union_id_idx on public.wards(union_id) where union_id is not null;
-create index wards_municipality_id_idx on public.wards(municipality_id) where municipality_id is not null;
 
 -- Preserve all 36 existing municipal ward IDs, census values, provenance and publication state.
 insert into public.wards (
@@ -111,8 +109,10 @@ alter table public.directory_entries
   add constraint directory_entries_ward_parent_check
     check (ward_id is null or ((union_id is not null) <> (municipality_id is not null)));
 
-create index if not exists directory_entries_ward_id_idx
-  on public.directory_entries(ward_id) where ward_id is not null;
+create index if not exists directory_entries_ward_union_idx
+  on public.directory_entries(ward_id, union_id) where ward_id is not null and union_id is not null;
+create index if not exists directory_entries_ward_municipality_idx
+  on public.directory_entries(ward_id, municipality_id) where ward_id is not null and municipality_id is not null;
 
 -- Remove the old directory policy before dropping its referenced table.
 drop policy if exists "Public can read published verified directory entries" on public.directory_entries;
