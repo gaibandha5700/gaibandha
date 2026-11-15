@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import {
+import { SiteHeader, SiteFooter } from "@/components/site-chrome";
   DIRECTORY_CATEGORIES,
   getDirectoryEntries,
   getMunicipalitiesByUpazila,
@@ -68,12 +69,7 @@ export default async function DirectoryCategoryPage({ params, searchParams }: Pa
 
   return (
     <main className="min-h-screen bg-slate-50 text-slate-900">
-      <header className="border-b border-slate-200 bg-white">
-        <div className="mx-auto flex max-w-5xl items-center justify-between px-4 py-5">
-          <Link href="/" className="text-xl font-extrabold text-emerald-800">গাইবান্ধা</Link>
-          <Link href="/directory" className="text-sm font-semibold text-emerald-800">সব বিভাগ</Link>
-        </div>
-      </header>
+      <SiteHeader />
       <section className="mx-auto max-w-5xl px-4 py-12">
         <nav aria-label="ধাপ নির্দেশনা" className="mb-5 text-sm text-slate-500">
           <Link href="/">হোম</Link> / <Link href="/directory" className="mx-2">তথ্যভান্ডার</Link> / {category.label}
@@ -106,6 +102,7 @@ export default async function DirectoryCategoryPage({ params, searchParams }: Pa
           </div>
         )}
       </section>
-    </main>
+    <SiteFooter />
+      </main>
   );
 }
