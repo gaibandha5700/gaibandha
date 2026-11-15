@@ -217,6 +217,7 @@ export async function getDirectoryEntries(options: {
   category?: DirectoryCategory;
   unionId?: string;
   upazilaId?: string;
+  municipalityId?: string;
   limit?: number;
   wardId?: string;
 } = {}): Promise<DirectoryEntry[]> {
@@ -231,6 +232,7 @@ export async function getDirectoryEntries(options: {
   if (options.unionId) filters.push(`union_id=eq.${encodeURIComponent(options.unionId)}`);
   if (options.wardId) filters.push(`ward_id=eq.${encodeURIComponent(options.wardId)}`);
   if (options.upazilaId) filters.push(`upazila_id=eq.${encodeURIComponent(options.upazilaId)}`);
+  if (options.municipalityId) filters.push(`municipality_id=eq.${encodeURIComponent(options.municipalityId)}`);
 
   return directoryFetch<DirectoryEntry[]>(`directory_entries?${filters.join("&")}`);
 }
