@@ -41,7 +41,12 @@ export default async function DirectoryEntryPage({ params }: PageProps) {
   const category = DIRECTORY_CATEGORIES.find((item) => item.slug === slug)!;
   const entry = await getDirectoryEntry(slug, entrySlug);
   if (!entry) notFound();
-  const [education, upazila, union, municipality] = await Promise.all([\n    slug === "education" ? getEducationInstitution(entry.id) : Promise.resolve(null),\n    entry.upazila_id ? getUpazilaById(entry.upazila_id) : Promise.resolve(null),\n    entry.union_id ? getUnionById(entry.union_id) : Promise.resolve(null),\n    entry.municipality_id ? getMunicipalityById(entry.municipality_id) : Promise.resolve(null),\n  ]);
+  const [education, upazila, union, municipality] = await Promise.all([
+    slug === "education" ? getEducationInstitution(entry.id) : Promise.resolve(null),
+    entry.upazila_id ? getUpazilaById(entry.upazila_id) : Promise.resolve(null),
+    entry.union_id ? getUnionById(entry.union_id) : Promise.resolve(null),
+    entry.municipality_id ? getMunicipalityById(entry.municipality_id) : Promise.resolve(null),
+  ]);
 
   const url = new URL(`/directory/${slug}/${entry.slug}`, getSiteUrl());
   const jsonLd = {
