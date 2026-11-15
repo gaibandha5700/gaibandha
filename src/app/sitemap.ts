@@ -4,13 +4,12 @@ import {
   DIRECTORY_CATEGORIES,
   getDirectoryEntries,
   getMunicipalitiesByUpazila,
-  getWardsByMunicipality,
-  getWardsByUnion,
   getUpazilas,
   getUnionsByUpazila,
 } from "@/lib/directory";
 
-export const revalidate = 60;
+export const revalidate = 3600;
+const PAGE_SIZE = 500;
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const siteUrl = getSiteUrl();
@@ -43,15 +42,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
         changeFrequency: "monthly",
         priority: 0.7,
       });
-      const wards = await getWardsByUnion(union.id);
-      for (const ward of wards) {
-        entries.push({
-          url: new URL(`/upazila/${upazila.slug}/${union.slug}/ward/${ward.ward_number}`, siteUrl).toString(),
-          lastModified: now,
-          changeFrequency: "monthly",
-          priority: 0.5,
-        });
-      }
     }
 
     for (const municipality of municipalities) {
@@ -61,35 +51,47 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
         changeFrequency: "monthly",
         priority: 0.7,
       });
-      const wards = await getWardsByMunicipality(municipality.id);
-      for (const ward of wards) {
+    }
+  }
+
+  // Only publish category and detail URLs that actually contain public, verified records.
+  // Paginate so directories larger than one API response are not silently omitted.
+  for (const category of DIRECTORY_CATEGORIES) {
+    let offset = 0;
+    let categoryHasEntries = false;
+
+    while (true) {
+      const page = await getDirectoryEntries({
+        category: category.slug,
+        limit: PAGE_SIZE,
+        offset,
+      });
+
+      if (page.length > 0 && !categoryHasEntries) {
+        categoryHasEntries = true;
         entries.push({
-          url: new URL(`/municipality/${municipality.slug}/ward/${ward.ward_number}`, siteUrl).toString(),
+          url: new URL(`/directory/${category.slug}`, siteUrl).toString(),
           lastModified: now,
-          changeFrequency: "monthly",
-          priority: 0.5,
+          changeFrequency: "weekly",
+          priority: 0.7,
         });
       }
+
+      for (const item of page) {
+        entries.push({
+          url: new URL(`/directory/${category.slug}/${item.slug}`, siteUrl).toString(),
+          lastModified: item.updated_at ? new Date(item.updated_at) : now,
+          changeFrequency: "monthly",
+          priority: 0.6,
+        });
+      }
+
+      if (page.length < PAGE_SIZE) break;
+      offset += PAGE_SIZE;
     }
   }
 
-  for (const category of DIRECTORY_CATEGORIES) {
-    entries.push({
-      url: new URL(`/directory/${category.slug}`, siteUrl).toString(),
-      lastModified: now,
-      changeFrequency: "weekly",
-      priority: 0.7,
-    });
-    const directoryEntries = await getDirectoryEntries({ category: category.slug });
-    for (const item of directoryEntries) {
-      entries.push({
-        url: new URL(`/directory/${category.slug}/${item.slug}`, siteUrl).toString(),
-        lastModified: item.updated_at ? new Date(item.updated_at) : now,
-        changeFrequency: "monthly",
-        priority: 0.6,
-      });
-    }
-  }
-
+  // Ward pages are reachable from parent pages but are intentionally not submitted
+  // until each has sufficient unique content to merit indexing.
   return entries;
 }

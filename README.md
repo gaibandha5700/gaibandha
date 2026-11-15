@@ -1,12 +1,12 @@
-# গাইবান্ধা — ডিজিটাল জেলা তথ্যভান্ডার
+# আমাদের গাইবান্ধা — ডিজিটাল জেলা তথ্যভান্ডার
 
-গাইবান্ধা জেলার উপজেলা, শিক্ষা প্রতিষ্ঠান, হাসপাতাল, সরকারি অফিস, ব্যবসা, পরিবহন, দর্শনীয় স্থান ও কমিউনিটি তথ্য এক জায়গায় তুলে ধরার উদ্যোগ।
+গাইবান্ধা জেলার উপজেলা, ইউনিয়ন, পৌরসভা, ওয়ার্ড, শিক্ষা প্রতিষ্ঠান, স্বাস্থ্যসেবা, সরকারি অফিস, স্থানীয় ব্যবসা, দর্শনীয় স্থান ও অন্যান্য যাচাইকৃত তথ্যের পাবলিক তথ্যভান্ডার।
 
 ## Technology
 - Next.js App Router
 - React + TypeScript
 - Tailwind CSS
-- Supabase (planned: PostgreSQL, Auth, Storage)
+- Supabase (existing PostgreSQL database and public read integration)
 - Vercel deployment
 
 ## Local development
@@ -22,54 +22,37 @@ Set the canonical production origin in Vercel Project Settings → Environment V
 
 ```env
 NEXT_PUBLIC_SITE_URL=https://YOUR-PRODUCTION-DOMAIN
-```
-
-Use the exact preferred HTTPS origin (including `www` only if that is the canonical host). The app can fall back to Vercel's production project URL when this variable is absent.
-
-Supabase integration is not enabled yet. When configured, add these to `.env.local`:
-
-```env
 NEXT_PUBLIC_SUPABASE_URL=
 NEXT_PUBLIC_SUPABASE_ANON_KEY=
 ```
 
-Never expose a Supabase service-role key in client-side code.
+Use the exact preferred HTTPS origin (including `www` only if that is the canonical host). The app falls back to the configured production project URL when this variable is absent.
+
+The public website reads published and verified records from the existing Supabase project using the anon key and Row Level Security. Never expose a Supabase service-role key in a `NEXT_PUBLIC_*` variable or browser code. Do not recreate the database or reapply historical migrations to an already populated project.
+
+## Public data and publication
+- Public pages must only expose records that are both `is_published = true` and `is_verified = true`.
+- Keep source names, source URLs, and source-check dates with factual records wherever available.
+- Admin writes must remain behind authenticated, authorized server-side workflows.
+- Do not publish placeholder, draft, duplicate, or thin-content pages just to increase URL counts.
 
 ## Technical SEO
 - `src/app/robots.ts` serves `/robots.txt`.
-- `src/app/sitemap.ts` serves `/sitemap.xml`.
-- `src/app/layout.tsx` defines the Bengali document language, canonical metadata, Open Graph/Twitter metadata, robots directives, and WebSite JSON-LD.
-- Only real, public, indexable routes should be added to the sitemap. Do not add admin, API, draft, empty, or duplicate URLs.
-- Each future public detail page must have unique useful content, a unique title and description, a self-referencing canonical URL, and appropriate structured data where eligible.
+- `src/app/sitemap.ts` serves `/sitemap.xml` and includes only public, verified, indexable pages.
+- Sitemap directory records are paginated to avoid omitting records beyond a single API response.
+- Search results and filtered directory views are not indexable; their canonical points to the clean category URL.
+- Ward detail pages remain crawlable through parent-page links but are excluded from indexing until they contain sufficient unique information.
+- `src/app/layout.tsx` defines Bengali document language, global metadata, Open Graph/Twitter metadata, robots directives, and WebSite JSON-LD.
+- Detail pages should have unique titles, descriptions, canonical URLs, useful visible content, source attribution, and appropriate structured data where eligible.
 
-After deployment, verify `/robots.txt` and `/sitemap.xml`, then submit `sitemap.xml` in Google Search Console.
+After deployment:
+1. Verify `/robots.txt` and `/sitemap.xml` return HTTP 200.
+2. Confirm sitemap URLs use the canonical HTTPS host and return indexable pages.
+3. Submit `https://YOUR-PRODUCTION-DOMAIN/sitemap.xml` in Google Search Console.
+4. Monitor Page indexing, Sitemaps, Core Web Vitals, and Search results reports.
 
-## Project status
-The initial responsive Bengali homepage and technical SEO foundation are in place. Directory data, Supabase schema, public detail pages, authentication, and admin workflows are next.
+## Content strategy
+Create substantive district information pages (history, heritage, geography, rivers, tourism, culture, economy, education, and public services) only when the content can be supported by reliable sources and kept current. Do not invent historical or statistical facts.
 
-**Data quality:** Public directory entries should be reviewed and verified before publication.
-
-
-## Supabase database setup
-
-The first database migration is available at:
-
-`supabase/migrations/202611150001_initial_public_directory.sql`
-
-To apply it:
-1. Open your Supabase project.
-2. Go to **SQL Editor** → **New query**.
-3. Copy the complete migration file into the editor and run it.
-4. In **Table Editor**, confirm that `upazilas`, `unions`, and `directory_entries` exist.
-
-### Publication and security rules
-- New records default to `is_published = false` and `is_verified = false`.
-- Anonymous and authenticated visitors can only SELECT records where both flags are true.
-- Public INSERT, UPDATE, and DELETE policies are intentionally absent.
-- Admin write operations must be implemented behind server-side authentication and authorization.
-- Never put the Supabase `service_role` key in a `NEXT_PUBLIC_*` variable or browser code.
-
-### Directory categories
-`directory_entries.category` supports: `education`, `health`, `police`, `government`, `business`, `tourism`, `transport`, and `community`.
-
-The migration creates the data foundation only. It does not insert unverified directory data or publish empty detail pages. Public SEO routes and the dynamic sitemap should be connected after the Supabase project credentials are configured and real records are added and verified.
+## Data quality
+Public directory records should be reviewed and verified before publication. Search visibility is a result of useful, accurate, accessible content; metadata and sitemap inclusion alone do not guarantee indexing.

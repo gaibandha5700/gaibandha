@@ -219,6 +219,7 @@ export async function getDirectoryEntries(options: {
   upazilaId?: string;
   municipalityId?: string;
   limit?: number;
+  offset?: number;
   wardId?: string;
 } = {}): Promise<DirectoryEntry[]> {
   const filters = [
@@ -227,6 +228,7 @@ export async function getDirectoryEntries(options: {
     "is_verified=eq.true",
     "order=name_bn.asc",
     `limit=${options.limit ?? 500}`,
+    `offset=${options.offset ?? 0}`,
   ];
   if (options.category) filters.push(`category=eq.${options.category}`);
   if (options.unionId) filters.push(`union_id=eq.${encodeURIComponent(options.unionId)}`);

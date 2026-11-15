@@ -22,14 +22,17 @@ export async function generateStaticParams() {
   return DIRECTORY_CATEGORIES.map((category) => ({ category: category.slug }));
 }
 
-export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
-  const { category: slug } = await params;
-  if (!isDirectoryCategory(slug)) return { title: "বিভাগ পাওয়া যায়নি" };
+export async function generateMetadata({ params, searchParams }: PageProps): Promise<Metadata> {
+  const [{ category: slug }, filters] = await Promise.all([params, searchParams]);
+  if (!isDirectoryCategory(slug)) return { title: "বিভাগ পাওয়া যায়নি", robots: { index: false, follow: true } };
   const category = DIRECTORY_CATEGORIES.find((item) => item.slug === slug)!;
+  const hasFilters = Boolean(filters.q?.trim() || filters.upazila || filters.area);
+  const hasPublishedEntries = (await getDirectoryEntries({ category: slug, limit: 1 })).length > 0;
   return {
     title: `${category.label} — গাইবান্ধা`,
     description: `গাইবান্ধা জেলার ${category.label} সম্পর্কিত প্রকাশিত ও যাচাইকৃত স্থানীয় তথ্য, ঠিকানা ও যোগাযোগের বিবরণ দেখুন।`,
     alternates: { canonical: `/directory/${slug}` },
+    robots: { index: !hasFilters && hasPublishedEntries, follow: true },
   };
 }
 
