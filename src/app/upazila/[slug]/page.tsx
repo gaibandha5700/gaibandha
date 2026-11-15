@@ -90,7 +90,6 @@ export default async function UpazilaDetailPage({ params }: PageProps) {
             <Link key={union.id} href={`/upazila/${upazila.slug}/${union.slug}`}
               className="rounded-xl border border-slate-200 bg-white p-5 font-semibold transition hover:border-emerald-300 hover:shadow-sm">
               <span>{union.name_bn}</span>
-              <span className="mt-1 block text-xs font-normal text-slate-500">{union.name_en}</span>
             </Link>
           ))}
         </div>
