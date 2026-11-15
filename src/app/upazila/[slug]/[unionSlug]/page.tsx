@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getSiteUrl } from "@/lib/site-url";
-import { DIRECTORY_CATEGORIES, getDirectoryEntries, getUpazilaBySlug, getUpazilas, getUnionBySlug, getUnionsByUpazila } from "@/lib/directory";
+import { DIRECTORY_CATEGORIES, getDirectoryEntries, getUpazilaBySlug, getUpazilas, getUnionBySlug, getUnionsByUpazila, getWardsByUnion } from "@/lib/directory";
 
 export const revalidate = 60;
 export const dynamicParams = true;
@@ -44,7 +44,7 @@ export default async function UnionDetailPage({ params }: PageProps) {
   if (!upazila) notFound();
   const union = await getUnionBySlug(upazila.id, unionSlug);
   if (!union) notFound();
-  const localEntries = await getDirectoryEntries({ unionId: union.id });
+  const [localEntries, wards] = await Promise.all([getDirectoryEntries({ unionId: union.id }), getWardsByUnion(union.id)]);
 
   const url = new URL(`/upazila/${upazila.slug}/${union.slug}`, getSiteUrl());
   const jsonLd = {
