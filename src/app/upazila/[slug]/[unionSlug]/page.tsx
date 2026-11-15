@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getSiteUrl } from "@/lib/site-url";
-import { getUpazilaBySlug, getUpazilas, getUnionBySlug, getUnionsByUpazila } from "@/lib/directory";
+import { DIRECTORY_CATEGORIES, getDirectoryEntries, getUpazilaBySlug, getUpazilas, getUnionBySlug, getUnionsByUpazila } from "@/lib/directory";
 
 export const revalidate = 3600;
 export const dynamicParams = true;
@@ -80,7 +80,7 @@ export default async function UnionDetailPage({ params }: PageProps) {
         <p className="mt-4 leading-8 text-slate-600">
           {union.name_bn} ইউনিয়ন গাইবান্ধা জেলার {upazila.name_bn} উপজেলার অন্তর্গত একটি ইউনিয়ন পরিষদ। এই পৃষ্ঠায় ইউনিয়নটির প্রশাসনিক পরিচিতি ও যাচাইকৃত স্থানীয় তথ্য পর্যায়ক্রমে যুক্ত করা হবে।
         </p>
-        <dl className="mt-8 grid gap-4 rounded-2xl border border-slate-200 bg-white p-6 sm:grid-cols-2">
+        <section className="mt-10">\n          <h2 className="text-2xl font-bold">এই ইউনিয়নের প্রতিষ্ঠান ও সেবা</h2>\n          {localEntries.length ? (\n            <div className="mt-5 grid gap-3 sm:grid-cols-2">\n              {localEntries.map((entry) => {\n                const category = DIRECTORY_CATEGORIES.find((item) => item.slug === entry.category);\n                return (\n                  <Link key={entry.id} href={`/directory/${entry.category}/${entry.slug}`} className="rounded-xl border border-slate-200 bg-white p-5 transition hover:border-emerald-300 hover:shadow-sm">\n                    <span className="text-xs font-semibold text-emerald-700">{category?.label}</span>\n                    <span className="mt-1 block font-bold">{entry.name_bn}</span>\n                    {entry.summary && <span className="mt-2 block text-sm leading-6 text-slate-600">{entry.summary}</span>}\n                  </Link>\n                );\n              })}\n            </div>\n          ) : (\n            <p className="mt-3 rounded-xl border border-dashed border-slate-300 bg-white p-5 text-sm leading-7 text-slate-600">এই ইউনিয়নের জন্য এখনো কোনো প্রকাশিত ও যাচাইকৃত প্রতিষ্ঠান বা সেবার তথ্য যোগ করা হয়নি।</p>\n          )}\n        </section>\n        <dl className="mt-8 grid gap-4 rounded-2xl border border-slate-200 bg-white p-6 sm:grid-cols-2">
           <div><dt className="text-sm text-slate-500">ইউনিয়নের নাম</dt><dd className="mt-1 font-bold">{union.name_bn}</dd></div>
           <div><dt className="text-sm text-slate-500">ইংরেজি নাম</dt><dd className="mt-1 font-bold">{union.name_en}</dd></div>
           <div><dt className="text-sm text-slate-500">উপজেলা</dt><dd className="mt-1 font-bold">{upazila.name_bn}</dd></div>
