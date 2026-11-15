@@ -82,7 +82,7 @@ export default async function DirectoryCategoryPage({ params, searchParams }: Pa
           <label><span className="mb-1 block text-xs font-semibold text-slate-600">ইউনিয়ন / পৌরসভা</span><select name="area" defaultValue={area} className="w-full rounded-xl border border-slate-300 bg-white px-3 py-3"><option value="">সব এলাকা</option>{areas.map((item) => <option key={item.value} value={item.value}>{item.label}</option>)}</select></label>
           <div className="flex items-center gap-2 sm:col-span-4"><button className="rounded-xl bg-emerald-700 px-5 py-3 font-bold text-white">ফিল্টার প্রয়োগ</button><Link href={`/directory/${slug}`} className="rounded-xl border border-slate-300 px-5 py-3 text-sm font-semibold text-slate-700">ফিল্টার মুছুন</Link><span className="ml-auto text-sm text-slate-500">{entries.length.toLocaleString("bn-BD")}টি ফলাফল</span></div>
         </form>
-        {entries.length ? (
+        <div className="mt-6 flex justify-end"><Link href="/submit" className="rounded-xl border border-emerald-200 bg-emerald-50 px-4 py-2.5 text-sm font-semibold text-emerald-800">নতুন প্রতিষ্ঠানের তথ্য জমা দিন</Link></div>\n        {entries.length ? (
           <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {entries.map((entry) => (
               <Link key={entry.id} href={`/directory/${slug}/${entry.slug}`} className="rounded-2xl border border-slate-200 bg-white p-5 transition hover:border-emerald-300 hover:shadow-sm">
