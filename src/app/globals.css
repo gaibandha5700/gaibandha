@@ -30,7 +30,7 @@ button, input { font: inherit; }
 .nav-links { display: flex; align-items: center; gap: 27px; color: #42534b; font-size: 14px; font-weight: 600; }
 .nav-links a:hover { color: var(--green); }
 .admin-link { padding: 11px 17px; background: var(--green); color: white; border-radius: 9px; font-size: 14px; font-weight: 700; }
-.hero { position: relative; overflow: hidden; padding: 76px 0 70px; color: white; background: linear-gradient(115deg, rgba(5,54,39,.96), rgba(7,118,79,.88)), url("https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=1800&q=85") center/cover; }
+.hero { position: relative; overflow: hidden; padding: 76px 0 70px; color: white; background: radial-gradient(circle at 85% 15%, rgba(94, 190, 137, .28), transparent 28%), linear-gradient(115deg, #073f2e, #08764f); }
 .hero:after { content: ""; position: absolute; width: 430px; height: 430px; right: -110px; top: -190px; border: 1px solid rgba(255,255,255,.13); border-radius: 50%; box-shadow: 0 0 0 45px rgba(255,255,255,.035), 0 0 0 90px rgba(255,255,255,.025); }
 .hero-content { position: relative; z-index: 1; max-width: 760px; }
 .eyebrow { display: inline-flex; align-items: center; gap: 8px; padding: 7px 12px; border: 1px solid rgba(255,255,255,.22); border-radius: 999px; color: #d6f4e4; font-size: 13px; }
