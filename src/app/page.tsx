@@ -39,7 +39,7 @@ export default async function Home() {
         <nav className="nav-links" aria-label="প্রধান নেভিগেশন">
           <Link href="#upazila">উপজেলা</Link>
           <Link href="#categories">সেবাসমূহ</Link>
-          <Link href="#about">আমাদের সম্পর্কে</Link>
+          <Link href="/search">তথ্য খুঁজুন</Link><Link href="#about">আমাদের সম্পর্কে</Link>
         </nav>
         <Link className="admin-link desktop-directory-link" href="/directory">তথ্যভান্ডার</Link>
         <details className="mobile-menu"><summary aria-label="মেনু খুলুন">মেনু</summary><div className="mobile-menu-panel"><Link href="#upazila">উপজেলা</Link><Link href="#categories">সেবাসমূহ</Link><Link href="/directory">তথ্যভান্ডার</Link><Link href="/search">তথ্য খুঁজুন</Link><Link href="#about">আমাদের সম্পর্কে</Link></div></details>
@@ -109,7 +109,7 @@ export default async function Home() {
       <section className="section" id="about">
         <div className="container">
           <div className="info-banner">
-            <div><h2>আপনার এলাকার তথ্য যোগ করতে চান?</h2><p>প্রতিষ্ঠান বা সেবার সঠিক তথ্য আমাদের জানান। যাচাইয়ের পর তথ্যভান্ডারে যুক্ত করা হবে।</p></div>
+            <div><h2>গাইবান্ধার তথ্য এক জায়গায়</h2><p>উপজেলা, ইউনিয়ন, পৌরসভা, ওয়ার্ড ও স্থানীয় প্রতিষ্ঠানের যাচাইকৃত তথ্য সহজে খুঁজে নিন।</p></div>
             <Link className="banner-button" href="/directory">তথ্যভান্ডার দেখুন <ArrowRight size={16} /></Link>
           </div>
         </div>
@@ -120,7 +120,7 @@ export default async function Home() {
           <div className="footer-grid">
             <div><Link className="brand" href="/"><span className="brand-mark"><Waves size={22} /></span><span>গাইবান্ধা</span></Link><p>গাইবান্ধা জেলার মানুষ ও এলাকার জন্য একটি উন্মুক্ত ডিজিটাল তথ্যভান্ডার গড়ে তোলার উদ্যোগ।</p></div>
             <div><h4>দ্রুত লিংক</h4><Link href="#upazila">উপজেলা পরিচিতি</Link><Link href="#categories">তথ্য বিভাগ</Link><Link href="#about">তথ্য জমা দিন</Link></div>
-            <div><h4>গুরুত্বপূর্ণ বিভাগ</h4><Link href="/directory">শিক্ষা ও স্বাস্থ্য</Link><Link href="/directory">সরকারি অফিস</Link><Link href="/directory">ব্যবসা ও কমিউনিটি</Link></div>
+            <div><h4>গুরুত্বপূর্ণ বিভাগ</h4><Link href="/directory/education">শিক্ষা প্রতিষ্ঠান</Link><Link href="/directory/health">স্বাস্থ্যসেবা</Link><Link href="/directory/government">সরকারি অফিস</Link></div>
           </div>
           <div className="footer-bottom">© {new Date().getFullYear()} গাইবান্ধা। সর্বস্বত্ব সংরক্ষিত। তথ্য যাচাই ও হালনাগাদের কাজ চলমান।</div>
         </div>
