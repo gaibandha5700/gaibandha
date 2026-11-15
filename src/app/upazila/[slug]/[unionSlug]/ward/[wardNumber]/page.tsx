@@ -12,7 +12,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const upazila = await getUpazilaBySlug(slug);
   if (!upazila) return { title: "ওয়ার্ড পাওয়া যায়নি" };
   const union = await getUnionBySlug(upazila.id, unionSlug);
-  return { title: union ? `${union.name_bn} ইউনিয়ন, ${wardNumber} নম্বর ওয়ার্ড — গাইবান্ধা` : "ওয়ার্ড পাওয়া যায়নি", alternates: { canonical: `/municipality/${slug}/ward/${wardNumber}` } };
+  return { title: union ? `${union.name_bn} ইউনিয়ন, ${wardNumber} নম্বর ওয়ার্ড — গাইবান্ধা` : "ওয়ার্ড পাওয়া যায়নি", alternates: { canonical: `/upazila/${slug}/${unionSlug}/ward/${wardNumber}` } };
 }
 
 export default async function UnionWardPage({ params }: Props) {
