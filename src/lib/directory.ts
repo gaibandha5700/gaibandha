@@ -22,6 +22,31 @@ export type Union = {
   updated_at: string;
 };
 
+export type Village = {
+  id: string;
+  upazila_id: string;
+  union_id: string;
+  name_bn: string;
+  name_en: string | null;
+  slug: string;
+  mouza_name_bn: string | null;
+  mouza_name_en: string | null;
+  post_office: string | null;
+  postal_code: string | null;
+  address: string | null;
+  description: string | null;
+  population: number | null;
+  households: number | null;
+  area_sq_km: number | null;
+  latitude: number | null;
+  longitude: number | null;
+  source_name: string | null;
+  source_url: string | null;
+  source_note: string | null;
+  source_checked_at: string | null;
+  updated_at: string;
+};
+
 async function directoryFetch<T>(resource: string): Promise<T> {
   if (!supabaseUrl || !supabaseKey) {
     throw new Error("Supabase public environment variables are not configured.");
@@ -68,6 +93,23 @@ export async function getUnionBySlug(
   return rows[0] ?? null;
 }
 
+export async function getVillagesByUnion(unionId: string): Promise<Village[]> {
+  return directoryFetch<Village[]>(
+    `villages?select=id,upazila_id,union_id,name_bn,name_en,slug,mouza_name_bn,mouza_name_en,post_office,postal_code,address,description,population,households,area_sq_km,latitude,longitude,source_name,source_url,source_note,source_checked_at,updated_at&union_id=eq.${encodeURIComponent(unionId)}&is_published=eq.true&is_verified=eq.true&order=name_bn.asc`,
+  );
+}
+
+export async function getVillageBySlug(
+  upazilaId: string,
+  unionId: string,
+  slug: string,
+): Promise<Village | null> {
+  const rows = await directoryFetch<Village[]>(
+    `villages?select=id,upazila_id,union_id,name_bn,name_en,slug,mouza_name_bn,mouza_name_en,post_office,postal_code,address,description,population,households,area_sq_km,latitude,longitude,source_name,source_url,source_note,source_checked_at,updated_at&upazila_id=eq.${encodeURIComponent(upazilaId)}&union_id=eq.${encodeURIComponent(unionId)}&slug=eq.${encodeURIComponent(slug)}&is_published=eq.true&is_verified=eq.true&limit=1`,
+  );
+  return rows[0] ?? null;
+}
+
 export async function requireUpazila(slug: string): Promise<Upazila> {
   const upazila = await getUpazilaBySlug(slug);
   if (!upazila) notFound();
@@ -93,6 +135,7 @@ export type DirectoryEntry = {
   category: DirectoryCategory;
   upazila_id: string | null;
   union_id: string | null;
+  village_id: string | null;
   name_bn: string;
   name_en: string | null;
   slug: string;
@@ -115,7 +158,7 @@ export function isDirectoryCategory(value: string): value is DirectoryCategory {
 }
 
 const directoryEntrySelect =
-  "id,category,upazila_id,union_id,name_bn,name_en,slug,summary,description,address,phone,email,website_url,image_url,latitude,longitude,meta_title,meta_description,updated_at";
+  "id,category,upazila_id,union_id,village_id,name_bn,name_en,slug,summary,description,address,phone,email,website_url,image_url,latitude,longitude,meta_title,meta_description,updated_at";
 
 export async function getDirectoryEntries(options: {
   category?: DirectoryCategory;
