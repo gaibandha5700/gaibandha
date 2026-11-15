@@ -1,11 +1,17 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="620" height="220" viewBox="0 0 620 220" role="img" aria-labelledby="title desc">
   <title id="title">আমাদের গাইবান্ধা</title>
-  <desc id="desc">আমাদের গাইবান্ধা জেলার ডিজিটাল তথ্যভান্ডারের লোগো</desc>
+  <desc id="desc">আমাদের উপরে এবং বড় গা অক্ষরের পাশে ইবান্ধা দিয়ে সাজানো আমাদের গাইবান্ধা লোগো</desc>
   <defs>
-    <linearGradient id="gold" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#b88b3d"/><stop offset=".52" stop-color="#e2c77e"/><stop offset="1" stop-color="#a9782e"/></linearGradient>
+    <linearGradient id="gold" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#b88b3d"/>
+      <stop offset=".52" stop-color="#e2c77e"/>
+      <stop offset="1" stop-color="#a9782e"/>
+    </linearGradient>
   </defs>
-  <text x="310" y="76" text-anchor="middle" fill="#08764f" font-family="Noto Serif Bengali, Hind Siliguri, serif" font-size="48" font-weight="600">আমাদের</text>
-  <text x="310" y="157" text-anchor="middle" fill="#07583d" font-family="Noto Serif Bengali, Hind Siliguri, serif" font-size="88" font-weight="800">গাইবান্ধা</text>
-  <path d="M130 184 H490" stroke="url(#gold)" stroke-width="5" stroke-linecap="round"/>
-  <circle cx="112" cy="184" r="5" fill="#d8b66a"/><circle cx="508" cy="184" r="5" fill="#d8b66a"/>
+  <text x="365" y="67" text-anchor="middle" fill="#08764f" font-family="Noto Serif Bengali, Hind Siliguri, serif" font-size="49" font-weight="700">আমাদের</text>
+  <text x="72" y="169" fill="#07583d" font-family="Noto Serif Bengali, Hind Siliguri, serif" font-size="151" font-weight="800">গা</text>
+  <text x="270" y="166" fill="#07583d" font-family="Noto Serif Bengali, Hind Siliguri, serif" font-size="91" font-weight="800">ইবান্ধা</text>
+  <path d="M78 195 H542" stroke="url(#gold)" stroke-width="4" stroke-linecap="round"/>
+  <circle cx="62" cy="195" r="4" fill="#d8b66a"/>
+  <circle cx="558" cy="195" r="4" fill="#d8b66a"/>
 </svg>
