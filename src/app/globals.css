@@ -218,3 +218,10 @@ body { font-family:"Hind Siliguri","Noto Sans Bengali",sans-serif; }
   .site-brand-wordmark strong { font-size: 23px; }
   .site-brand-footer .site-brand-wordmark strong { font-size: 27px; }
 }
+
+
+/* Shared master brand asset used by the header and footer */
+.site-brand-image { display:block; width:154px; height:auto; }
+.site-brand-footer .site-brand-image { width:176px; }
+@media (max-width:900px) { .site-brand-image { width:140px; } }
+@media (max-width:480px) { .site-brand-image { width:124px; } .site-brand-footer .site-brand-image { width:160px; } }
