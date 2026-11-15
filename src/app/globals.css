@@ -304,3 +304,13 @@ body { font-family:"Hind Siliguri","Noto Sans Bengali",sans-serif; }
   .site-brand-rest { font-size: 27px; }
   .site-brand-footer { width: 190px; }
 }
+
+
+/* The brand is now a self-contained custom vector wordmark */
+.site-brand-image { display:block; width:176px; height:auto; object-fit:contain; }
+.site-brand-footer .site-brand-image { width:205px; }
+@media(max-width:900px) { .site-brand-image { width:158px; } }
+@media(max-width:480px) {
+  .site-brand-image { width:142px; }
+  .site-brand-footer .site-brand-image { width:190px; }
+}
