@@ -118,7 +118,7 @@ export default async function DirectoryEntryPage({ params }: PageProps) {
         {entry.latitude !== null && entry.longitude !== null && (
           <p className="mt-5 text-sm"><a className="font-semibold text-emerald-700" href={`https://www.google.com/maps?q=${entry.latitude},${entry.longitude}`} target="_blank" rel="noopener noreferrer">গুগল ম্যাপে অবস্থান দেখুন ↗</a></p>
         )}
-        <p className="mt-8 text-xs leading-6 text-slate-500">এই পৃষ্ঠায় কেবল প্রকাশিত ও যাচাইকৃত তথ্য দেখানো হয়। কোনো তথ্য ভুল মনে হলে সংশোধনের অনুরোধ জানানোর আগে তথ্যসূত্র মিলিয়ে নিন।</p>
+        <div className="mt-8 flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-emerald-100 bg-emerald-50 p-5"><p className="text-sm leading-6 text-emerald-900">এই তথ্যটি ভুল বা পুরোনো মনে হলে সংশোধনের অনুরোধ জানান।</p><Link href={`/submit?type=correction&entry_id=${entry.id}&name=${encodeURIComponent(entry.name_bn)}&category=${slug}`} className="rounded-xl bg-emerald-700 px-4 py-2.5 text-sm font-bold text-white">সংশোধনের অনুরোধ</Link></div>
       </article>
     <SiteFooter />
       </main>
