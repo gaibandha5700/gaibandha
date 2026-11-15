@@ -109,6 +109,9 @@ alter table public.directory_entries
   add constraint directory_entries_ward_parent_check
     check (ward_id is null or ((union_id is not null) <> (municipality_id is not null)));
 
+drop index if exists public.directory_entries_municipality_ward_id_idx;
+drop index if exists public.directory_entries_municipality_ward_idx;
+
 create index if not exists directory_entries_ward_union_idx
   on public.directory_entries(ward_id, union_id) where ward_id is not null and union_id is not null;
 create index if not exists directory_entries_ward_municipality_idx
