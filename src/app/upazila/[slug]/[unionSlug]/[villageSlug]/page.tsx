@@ -132,7 +132,15 @@ export default async function VillageDetailPage({ params }: PageProps) {
           <div><dt className="text-sm text-slate-500">পোস্টকোড</dt><dd className="mt-1 font-bold">{village.postal_code ?? "তথ্য পাওয়া যায়নি"}</dd></div>
           <div><dt className="text-sm text-slate-500">ঠিকানা</dt><dd className="mt-1 font-bold">{village.address ?? "তথ্য পাওয়া যায়নি"}</dd></div>
           <div><dt className="text-sm text-slate-500">জনসংখ্যা</dt><dd className="mt-1 font-bold">{number(village.population)}</dd></div>
-          <div><dt className="text-sm text-slate-500">পরিবার</dt><dd className="mt-1 font-bold">{number(village.households)}</dd></div>
+          <div><dt className="text-sm text-slate-500">পরিবার (২০২২)</dt><dd className="mt-1 font-bold">{number(village.households_total_2022)}</dd></div>
+          <div><dt className="text-sm text-slate-500">জনসংখ্যা (২০২২)</dt><dd className="mt-1 font-bold">{number(village.population_total_2022)}</dd></div>
+          <div><dt className="text-sm text-slate-500">পুরুষ (২০২২)</dt><dd className="mt-1 font-bold">{number(village.population_male_2022)}</dd></div>
+          <div><dt className="text-sm text-slate-500">নারী (২০২২)</dt><dd className="mt-1 font-bold">{number(village.population_female_2022)}</dd></div>
+          <div><dt className="text-sm text-slate-500">হিজড়া (২০২২)</dt><dd className="mt-1 font-bold">{number(village.population_hijra_2022)}</dd></div>
+          <div><dt className="text-sm text-slate-500">মৌজা কোড</dt><dd className="mt-1 font-bold">{village.mauza_code ?? "তথ্য পাওয়া যায়নি"}</dd></div>
+          <div><dt className="text-sm text-slate-500">গ্রাম কোড</dt><dd className="mt-1 font-bold">{village.village_code ?? "তথ্য পাওয়া যায়নি"}</dd></div>
+          <div><dt className="text-sm text-slate-500">জনশুমারি জিও-কোড</dt><dd className="mt-1 font-bold">{village.geo_code ?? "তথ্য পাওয়া যায়নি"}</dd></div>
+          <div><dt className="text-sm text-slate-500">লিঙ্গ অনুপাত (২০২২)</dt><dd className="mt-1 font-bold">{number(village.sex_ratio_2022)}</dd></div>
           <div><dt className="text-sm text-slate-500">আয়তন (বর্গ কিমি)</dt><dd className="mt-1 font-bold">{number(village.area_sq_km)}</dd></div>
           <div><dt className="text-sm text-slate-500">অবস্থান</dt><dd className="mt-1 font-bold">
             {village.latitude != null && village.longitude != null
