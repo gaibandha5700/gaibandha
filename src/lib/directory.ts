@@ -29,7 +29,7 @@ async function directoryFetch<T>(resource: string): Promise<T> {
 
   const response = await fetch(`${supabaseUrl}/rest/v1/${resource}`, {
     headers: { apikey: supabaseKey },
-    next: { revalidate: 3600 },
+    next: { revalidate: 60 },
   });
 
   if (!response.ok) {
