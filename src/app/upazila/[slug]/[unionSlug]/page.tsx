@@ -105,7 +105,6 @@ export default async function UnionDetailPage({ params }: PageProps) {
           <div><dt className="text-sm text-slate-500">হিজড়া · ২০২২</dt><dd className="mt-1 font-bold">{union.population_hijra_2022 == null ? "তথ্য পাওয়া যায়নি" : union.population_hijra_2022.toLocaleString("bn-BD")}</dd></div>
           <div><dt className="text-sm text-slate-500">লিঙ্গ অনুপাত · ২০২২</dt><dd className="mt-1 font-bold">{union.sex_ratio_2022 == null ? "তথ্য পাওয়া যায়নি" : union.sex_ratio_2022.toLocaleString("bn-BD")}</dd></div>
           <div><dt className="text-sm text-slate-500">ইউনিয়নের নাম</dt><dd className="mt-1 font-bold">{union.name_bn}</dd></div>
-          <div><dt className="text-sm text-slate-500">ইংরেজি নাম</dt><dd className="mt-1 font-bold">{union.name_en}</dd></div>
           <div><dt className="text-sm text-slate-500">উপজেলা</dt><dd className="mt-1 font-bold">{upazila.name_bn}</dd></div>
           <div><dt className="text-sm text-slate-500">জেলা</dt><dd className="mt-1 font-bold">গাইবান্ধা</dd></div>
         </dl>
