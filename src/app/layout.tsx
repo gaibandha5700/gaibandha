@@ -10,7 +10,7 @@ export const metadata: Metadata = {
   description: "গাইবান্ধা জেলার উপজেলা, ইউনিয়ন, পৌরসভা, ওয়ার্ড, শিক্ষা প্রতিষ্ঠান, হাসপাতাল, সরকারি অফিস, ব্যবসা ও দর্শনীয় স্থানের তথ্য ও স্থানীয় সেবা খুঁজুন এক জায়গায়।",
   applicationName: "আমাদের গাইবান্ধা",
   keywords: ["আমাদের গাইবান্ধা", "গাইবান্ধা", "Gaibandha", "Gaibandha district", "গাইবান্ধা জেলা", "গাইবান্ধা উপজেলা", "শিক্ষা প্রতিষ্ঠান", "হাসপাতাল", "স্থানীয় সেবা"],
-  icons: { icon: [{ url: "/favicon.ico", type: "image/x-icon" }, { url: "/icon.svg", type: "image/svg+xml" }], shortcut: ["/favicon.ico"], apple: ["/icon.svg"] },
+  icons: { icon: [{ url: "/favicon.ico?v=20261116-2", type: "image/x-icon" }, { url: "/icon.svg?v=20261116-2", type: "image/svg+xml" }], shortcut: ["/favicon.ico?v=20261116-2"], apple: ["/icon.svg?v=20261116-2"] },
   openGraph: {
     title: "আমাদের গাইবান্ধা — জেলার ডিজিটাল তথ্যভান্ডার",
     description: "গাইবান্ধা জেলার প্রয়োজনীয় তথ্য, প্রতিষ্ঠান ও স্থানীয় সেবা খুঁজুন এক জায়গায়।",
