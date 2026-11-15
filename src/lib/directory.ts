@@ -22,6 +22,31 @@ export type Union = {
   updated_at: string;
 };
 
+export type Mauza = {
+  id: string;
+  upazila_id: string;
+  union_id: string;
+  name_bn: string;
+  name_en: string | null;
+  slug: string;
+  mouza_code: string | null;
+  geo_code: string | null;
+  description: string | null;
+  households_total_2022: number | null;
+  households_general_2022: number | null;
+  households_institutional_2022: number | null;
+  households_other_2022: number | null;
+  population_total_2022: number | null;
+  population_male_2022: number | null;
+  population_female_2022: number | null;
+  population_hijra_2022: number | null;
+  sex_ratio_2022: number | null;
+  source_name: string | null;
+  source_url: string | null;
+  source_checked_at: string | null;
+  updated_at: string;
+};
+
 export type Village = {
   id: string;
   upazila_id: string;
@@ -31,6 +56,19 @@ export type Village = {
   slug: string;
   mouza_name_bn: string | null;
   mouza_name_en: string | null;
+  mauza_id: string | null;
+  mauza_code: string | null;
+  village_code: string | null;
+  geo_code: string | null;
+  households_total_2022: number | null;
+  households_general_2022: number | null;
+  households_institutional_2022: number | null;
+  households_other_2022: number | null;
+  population_total_2022: number | null;
+  population_male_2022: number | null;
+  population_female_2022: number | null;
+  population_hijra_2022: number | null;
+  sex_ratio_2022: number | null;
   post_office: string | null;
   postal_code: string | null;
   address: string | null;
@@ -93,9 +131,28 @@ export async function getUnionBySlug(
   return rows[0] ?? null;
 }
 
+const mauzaSelect = "id,upazila_id,union_id,name_bn,name_en,slug,mouza_code,geo_code,description,households_total_2022,households_general_2022,households_institutional_2022,households_other_2022,population_total_2022,population_male_2022,population_female_2022,population_hijra_2022,sex_ratio_2022,source_name,source_url,source_checked_at,updated_at";
+
+export async function getMouzasByUnion(unionId: string): Promise<Mauza[]> {
+  return directoryFetch<Mauza[]>(
+    `mouzas?select=${mauzaSelect}&union_id=eq.${encodeURIComponent(unionId)}&is_published=eq.true&is_verified=eq.true&order=name_bn.asc`,
+  );
+}
+
+export async function getMauzaBySlug(
+  upazilaId: string,
+  unionId: string,
+  slug: string,
+): Promise<Mauza | null> {
+  const rows = await directoryFetch<Mauza[]>(
+    `mouzas?select=${mauzaSelect}&upazila_id=eq.${encodeURIComponent(upazilaId)}&union_id=eq.${encodeURIComponent(unionId)}&slug=eq.${encodeURIComponent(slug)}&is_published=eq.true&is_verified=eq.true&limit=1`,
+  );
+  return rows[0] ?? null;
+}
+
 export async function getVillagesByUnion(unionId: string): Promise<Village[]> {
   return directoryFetch<Village[]>(
-    `villages?select=id,upazila_id,union_id,name_bn,name_en,slug,mouza_name_bn,mouza_name_en,post_office,postal_code,address,description,population,households,area_sq_km,latitude,longitude,source_name,source_url,source_note,source_checked_at,updated_at&union_id=eq.${encodeURIComponent(unionId)}&is_published=eq.true&is_verified=eq.true&order=name_bn.asc`,
+    `villages?select=id,upazila_id,union_id,name_bn,name_en,slug,mouza_name_bn,mouza_name_en,mauza_id,mauza_code,village_code,geo_code,households_total_2022,households_general_2022,households_institutional_2022,households_other_2022,population_total_2022,population_male_2022,population_female_2022,population_hijra_2022,sex_ratio_2022,post_office,postal_code,address,description,population,households,area_sq_km,latitude,longitude,source_name,source_url,source_note,source_checked_at,updated_at&union_id=eq.${encodeURIComponent(unionId)}&is_published=eq.true&is_verified=eq.true&order=name_bn.asc`,
   );
 }
 
@@ -105,7 +162,7 @@ export async function getVillageBySlug(
   slug: string,
 ): Promise<Village | null> {
   const rows = await directoryFetch<Village[]>(
-    `villages?select=id,upazila_id,union_id,name_bn,name_en,slug,mouza_name_bn,mouza_name_en,post_office,postal_code,address,description,population,households,area_sq_km,latitude,longitude,source_name,source_url,source_note,source_checked_at,updated_at&upazila_id=eq.${encodeURIComponent(upazilaId)}&union_id=eq.${encodeURIComponent(unionId)}&slug=eq.${encodeURIComponent(slug)}&is_published=eq.true&is_verified=eq.true&limit=1`,
+    `villages?select=id,upazila_id,union_id,name_bn,name_en,slug,mouza_name_bn,mouza_name_en,mauza_id,mauza_code,village_code,geo_code,households_total_2022,households_general_2022,households_institutional_2022,households_other_2022,population_total_2022,population_male_2022,population_female_2022,population_hijra_2022,sex_ratio_2022,post_office,postal_code,address,description,population,households,area_sq_km,latitude,longitude,source_name,source_url,source_note,source_checked_at,updated_at&upazila_id=eq.${encodeURIComponent(upazilaId)}&union_id=eq.${encodeURIComponent(unionId)}&slug=eq.${encodeURIComponent(slug)}&is_published=eq.true&is_verified=eq.true&limit=1`,
   );
   return rows[0] ?? null;
 }
