@@ -1,1 +1,5 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none"><rect width="64" height="64" rx="15" fill="#073D2D"/><path d="M32 5 55 14v17c0 14-9 24-23 30C18 55 9 45 9 31V14L32 5Z" fill="#087B52" stroke="#D8B66A" stroke-width="1.8"/><path d="M19 39c4-8 8-12 13-12s9 4 13 12M23 23c3-4 6-6 9-6s6 2 9 6" stroke="#F4E8C8" stroke-width="2.5" stroke-linecap="round"/><path d="M32 18v26" stroke="#F4E8C8" stroke-width="2.2" stroke-linecap="round"/></svg>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <rect x="2" y="2" width="60" height="60" rx="15" fill="#073D2D"/>
+  <rect x="5" y="5" width="54" height="54" rx="12" fill="none" stroke="#D8B66A" stroke-width="1.5"/>
+  <text x="32" y="46" text-anchor="middle" font-family="'Noto Serif Bengali','Hind Siliguri',serif" font-size="43" font-weight="800" fill="#FFF8E6">গ</text>
+</svg>
