@@ -1,14 +1,11 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import { getSiteUrl } from "@/lib/site-url";
 
-const siteUrl =
-  process.env.NEXT_PUBLIC_SITE_URL?.replace(/\/$/, "") ??
-  (process.env.VERCEL_PROJECT_PRODUCTION_URL
-    ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`
-    : "http://localhost:3000");
+const siteUrl = getSiteUrl();
 
 export const metadata: Metadata = {
-  metadataBase: new URL(siteUrl),
+  metadataBase: siteUrl,
   title: {
     default: "গাইবান্ধা — জেলার তথ্য, সেবা ও সম্ভাবনার ঠিকানা",
     template: "%s | গাইবান্ধা",
@@ -16,11 +13,21 @@ export const metadata: Metadata = {
   description:
     "গাইবান্ধা জেলার উপজেলা, ইউনিয়ন, গ্রাম, শিক্ষা প্রতিষ্ঠান, হাসপাতাল, সরকারি অফিস, ব্যবসা ও দর্শনীয় স্থানের তথ্য ও স্থানীয় সেবা খুঁজুন এক জায়গায়।",
   applicationName: "গাইবান্ধা",
-  keywords: ["গাইবান্ধা", "Gaibandha", "Gaibandha district", "গাইবান্ধা জেলা", "গাইবান্ধা উপজেলা", "শিক্ষা প্রতিষ্ঠান", "হাসপাতাল", "স্থানীয় সেবা"],
+  keywords: [
+    "গাইবান্ধা",
+    "Gaibandha",
+    "Gaibandha district",
+    "গাইবান্ধা জেলা",
+    "গাইবান্ধা উপজেলা",
+    "শিক্ষা প্রতিষ্ঠান",
+    "হাসপাতাল",
+    "স্থানীয় সেবা",
+  ],
   alternates: { canonical: "/" },
   openGraph: {
     title: "গাইবান্ধা — জেলার ডিজিটাল তথ্যভান্ডার",
-    description: "গাইবান্ধা জেলার প্রয়োজনীয় তথ্য, প্রতিষ্ঠান ও স্থানীয় সেবা খুঁজুন এক জায়গায়।",
+    description:
+      "গাইবান্ধা জেলার প্রয়োজনীয় তথ্য, প্রতিষ্ঠান ও স্থানীয় সেবা খুঁজুন এক জায়গায়।",
     url: siteUrl,
     siteName: "গাইবান্ধা",
     locale: "bn_BD",
@@ -29,12 +36,19 @@ export const metadata: Metadata = {
   twitter: {
     card: "summary_large_image",
     title: "গাইবান্ধা — জেলার ডিজিটাল তথ্যভান্ডার",
-    description: "গাইবান্ধা জেলার প্রয়োজনীয় তথ্য, প্রতিষ্ঠান ও স্থানীয় সেবা খুঁজুন এক জায়গায়।",
+    description:
+      "গাইবান্ধা জেলার প্রয়োজনীয় তথ্য, প্রতিষ্ঠান ও স্থানীয় সেবা খুঁজুন এক জায়গায়।",
   },
   robots: {
     index: true,
     follow: true,
-    googleBot: { index: true, follow: true, "max-image-preview": "large", "max-snippet": -1, "max-video-preview": -1 },
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+      "max-video-preview": -1,
+    },
   },
 };
 
@@ -43,18 +57,23 @@ const websiteJsonLd = {
   "@type": "WebSite",
   name: "গাইবান্ধা",
   alternateName: "Gaibandha",
-  url: siteUrl,
+  url: siteUrl.toString(),
   inLanguage: "bn-BD",
-  description: "গাইবান্ধা জেলার উপজেলা, প্রতিষ্ঠান, স্থানীয় সেবা ও প্রয়োজনীয় তথ্যের উন্মুক্ত ডিজিটাল তথ্যভান্ডার।",
+  description:
+    "গাইবান্ধা জেলার উপজেলা, প্রতিষ্ঠান, স্থানীয় সেবা ও প্রয়োজনীয় তথ্যের উন্মুক্ত ডিজিটাল তথ্যভান্ডার।",
 };
 
-export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
+export default function RootLayout({
+  children,
+}: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="bn">
       <body>
         <script
           type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteJsonLd).replace(/</g, "\\u003c") }}
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify(websiteJsonLd).replace(/</g, "\\u003c"),
+          }}
         />
         {children}
       </body>
