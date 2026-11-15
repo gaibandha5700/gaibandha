@@ -3,7 +3,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { DIRECTORY_CATEGORIES, getDirectoryEntries, isDirectoryCategory } from "@/lib/directory";
 
-export const revalidate = 3600;
+export const revalidate = 60;
 export const dynamicParams = true;
 
 type PageProps = { params: Promise<{ category: string }> };
