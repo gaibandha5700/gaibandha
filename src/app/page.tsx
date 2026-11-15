@@ -70,7 +70,7 @@ export default async function Home() {
       <section className="section" id="upazila">
         <div className="container">
           <div className="section-head">
-            <div><div className="kicker">জেলা পরিচিতি</div><h2>গাইবান্ধার ৭টি উপজেলা</h2><p className="section-sub">আপনার এলাকার তথ্য খুঁজতে উপজেলা নির্বাচন করুন।</p></div>
+            <div><div className="kicker">জেলা পরিচিতি</div><h2>গাইবান্ধার {upazilas.length.toLocaleString("bn-BD")}টি উপজেলা</h2><p className="section-sub">আপনার এলাকার তথ্য খুঁজতে উপজেলা নির্বাচন করুন।</p></div>
             <Link className="text-link" href="/upazila">সব উপজেলা <ArrowRight size={16} /></Link>
           </div>
           <div className="grid-7">
@@ -78,7 +78,7 @@ export default async function Home() {
               <Link className="upazila-card" href={`/upazila/${item.slug}`} key={item.slug}>
                 <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
                   <span className="upazila-icon"><Building2 size={20} /></span>
-                  <div><strong>{item.name}</strong><span>{item.note}</span></div>
+                  <div><strong>{item.name_bn}</strong><span>{item.name_en ?? item.description ?? "উপজেলার বিস্তারিত তথ্য দেখুন"}</span></div>
                 </div>
                 <ArrowRight size={17} color="#8a9a91" />
               </Link>
