@@ -114,6 +114,9 @@ alter table public.directory_entries
 create index if not exists directory_entries_ward_id_idx
   on public.directory_entries(ward_id) where ward_id is not null;
 
+-- Remove the old directory policy before dropping its referenced table.
+drop policy if exists "Public can read published verified directory entries" on public.directory_entries;
+
 -- Retain the existing municipality/upazila and union/upazila integrity constraints.
 drop table public.municipality_wards;
 
@@ -148,7 +151,6 @@ using (
 grant select on public.wards to anon, authenticated;
 
 -- Update directory visibility so a linked ward is public only when its full parent chain is public.
-drop policy if exists "Public can read published verified directory entries" on public.directory_entries;
 create policy "Public can read published verified directory entries"
 on public.directory_entries for select to anon, authenticated
 using (
