@@ -109,3 +109,4 @@ button, input { font: inherit; }
 .site-footer-bottom { width: min(1080px, 100%); margin: 28px auto 0; padding-top: 16px; border-top: 1px solid rgba(255,255,255,.12); color: #91b09f; font-size: 12px; }
 @media (max-width: 760px) { .site-nav { display:none; } .site-mobile-nav { display:block; } .site-footer-inner { grid-template-columns: 1fr 1fr; } .site-footer-inner > :first-child { grid-column: 1 / -1; } }
 @media (max-width: 420px) { .site-brand { font-size: 16px; } .site-footer-inner { grid-template-columns: 1fr; } .site-footer-inner > :first-child { grid-column:auto; } }
+\n.site-submit-link { padding: 10px 14px; border-radius: 9px; background: #08764f; color: #fff !important; font-size: 13px; font-weight: 800; }\n.site-submit-link:hover { background: #07583d; }\n
