@@ -465,3 +465,79 @@ footer.site-footer-v2:before {
   .site-footer-v2__bottom span:last-child { text-align:left; }
 }
 @media(prefers-reduced-motion:reduce) { .site-footer-v2__links a { transition:none; } }
+
+
+/* Header and footer refinement: clear brand contrast, navigation states and update metadata */
+.site-nav > a:not(.site-submit-link) {
+  border-radius: 7px;
+  outline-offset: 4px;
+}
+.site-nav > a[aria-current="page"] {
+  color: #087b52;
+  font-weight: 800;
+}
+.site-nav > a[aria-current="page"]::after {
+  right: 0;
+  left: 0;
+  height: 3px;
+  border-radius: 4px;
+}
+.site-nav > a:focus-visible,
+.site-submit-link:focus-visible,
+.site-mobile-nav summary:focus-visible,
+.site-mobile-panel a:focus-visible {
+  outline: 3px solid rgba(8,123,82,.35);
+  outline-offset: 3px;
+}
+.site-submit-link { white-space: nowrap; }
+.site-mobile-nav[open] summary {
+  border-color: #a9d4bd;
+  background: #edf7f1;
+}
+.site-mobile-panel a[aria-current="page"] {
+  color: #07583d;
+  background: #eaf5ee;
+  font-weight: 800;
+}
+.site-mobile-panel .site-mobile-submit {
+  color: #fff;
+  background: linear-gradient(135deg,#0a8559,#066443);
+}
+.site-mobile-panel .site-mobile-submit:hover {
+  color: #fff;
+  background: #07583d;
+}
+.site-brand-footer .site-brand-image {
+  filter: brightness(0) invert(1);
+  opacity: .94;
+}
+.site-footer-v2__bottom {
+  grid-template-columns: minmax(0,1fr) auto;
+  align-items: center;
+  gap: 18px;
+}
+.site-footer-v2__bottom > span:last-child {
+  color: #c8dacf;
+  text-align: right;
+}
+.site-footer-v2__update-label { color: #a5bfaf; }
+.site-footer-v2__bottom time {
+  color: #f0f6f2;
+  font-variant-numeric: tabular-nums;
+}
+@media(max-width:900px) {
+  .site-nav { display:none; }
+  .site-mobile-nav { display:block; }
+}
+@media(max-width:480px) {
+  .site-footer-v2__bottom {
+    grid-template-columns: minmax(0,1fr) auto;
+    gap: 10px;
+    font-size: 10px;
+  }
+  .site-footer-v2__bottom > span:last-child { text-align:right; }
+}
+@media(prefers-reduced-motion:reduce) {
+  .site-nav > a:not(.site-submit-link)::after,
+  .site-submit-link { transition:none; }
+}
