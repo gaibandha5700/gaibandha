@@ -12,9 +12,15 @@ export const metadata: Metadata = {
 
 type Props = { searchParams: Promise<{ q?: string }> };
 
+function normalizeSearchText(value: string) {
+  return value
+    .toLocaleLowerCase("bn-BD")
+    .replace(/[০-৯]/g, (digit) => String("০১২৩৪৫৬৭৮৯".indexOf(digit)));
+}
+
 export default async function SearchPage({ searchParams }: Props) {
   const { q = "" } = await searchParams;
-  const query = q.trim().toLocaleLowerCase("bn-BD");
+  const query = normalizeSearchText(q.trim());
   const [entries, upazilas, wards, district] = await Promise.all([getDirectoryEntries(), getUpazilas(), getPublishedWards(), getDistrictBySlug("gaibandha")]);
   const [unionGroups, municipalityGroups] = await Promise.all([
     Promise.all(upazilas.map((u) => getUnionsByUpazila(u.id))),
@@ -26,15 +32,15 @@ export default async function SearchPage({ searchParams }: Props) {
     upazilaSlug: upazilas.find((u) => u.id === union.upazila_id)?.slug ?? "",
   }));
   const municipalities = municipalityGroups.flat().map((municipality) => ({ ...municipality, upazilaName: upazilas.find((u) => u.id === municipality.upazila_id)?.name_bn ?? "" }));
-  const matchingWards = query ? wards.filter((ward) => ward.name_bn.toLocaleLowerCase("bn-BD").includes(query) || String(ward.ward_number).includes(query)).map((ward) => {
+  const matchingWards = query ? wards.filter((ward) => normalizeSearchText(ward.name_bn).includes(query) || String(ward.ward_number).includes(query)).map((ward) => {
     const union = unions.find((item) => item.id === ward.union_id);
     const municipality = municipalities.find((item) => item.id === ward.municipality_id);
     const upazila = upazilas.find((item) => item.id === (union?.upazila_id ?? municipality?.upazila_id));
     const href = union && upazila ? `/upazila/${upazila.slug}/${union.slug}/ward/${ward.ward_number}` : municipality ? `/municipality/${municipality.slug}/ward/${ward.ward_number}` : "";
     return { ...ward, href, parentName: union?.name_bn ?? municipality?.name_bn ?? "", upazilaName: upazila?.name_bn ?? "" };
   }).filter((ward) => ward.href) : [];
-  const matchingDistrict = query && district && [district.name_bn, district.name_en].some((value) => value?.toLocaleLowerCase("bn-BD").includes(query)) ? district : null;
-  const matchingMunicipalities = query ? municipalities.filter((item) => item.name_bn.toLocaleLowerCase("bn-BD").includes(query)) : [];
+  const matchingDistrict = query && district && [district.name_bn, district.name_en].some((value) => value ? normalizeSearchText(value).includes(query) : false) ? district : null;
+  const matchingMunicipalities = query ? municipalities.filter((item) => normalizeSearchText(item.name_bn).includes(query)) : [];
   const matches = query ? entries.filter((entry) =>
     [entry.name_bn, entry.name_en, entry.summary, entry.description, entry.address]
       .some((value) => value?.toLocaleLowerCase("bn-BD").includes(query))
