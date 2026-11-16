@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { SiteHeader, SiteFooter } from "@/components/site-chrome";
-import { getMunicipalitiesByUpazila, getUpazilas, getUnionsByUpazila } from "@/lib/directory";
+import { getDirectoryEntries, getMunicipalitiesByUpazila, getUpazilas, getUnionsByUpazila } from "@/lib/directory";
 import {
   ArrowRight, Building2, Bus, GraduationCap, HeartPulse,
   Landmark, MapPin, Search, ShieldCheck, ShoppingBag,
@@ -20,9 +20,10 @@ const categories = [
 
 export default async function Home() {
   const upazilas = await getUpazilas();
-  const [unionGroups, municipalityGroups] = await Promise.all([
+  const [unionGroups, municipalityGroups, directoryEntries] = await Promise.all([
     Promise.all(upazilas.map((upazila) => getUnionsByUpazila(upazila.id))),
     Promise.all(upazilas.map((upazila) => getMunicipalitiesByUpazila(upazila.id))),
+    getDirectoryEntries(),
   ]);
   const unionCount = unionGroups.reduce((total, unions) => total + unions.length, 0);
   const municipalityCount = municipalityGroups.reduce((total, municipalities) => total + municipalities.length, 0);
@@ -80,13 +81,19 @@ export default async function Home() {
             <Link className="text-link" href="/directory">সব বিভাগ <ArrowRight size={16} /></Link>
           </div>
           <div className="category-grid">
-            {categories.map(({ slug, title, desc, icon: Icon }) => (
-              <Link className="category-card" href={`/directory/${slug}`} key={slug}>
-                <span className="category-icon"><Icon size={22} /></span>
-                <h3>{title}</h3>
-                <p>{desc}</p>
-              </Link>
-            ))}
+            {categories.map(({ slug, title, desc, icon: Icon }) => {
+              const count = directoryEntries.filter((entry) => entry.category === slug).length;
+              return (
+                <Link className="category-card" href={`/directory/${slug}`} key={slug}>
+                  <span className="category-icon"><Icon size={22} /></span>
+                  <h3>{title}</h3>
+                  <p>{desc}</p>
+                  <p className="mt-3 text-xs font-semibold text-emerald-700">
+                    {count > 0 ? `${count.toLocaleString("bn-BD")}টি যাচাইকৃত তথ্য` : "তথ্য সংগ্রহ চলছে"}
+                  </p>
+                </Link>
+              );
+            })}
           </div>
         </div>
       </section>
