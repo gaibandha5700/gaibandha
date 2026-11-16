@@ -11,7 +11,6 @@ import {
   getWardsByUnion,
   getWardsByMunicipality,
 } from "@/lib/directory";
-import { SiteHeader, SiteFooter } from "@/components/site-chrome";
 
 export const revalidate = 60;
 export const dynamicParams = true;
@@ -80,7 +79,7 @@ export default async function DirectoryCategoryPage({ params, searchParams }: Pa
 
   return (
     <main className="min-h-screen bg-slate-50 text-slate-900">
-      <SiteHeader />
+      
       <section className="mx-auto max-w-5xl px-4 py-12">
         <nav aria-label="ধাপ নির্দেশনা" className="mb-5 text-sm text-slate-500">
           <Link href="/">হোম</Link> / <Link href="/directory" className="mx-2">তথ্যভান্ডার</Link> / {category.label}
@@ -115,7 +114,7 @@ export default async function DirectoryCategoryPage({ params, searchParams }: Pa
           </div>
         )}
       </section>
-    <SiteFooter />
+    
       </main>
   );
 }
