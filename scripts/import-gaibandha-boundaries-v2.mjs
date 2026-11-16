@@ -82,8 +82,8 @@ function validateCoordinates(geometry) {
   if (coordinateCount < 4) throw new Error("Geometry contains too few coordinates.");
 }
 
-function uniqueMatch(name, map, label) {
-  const matches = map.get(normalize(name)) ?? [];
+function uniqueMatch(name, map, label, normalizer = normalize) {
+  const matches = map.get(normalizer(name)) ?? [];
   if (matches.length !== 1) {
     throw new Error(`Could not uniquely match ${label} "${name}" (matches: ${matches.length}).`);
   }
@@ -163,7 +163,7 @@ for (const feature of localFeatures) {
     !["0", "-", "null", "none"].includes(municipalValue.toLowerCase());
 
   if (isMunicipality) {
-    const entity = uniqueMatch(municipalValue, municipalityMap, "municipality");
+    const entity = uniqueMatch(municipalValue, municipalityMap, "municipality", normalizeMunicipality);
     records.push(recordFor(feature, { municipality_id: entity.id }, 123));
     counts.municipality++;
   } else if (props.UnName) {
