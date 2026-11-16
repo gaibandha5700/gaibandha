@@ -22,7 +22,7 @@ export default async function SearchPage({ searchParams }: Props) {
   const { q = "" } = await searchParams;
   const query = normalizeSearchText(q.trim());
   const [entries, upazilas, wards, district] = await Promise.all([getDirectoryEntries(), getUpazilas(), getPublishedWards(), getDistrictBySlug("gaibandha")]);
-  const wardNumberQuery = query.match(/^(?:ওয়ার্ড\\s*(?:নং|নম্বর)?\\s*)?0*(\\d+)$/)?.[1];
+  const wardNumberQuery = query.match(/^(?:ওয়ার্ড\s*(?:নং|নম্বর)?\s*)?0*(\d+)$/)?.[1];
   const [unionGroups, municipalityGroups] = await Promise.all([
     Promise.all(upazilas.map((u) => getUnionsByUpazila(u.id))),
     Promise.all(upazilas.map((u) => getMunicipalitiesByUpazila(u.id))),
