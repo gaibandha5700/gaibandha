@@ -3,7 +3,6 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getSiteUrl } from "@/lib/site-url";
 import { DIRECTORY_CATEGORIES, getDirectoryEntries, getDirectoryEntry, getEducationInstitution, getMunicipalityById, getUpazilaById, getUnionById, isDirectoryCategory } from "@/lib/directory";
-import { SiteHeader, SiteFooter } from "@/components/site-chrome";
 
 export const revalidate = 60;
 export const dynamicParams = true;
@@ -67,7 +66,7 @@ export default async function DirectoryEntryPage({ params }: PageProps) {
   return (
     <main className="min-h-screen bg-slate-50 text-slate-900">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd).replace(/</g, "\\u003c") }} />
-      <SiteHeader />
+      
       <article className="mx-auto max-w-4xl px-4 py-12">
         <nav aria-label="Breadcrumb" className="mb-6 text-sm text-slate-500">
           <Link href="/" className="hover:text-emerald-700">হোম</Link> /
@@ -120,7 +119,7 @@ export default async function DirectoryEntryPage({ params }: PageProps) {
         )}
         <div className="mt-8 flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-emerald-100 bg-emerald-50 p-5"><p className="text-sm leading-6 text-emerald-900">এই তথ্যটি ভুল বা পুরোনো মনে হলে সংশোধনের অনুরোধ জানান।</p><Link href={`/submit?type=correction&entry_id=${entry.id}&name=${encodeURIComponent(entry.name_bn)}&category=${slug}`} className="rounded-xl bg-emerald-700 px-4 py-2.5 text-sm font-bold text-white">সংশোধনের অনুরোধ</Link></div>
       </article>
-    <SiteFooter />
+    
       </main>
   );
 }
