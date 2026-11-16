@@ -51,7 +51,7 @@ export default async function Home() {
           <div className="stat"><div className="stat-label">উপজেলা</div><div className="stat-value">{upazilas.length.toLocaleString("bn-BD", { minimumIntegerDigits: 2 })}</div><small>জেলার প্রশাসনিক উপজেলা</small></div>
           <div className="stat"><div className="stat-label">ইউনিয়ন</div><div className="stat-value">{unionCount.toLocaleString("bn-BD")}</div><small>উপজেলাভিত্তিক ইউনিয়ন</small></div>
           <div className="stat"><div className="stat-label">পৌরসভা</div><div className="stat-value">{municipalityCount.toLocaleString("bn-BD")}</div><small>প্রকাশিত ও যাচাইকৃত পৌরসভা</small></div>
-          <div className="stat"><div className="stat-label">তথ্যভান্ডার</div><div className="stat-value">যাচাইকৃত</div><small>প্রকাশিত তথ্য নিয়মিত হালনাগাদ</small></div>
+          <div className="stat"><div className="stat-label">প্রতিষ্ঠান ও সেবা</div><div className="stat-value">{directoryEntries.length.toLocaleString("bn-BD")}</div><small>প্রকাশিত ও যাচাইকৃত তথ্য</small></div>
         </section>
       </div>
 
