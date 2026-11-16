@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getSiteUrl } from "@/lib/site-url";
-import { getMunicipalitiesByUpazila, getUpazilaBySlug, getUpazilas, getUnionsByUpazila } from "@/lib/directory";
+import { DIRECTORY_CATEGORIES, getDirectoryEntries, getMunicipalitiesByUpazila, getUpazilaBySlug, getUpazilas, getUnionsByUpazila } from "@/lib/directory";
 import { SiteHeader, SiteFooter } from "@/components/site-chrome";
 
 export const revalidate = 60;
@@ -38,7 +38,7 @@ export default async function UpazilaDetailPage({ params }: PageProps) {
   const upazila = await getUpazilaBySlug(slug);
   if (!upazila) notFound();
 
-  const [unions, municipalities] = await Promise.all([getUnionsByUpazila(upazila.id), getMunicipalitiesByUpazila(upazila.id)]);
+  const [unions, municipalities, localEntries] = await Promise.all([getUnionsByUpazila(upazila.id), getMunicipalitiesByUpazila(upazila.id), getDirectoryEntries({ upazilaId: upazila.id })]);
   const url = new URL(`/upazila/${upazila.slug}`, getSiteUrl());
   const jsonLd = {
     "@context": "https://schema.org",
@@ -64,7 +64,7 @@ export default async function UpazilaDetailPage({ params }: PageProps) {
         <p className="mt-4 max-w-2xl leading-8 text-slate-600">
           {upazila.name_bn} উপজেলার ইউনিয়ন পরিষদগুলোর তালিকা ও স্থানীয় প্রশাসনিক এলাকার তথ্য। প্রতিটি ইউনিয়ন নির্বাচন করে বিস্তারিত দেখুন।
         </p>
-        <div className="mt-8 grid gap-3 sm:grid-cols-4">
+        <div className="mt-8 grid gap-3 sm:grid-cols-2 lg:grid-cols-6">
           <div className="rounded-2xl border border-emerald-100 bg-emerald-50 p-5">
             <p className="text-sm text-emerald-900">ইউনিয়ন পরিষদ</p>
             <p className="mt-1 text-3xl font-extrabold text-emerald-800">{unions.length.toLocaleString("bn-BD")}</p>
@@ -77,12 +77,24 @@ export default async function UpazilaDetailPage({ params }: PageProps) {
             <p className="text-sm text-slate-500">খানা · ২০২২</p>
             <p className="mt-1 text-2xl font-extrabold">{upazila.households_total_2022 == null ? "তথ্য নেই" : upazila.households_total_2022.toLocaleString("bn-BD")}</p>
           </div>
+          <div className="rounded-2xl border border-slate-200 bg-white p-5"><p className="text-sm text-slate-500">পুরুষ · ২০২২</p><p className="mt-1 text-2xl font-extrabold">{upazila.population_male_2022 == null ? "তথ্য নেই" : upazila.population_male_2022.toLocaleString("bn-BD")}</p></div>
+          <div className="rounded-2xl border border-slate-200 bg-white p-5"><p className="text-sm text-slate-500">নারী · ২০২২</p><p className="mt-1 text-2xl font-extrabold">{upazila.population_female_2022 == null ? "তথ্য নেই" : upazila.population_female_2022.toLocaleString("bn-BD")}</p></div>
         </div>
         {upazila.census_source_url && (
           <p className="mt-3 text-xs text-slate-500">
             জনশুমারি ২০২২-এর তথ্যসূত্র: <a className="text-emerald-700 underline" href={upazila.census_source_url} target="_blank" rel="noreferrer">BBS Community Report ↗</a>
           </p>
         )}
+        <section className="mt-10">
+          <div className="flex flex-wrap items-end justify-between gap-3"><div><h2 className="text-2xl font-bold">এই উপজেলার প্রতিষ্ঠান ও সেবা</h2><p className="mt-1 text-sm text-slate-500">প্রকাশিত ও যাচাইকৃত {localEntries.length.toLocaleString("bn-BD")}টি তথ্য</p></div><Link href="/directory" className="text-sm font-semibold text-emerald-700">সব তথ্যভান্ডার →</Link></div>
+          <div className="mt-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+            {DIRECTORY_CATEGORIES.map((category) => {
+              const count = localEntries.filter((entry) => entry.category === category.slug).length;
+              return <Link key={category.slug} href={`/directory/${category.slug}?upazila=${upazila.id}`} className="rounded-xl border border-slate-200 bg-white p-4 hover:border-emerald-300"><strong>{category.label}</strong><span className="mt-1 block text-sm text-slate-500">{count.toLocaleString("bn-BD")}টি তথ্য</span></Link>;
+            })}
+          </div>
+          {localEntries.length > 0 && <div className="mt-5 grid gap-3 sm:grid-cols-2">{localEntries.slice(0, 6).map((entry) => <Link key={entry.id} href={`/directory/${entry.category}/${entry.slug}`} className="rounded-xl border border-slate-200 bg-white p-4 hover:border-emerald-300"><span className="text-xs font-semibold text-emerald-700">{DIRECTORY_CATEGORIES.find((item) => item.slug === entry.category)?.label}</span><strong className="mt-1 block">{entry.name_bn}</strong>{entry.address && <span className="mt-1 block text-sm text-slate-500">{entry.address}</span>}</Link>)}</div>}
+        </section>
         {municipalities.length > 0 && (<section className="mt-10"><h2 className="text-2xl font-bold">পৌরসভাসমূহ</h2><div className="mt-5 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">{municipalities.map((municipality) => (<Link key={municipality.id} href={`/municipality/${municipality.slug}`} className="rounded-xl border border-slate-200 bg-white p-5 font-semibold transition hover:border-emerald-300 hover:shadow-sm">{municipality.name_bn} পৌরসভা<span className="mt-1 block text-xs font-normal text-slate-500">{municipality.wards_count?.toLocaleString("bn-BD") ?? "তথ্য"}টি ওয়ার্ড</span></Link>))}</div></section>)}
         <h2 className="mt-10 text-2xl font-bold">ইউনিয়নসমূহ</h2>
         <div className="mt-5 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
