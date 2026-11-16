@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { getDirectoryEntries, DIRECTORY_CATEGORIES } from "@/lib/directory";
-import { SiteHeader, SiteFooter } from "@/components/site-chrome";
 
 export const revalidate = 3600;
 
@@ -21,7 +20,7 @@ export default async function DirectoryPage() {
 
   return (
     <main className="min-h-screen bg-slate-50 text-slate-900">
-      <SiteHeader />
+      
       <section className="mx-auto max-w-5xl px-4 py-12">
         <nav aria-label="ধাপ নির্দেশনা" className="mb-5 text-sm text-slate-500"><Link href="/">হোম</Link> / তথ্য ডিরেক্টরি</nav>
         <p className="text-sm font-bold tracking-wide text-emerald-700">স্থানীয় তথ্যভান্ডার</p>
@@ -46,7 +45,7 @@ export default async function DirectoryPage() {
         </div>
         <div className="mt-8 flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-emerald-100 bg-emerald-50 p-5"><p className="text-sm leading-6 text-emerald-900">আপনার জানা কোনো প্রতিষ্ঠান তালিকায় নেই?</p><Link href="/submit" className="rounded-xl bg-emerald-700 px-4 py-2.5 text-sm font-bold text-white">নতুন তথ্য জমা দিন</Link></div>
       </section>
-    <SiteFooter />
+    
       </main>
   );
 }
