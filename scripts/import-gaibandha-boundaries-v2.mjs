@@ -158,8 +158,12 @@ for (const feature of localFeatures) {
   const props = feature.properties ?? {};
   if (normalize(props.District) !== normalize("Gaibandha")) continue;
 
-  if (props.Municipal) {
-    const entity = uniqueMatch(props.Municipal, municipalityMap, "municipality");
+  const municipalValue = String(props.Municipal ?? "").trim();
+  const isMunicipality = municipalValue !== "" &&
+    !["0", "-", "null", "none"].includes(municipalValue.toLowerCase());
+
+  if (isMunicipality) {
+    const entity = uniqueMatch(municipalValue, municipalityMap, "municipality");
     records.push(recordFor(feature, { municipality_id: entity.id }, 123));
     counts.municipality++;
   } else if (props.UnName) {
