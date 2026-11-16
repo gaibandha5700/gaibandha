@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import { SiteHeader, SiteFooter } from "@/components/site-chrome";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { DIRECTORY_CATEGORIES, getDirectoryEntries, getMunicipalityBySlug, getUpazilaById, getWardsByMunicipality } from "@/lib/directory";
@@ -21,7 +20,7 @@ export default async function MunicipalityPage({ params }: Props) {
   const [wards, localEntries, upazila] = await Promise.all([getWardsByMunicipality(municipality.id), getDirectoryEntries({ municipalityId: municipality.id }), getUpazilaById(municipality.upazila_id)]);
   return (
     <main className="min-h-screen bg-slate-50 text-slate-900">
-      <SiteHeader />
+      
       <article className="mx-auto max-w-5xl px-4 py-12">
         <nav aria-label="Breadcrumb" className="mb-5 text-sm text-slate-500"><Link href="/">হোম</Link> / <Link href="/district" className="mx-2 hover:text-emerald-700">জেলা</Link> / <Link href="/municipality" className="mx-2 hover:text-emerald-700">পৌরসভা</Link> / {municipality.name_bn}</nav>
         <p className="text-sm font-bold text-emerald-700">গাইবান্ধা জেলার স্থানীয় প্রশাসন</p>
@@ -38,7 +37,7 @@ export default async function MunicipalityPage({ params }: Props) {
         {wards.length === 0 && <p className="mt-4 rounded-xl border border-dashed bg-white p-5 text-sm text-slate-600">এখনো কোনো প্রকাশিত ও যাচাইকৃত ওয়ার্ডের তথ্য নেই।</p>}
         {municipality.census_source_url && <p className="mt-6 text-xs text-slate-500">তথ্যসূত্র: <a href={municipality.census_source_url} target="_blank" rel="noreferrer" className="text-emerald-700 underline">জনশুমারি ২০২২</a></p>}
       </article>
-    <SiteFooter />
+    
 </main>
   );
 }
