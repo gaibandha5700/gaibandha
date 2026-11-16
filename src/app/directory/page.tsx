@@ -36,7 +36,11 @@ export default async function DirectoryPage() {
             <Link key={category.slug} href={`/directory/${category.slug}`} className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm transition hover:border-emerald-300 hover:shadow-md">
               <h2 className="text-lg font-bold">{category.label}</h2>
               <p className="mt-2 text-sm leading-6 text-slate-600">{category.description}</p>
-              <p className="mt-4 text-sm font-semibold text-emerald-700">{category.count.toLocaleString("bn-BD")}টি যাচাইকৃত তথ্য · দেখুন →</p>
+              <p className="mt-4 text-sm font-semibold text-emerald-700">
+                {category.count > 0
+                  ? `${category.count.toLocaleString("bn-BD")}টি যাচাইকৃত তথ্য · দেখুন →`
+                  : "এখনো প্রকাশিত তথ্য নেই · তথ্য জমা দিন"}
+              </p>
             </Link>
           ))}
         </div>
