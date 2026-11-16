@@ -33,7 +33,7 @@ export default async function SearchPage({ searchParams }: Props) {
     upazilaSlug: upazilas.find((u) => u.id === union.upazila_id)?.slug ?? "",
   }));
   const municipalities = municipalityGroups.flat().map((municipality) => ({ ...municipality, upazilaName: upazilas.find((u) => u.id === municipality.upazila_id)?.name_bn ?? "" }));
-  const matchingWards = query ? wards.filter((ward) => wardNumberQuery ? ward.ward_number === Number(wardNumberQuery) : normalizeSearchText(ward.name_bn).includes(query)).map((ward) => {
+  const wardNumberQuery = query.match(/^(?:ওয়ার্ড\s*(?:নং|নম্বর)?\s*)?0*(\d+)$/)?.[1];
     const union = unions.find((item) => item.id === ward.union_id);
     const municipality = municipalities.find((item) => item.id === ward.municipality_id);
     const upazila = upazilas.find((item) => item.id === (union?.upazila_id ?? municipality?.upazila_id));
