@@ -33,21 +33,36 @@ export default async function SearchPage({ searchParams }: Props) {
     upazilaSlug: upazilas.find((u) => u.id === union.upazila_id)?.slug ?? "",
   }));
   const municipalities = municipalityGroups.flat().map((municipality) => ({ ...municipality, upazilaName: upazilas.find((u) => u.id === municipality.upazila_id)?.name_bn ?? "" }));
-  const wardNumberQuery = query.match(/^(?:ওয়ার্ড\s*(?:নং|নম্বর)?\s*)?0*(\d+)$/)?.[1];
-    const union = unions.find((item) => item.id === ward.union_id);
-    const municipality = municipalities.find((item) => item.id === ward.municipality_id);
-    const upazila = upazilas.find((item) => item.id === (union?.upazila_id ?? municipality?.upazila_id));
-    const href = union && upazila ? `/upazila/${upazila.slug}/${union.slug}/ward/${ward.ward_number}` : municipality ? `/municipality/${municipality.slug}/ward/${ward.ward_number}` : "";
-    return { ...ward, href, parentName: union?.name_bn ?? municipality?.name_bn ?? "", upazilaName: upazila?.name_bn ?? "" };
-  }).filter((ward) => ward.href) : [];
+  const matchingWards = query ? wards
+    .filter((ward) => wardNumberQuery
+      ? ward.ward_number === Number(wardNumberQuery)
+      : normalizeSearchText(ward.name_bn).includes(query))
+    .map((ward) => {
+      const union = unions.find((item) => item.id === ward.union_id);
+      const municipality = municipalities.find((item) => item.id === ward.municipality_id);
+      const upazila = upazilas.find((item) => item.id === (union?.upazila_id ?? municipality?.upazila_id));
+      const href = union && upazila
+        ? `/upazila/${upazila.slug}/${union.slug}/ward/${ward.ward_number}`
+        : municipality
+          ? `/municipality/${municipality.slug}/ward/${ward.ward_number}`
+          : "";
+      return {
+        ...ward,
+        href,
+        parentName: union?.name_bn ?? municipality?.name_bn ?? "",
+        upazilaName: upazila?.name_bn ?? "",
+      };
+    })
+    .filter((ward) => ward.href)
+    : [];
   const matchingDistrict = query && district && [district.name_bn, district.name_en].some((value) => value ? normalizeSearchText(value).includes(query) : false) ? district : null;
   const matchingMunicipalities = query ? municipalities.filter((item) => normalizeSearchText(item.name_bn).includes(query)) : [];
   const matches = query ? entries.filter((entry) =>
     [entry.name_bn, entry.name_en, entry.summary, entry.description, entry.address]
-      .some((value) => value?.toLocaleLowerCase("bn-BD").includes(query))
+      .some((value) => value ? normalizeSearchText(value).includes(query) : false)
   ) : [];
-  const matchingUpazilas = query ? upazilas.filter((item) => item.name_bn.toLocaleLowerCase("bn-BD").includes(query)) : [];
-  const matchingUnions = query ? unions.filter((item) => item.name_bn.toLocaleLowerCase("bn-BD").includes(query)) : [];
+  const matchingUpazilas = query ? upazilas.filter((item) => normalizeSearchText(item.name_bn).includes(query)) : [];
+  const matchingUnions = query ? unions.filter((item) => normalizeSearchText(item.name_bn).includes(query)) : [];
 
   return (
     <main className="min-h-screen bg-slate-50 text-slate-900">
