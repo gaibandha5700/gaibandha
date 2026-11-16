@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { getDistrictBySlug, getDirectoryEntries, getMunicipalitiesByUpazila, getUpazilas, getUnionsByUpazila, DIRECTORY_CATEGORIES } from "@/lib/directory";
+import { getDistrictBySlug, getDirectoryEntries, getMunicipalitiesByUpazila, getUpazilas, getUnionsByUpazila, getPublishedWards, DIRECTORY_CATEGORIES } from "@/lib/directory";
 import { getSiteUrl } from "@/lib/site-url";
 import { SiteHeader, SiteFooter } from "@/components/site-chrome";
 import { notFound } from "next/navigation";
@@ -27,9 +27,10 @@ export default async function DistrictPage() {
   const district = await getDistrictBySlug("gaibandha");
   if (!district) notFound();
 
-  const [upazilas, directoryEntries] = await Promise.all([
+  const [upazilas, directoryEntries, wards] = await Promise.all([
     getUpazilas(),
     getDirectoryEntries({ limit: 500 }),
+    getPublishedWards(),
   ]);
   const groups = await Promise.all(upazilas.map(async (upazila) => {
     const [unions, municipalities] = await Promise.all([
@@ -106,6 +107,7 @@ export default async function DistrictPage() {
               ["উপজেলা", upazilas.length, "/upazila"],
               ["ইউনিয়ন", unionCount, "/upazila"],
               ["পৌরসভা", municipalityCount, "/municipality"],
+              ["ওয়ার্ড", wards.length, "/upazila"],
               ["যাচাইকৃত প্রতিষ্ঠান", directoryEntries.length, "/directory"],
             ].map(([label, count, href]) => (
               <Link key={String(label)} href={String(href)} className="rounded-2xl border border-slate-200 bg-white p-5 transition hover:border-emerald-300">
