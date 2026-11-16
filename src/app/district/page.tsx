@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { getDistrictBySlug, getDirectoryEntries, getMunicipalitiesByUpazila, getUpazilas, getUnionsByUpazila, getPublishedWards, DIRECTORY_CATEGORIES } from "@/lib/directory";
 import { getSiteUrl } from "@/lib/site-url";
-import { SiteHeader, SiteFooter } from "@/components/site-chrome";
 import { notFound } from "next/navigation";
 
 export const revalidate = 3600;
@@ -55,7 +54,7 @@ export default async function DistrictPage() {
   return (
     <main className="min-h-screen bg-slate-50 text-slate-900">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd).replace(/</g, "\\u003c") }} />
-      <SiteHeader />
+      
       <article className="mx-auto max-w-6xl px-4 py-10 sm:py-14">
         <nav aria-label="Breadcrumb" className="mb-6 text-sm text-slate-500">
           <Link href="/" className="hover:text-emerald-700">হোম</Link> / জেলা পরিচিতি
@@ -139,7 +138,7 @@ export default async function DistrictPage() {
           </div>
         </section>
       </article>
-      <SiteFooter />
+      
     </main>
   );
 }
