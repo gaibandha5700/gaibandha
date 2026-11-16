@@ -340,3 +340,32 @@ export async function getPublishedWards(): Promise<Ward[]> {
   );
 }
 
+
+
+/**
+ * Returns the latest update timestamp among publicly visible, verified records.
+ * Each table request is cached for 60 seconds by directoryFetch.
+ */
+export async function getLastDatabaseUpdate(): Promise<string | null> {
+  const resources = [
+    "districts?select=updated_at&is_published=eq.true&is_verified=eq.true&order=updated_at.desc&limit=1",
+    "upazilas?select=updated_at&is_published=eq.true&is_verified=eq.true&order=updated_at.desc&limit=1",
+    "unions?select=updated_at&is_published=eq.true&is_verified=eq.true&order=updated_at.desc&limit=1",
+    "municipalities?select=updated_at&is_published=eq.true&is_verified=eq.true&order=updated_at.desc&limit=1",
+    "wards?select=updated_at&is_published=eq.true&is_verified=eq.true&order=updated_at.desc&limit=1",
+    "directory_entries?select=updated_at&is_published=eq.true&is_verified=eq.true&order=updated_at.desc&limit=1",
+    "education_institutions?select=updated_at,directory_entries!inner(is_published,is_verified)&directory_entries.is_published=eq.true&directory_entries.is_verified=eq.true&order=updated_at.desc&limit=1",
+  ];
+
+  const results = await Promise.allSettled(
+    resources.map((resource) => directoryFetch<Array<{ updated_at: string }>>(resource)),
+  );
+  const timestamps = results.flatMap((result) =>
+    result.status === "fulfilled" ? result.value.map((row) => row.updated_at) : [],
+  );
+
+  if (timestamps.length === 0) return null;
+  return timestamps.reduce((latest, value) =>
+    new Date(value).getTime() > new Date(latest).getTime() ? value : latest,
+  );
+}
