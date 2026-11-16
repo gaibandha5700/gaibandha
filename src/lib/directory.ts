@@ -302,3 +302,41 @@ export async function getMunicipalityById(id: string): Promise<Municipality | nu
   const rows = await directoryFetch<Municipality[]>(`municipalities?select=${municipalitySelect}&id=eq.${encodeURIComponent(id)}&is_published=eq.true&is_verified=eq.true&limit=1`);
   return rows[0] ?? null;
 }
+
+export type District = {
+  id: string;
+  name_bn: string;
+  name_en: string | null;
+  slug: string;
+  district_code: string | null;
+  households_total_2022: number | null;
+  households_general_2022: number | null;
+  households_institutional_2022: number | null;
+  households_other_2022: number | null;
+  population_total_2022: number | null;
+  population_male_2022: number | null;
+  population_female_2022: number | null;
+  population_hijra_2022: number | null;
+  sex_ratio_2022: number | null;
+  census_source_name: string | null;
+  census_source_url: string | null;
+  census_checked_at: string | null;
+  updated_at: string;
+};
+
+const districtSelect =
+  "id,name_bn,name_en,slug,district_code,households_total_2022,households_general_2022,households_institutional_2022,households_other_2022,population_total_2022,population_male_2022,population_female_2022,population_hijra_2022,sex_ratio_2022,census_source_name,census_source_url,census_checked_at,updated_at";
+
+export async function getDistrictBySlug(slug: string): Promise<District | null> {
+  const rows = await directoryFetch<District[]>(
+    `districts?select=${districtSelect}&slug=eq.${encodeURIComponent(slug)}&is_published=eq.true&is_verified=eq.true&limit=1`,
+  );
+  return rows[0] ?? null;
+}
+
+export async function getPublishedWards(): Promise<Ward[]> {
+  return directoryFetch<Ward[]>(
+    `wards?select=${wardSelect}&is_published=eq.true&is_verified=eq.true&order=name_bn.asc&limit=1000`,
+  );
+}
+
