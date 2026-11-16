@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import { getSiteUrl } from "@/lib/site-url";
+import { SiteHeader } from "@/components/header";
+import { SiteFooter } from "@/components/footer";
 
 const siteUrl = getSiteUrl();
 
@@ -45,7 +47,9 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
     <html lang="bn">
       <body>
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteJsonLd).replace(/</g, "\\u003c") }} />
+        <SiteHeader />
         {children}
+        <SiteFooter />
       </body>
     </html>
   );
