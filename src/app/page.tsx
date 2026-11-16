@@ -1,5 +1,4 @@
 import Link from "next/link";
-import { SiteHeader, SiteFooter } from "@/components/site-chrome";
 import { getDirectoryEntries, getMunicipalitiesByUpazila, getUpazilas, getUnionsByUpazila } from "@/lib/directory";
 import {
   ArrowRight, Building2, Bus, GraduationCap, HeartPulse,
@@ -30,7 +29,7 @@ export default async function Home() {
 
   return (
     <main>
-      <SiteHeader />
+      
       <section className="hero">
         <div className="container hero-content">
           <span className="eyebrow"><MapPin size={14} /> রংপুর বিভাগের একটি ঐতিহ্যবাহী জেলা</span>
@@ -107,7 +106,7 @@ export default async function Home() {
           </div>
         </div>
       </section>
-      <SiteFooter />
+      
     </main>
   );
 }
