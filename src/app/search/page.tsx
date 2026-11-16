@@ -22,6 +22,7 @@ export default async function SearchPage({ searchParams }: Props) {
   const { q = "" } = await searchParams;
   const query = normalizeSearchText(q.trim());
   const [entries, upazilas, wards, district] = await Promise.all([getDirectoryEntries(), getUpazilas(), getPublishedWards(), getDistrictBySlug("gaibandha")]);
+  const wardNumberQuery = query.match(/^(?:ওয়ার্ড\\s*(?:নং|নম্বর)?\\s*)?0*(\\d+)$/)?.[1];
   const [unionGroups, municipalityGroups] = await Promise.all([
     Promise.all(upazilas.map((u) => getUnionsByUpazila(u.id))),
     Promise.all(upazilas.map((u) => getMunicipalitiesByUpazila(u.id))),
@@ -32,7 +33,7 @@ export default async function SearchPage({ searchParams }: Props) {
     upazilaSlug: upazilas.find((u) => u.id === union.upazila_id)?.slug ?? "",
   }));
   const municipalities = municipalityGroups.flat().map((municipality) => ({ ...municipality, upazilaName: upazilas.find((u) => u.id === municipality.upazila_id)?.name_bn ?? "" }));
-  const matchingWards = query ? wards.filter((ward) => normalizeSearchText(ward.name_bn).includes(query) || String(ward.ward_number).includes(query)).map((ward) => {
+  const matchingWards = query ? wards.filter((ward) => wardNumberQuery ? ward.ward_number === Number(wardNumberQuery) : normalizeSearchText(ward.name_bn).includes(query)).map((ward) => {
     const union = unions.find((item) => item.id === ward.union_id);
     const municipality = municipalities.find((item) => item.id === ward.municipality_id);
     const upazila = upazilas.find((item) => item.id === (union?.upazila_id ?? municipality?.upazila_id));
