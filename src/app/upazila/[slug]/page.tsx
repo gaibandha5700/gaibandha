@@ -64,7 +64,7 @@ export default async function UpazilaDetailPage({ params }: PageProps) {
         <p className="mt-4 max-w-2xl leading-8 text-slate-600">
           {upazila.name_bn} উপজেলার ইউনিয়ন পরিষদগুলোর তালিকা ও স্থানীয় প্রশাসনিক এলাকার তথ্য। প্রতিটি ইউনিয়ন নির্বাচন করে বিস্তারিত দেখুন।
         </p>
-        <div className="mt-8 grid gap-3 sm:grid-cols-2 lg:grid-cols-6">
+        <div className="mt-8 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
           <div className="rounded-2xl border border-emerald-100 bg-emerald-50 p-5">
             <p className="text-sm text-emerald-900">ইউনিয়ন পরিষদ</p>
             <p className="mt-1 text-3xl font-extrabold text-emerald-800">{unions.length.toLocaleString("bn-BD")}</p>
@@ -79,6 +79,8 @@ export default async function UpazilaDetailPage({ params }: PageProps) {
           </div>
           <div className="rounded-2xl border border-slate-200 bg-white p-5"><p className="text-sm text-slate-500">পুরুষ · ২০২২</p><p className="mt-1 text-2xl font-extrabold">{upazila.population_male_2022 == null ? "তথ্য নেই" : upazila.population_male_2022.toLocaleString("bn-BD")}</p></div>
           <div className="rounded-2xl border border-slate-200 bg-white p-5"><p className="text-sm text-slate-500">নারী · ২০২২</p><p className="mt-1 text-2xl font-extrabold">{upazila.population_female_2022 == null ? "তথ্য নেই" : upazila.population_female_2022.toLocaleString("bn-BD")}</p></div>
+          <div className="rounded-2xl border border-slate-200 bg-white p-5"><p className="text-sm text-slate-500">হিজড়া · ২০২২</p><p className="mt-1 text-2xl font-extrabold">{upazila.population_hijra_2022 == null ? "তথ্য নেই" : upazila.population_hijra_2022.toLocaleString("bn-BD")}</p></div>
+          <div className="rounded-2xl border border-slate-200 bg-white p-5"><p className="text-sm text-slate-500">লিঙ্গ অনুপাত · ২০২২</p><p className="mt-1 text-2xl font-extrabold">{upazila.sex_ratio_2022 == null ? "তথ্য নেই" : upazila.sex_ratio_2022.toLocaleString("bn-BD")}</p></div>
         </div>
         {upazila.census_source_url && (
           <p className="mt-3 text-xs text-slate-500">
