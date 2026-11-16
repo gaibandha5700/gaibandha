@@ -100,7 +100,8 @@ export default async function DirectoryCategoryPage({ params, searchParams }: Pa
         ) : (
           <div className="mt-8 rounded-2xl border border-dashed border-slate-300 bg-white p-8">
             <h2 className="text-lg font-bold">কোনো তথ্য পাওয়া যায়নি</h2>
-            <p className="mt-2 leading-7 text-slate-600">নির্বাচিত ফিল্টার বা অনুসন্ধান অনুযায়ী প্রকাশিত ও যাচাইকৃত তথ্য নেই। ফিল্টার পরিবর্তন করে আবার চেষ্টা করুন।</p>
+            <p className="mt-2 leading-7 text-slate-600">নির্বাচিত ফিল্টার বা অনুসন্ধান অনুযায়ী প্রকাশিত ও যাচাইকৃত তথ্য নেই। ফিল্টার পরিবর্তন করে আবার চেষ্টা করুন অথবা এই বিভাগের নতুন তথ্য জমা দিন।</p>
+            <Link href={`/submit?category=${slug}`} className="mt-4 inline-flex rounded-xl bg-emerald-700 px-4 py-2.5 text-sm font-bold text-white">এই বিভাগের তথ্য জমা দিন</Link>
           </div>
         )}
       </section>
