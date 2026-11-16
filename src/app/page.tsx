@@ -42,6 +42,7 @@ export default async function Home() {
             <button type="submit">খুঁজুন</button>
           </form>
           <p className="hero-note">উপজেলা, প্রতিষ্ঠান, সেবা ও এলাকার নাম দিয়ে খুঁজুন</p>
+          <Link href="/district" className="mt-4 inline-flex items-center gap-2 text-sm font-semibold text-white underline underline-offset-4">গাইবান্ধা জেলা সম্পর্কে জানুন <ArrowRight size={15} /></Link>
         </div>
       </section>
 
