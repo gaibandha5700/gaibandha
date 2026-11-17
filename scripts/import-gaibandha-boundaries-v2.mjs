@@ -106,10 +106,9 @@ const districts = await supabase("districts?select=id,name_en,slug&slug=eq.gaiba
 if (districts.length !== 1) throw new Error("Expected exactly one Gaibandha district row.");
 const district = districts[0];
 
-const [upazilas, unions, municipalities, currentBoundaries] = await Promise.all([
+const [upazilas, unions, currentBoundaries] = await Promise.all([
   supabase(`upazilas?select=id,name_en,slug,district_id&district_id=eq.${district.id}`),
   supabase("unions?select=id,name_en,slug,upazila_id"),
-  supabase("municipalities?select=id,name_en,slug,upazila_id"),
   supabase("administrative_boundaries?select=id,district_id,upazila_id,union_id,municipality_id,ward_id&is_current=eq.true"),
 ]);
 
@@ -126,12 +125,6 @@ for (const item of unions) {
   const key = `${item.upazila_id}:${normalize(item.name_en)}`;
   unionMapByUpazila.set(key, [...(unionMapByUpazila.get(key) ?? []), item]);
 }
-const municipalityMap = new Map();
-for (const item of municipalities) {
-  const key = normalizeMunicipality(item.name_en);
-  municipalityMap.set(key, [...(municipalityMap.get(key) ?? []), item]);
-}
-
 const [districtFeatures, upazilaFeatures, localFeatures] = await Promise.all([
   arcgisFeatures(121), arcgisFeatures(122), arcgisFeatures(123),
 ]);
