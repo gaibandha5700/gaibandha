@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * Import Gaibandha district, upazila, union and municipality polygons.
+ * Import Gaibandha district, upazila, union and municipal ward polygons.
  * Default mode is a read-only dry run. Use --apply to call the protected
  * Supabase RPC; imported rows always remain unpublished and unverified.
  */
@@ -17,6 +17,8 @@ if (!supabaseUrl || !serviceKey) {
 
 const normalize = (value) => String(value ?? "").normalize("NFKD")
   .replace(/[\u0300-\u036f]/g, "").toLowerCase().replace(/[^a-z0-9]/g, "");
+const normalizeMunicipality = (value) =>
+  normalize(value).replace(/pourasabha|pourashava|paurashava|municipality|municipal/g, "");
 
 async function getJson(url, options = {}) {
   const response = await fetch(url, options);
