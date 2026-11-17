@@ -17,8 +17,6 @@ if (!supabaseUrl || !serviceKey) {
 
 const normalize = (value) => String(value ?? "").normalize("NFKD")
   .replace(/[\u0300-\u036f]/g, "").toLowerCase().replace(/[^a-z0-9]/g, "");
-const normalizeMunicipality = (value) =>
-  normalize(value).replace(/pourashava|paurashava|municipality|municipal/g, "");
 
 async function getJson(url, options = {}) {
   const response = await fetch(url, options);
