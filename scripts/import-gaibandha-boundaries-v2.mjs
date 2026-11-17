@@ -6,7 +6,7 @@
  */
 const ARCGIS_BASE = "https://www.arcgisbd.com/server/rest/services/ADB005/CRIIPS/MapServer";
 const SOURCE_NAME = "ArcGIS Bangladesh CRIIPS — BBS 2022 administrative boundary layers";
-const EXPECTED = { district: 1, upazila: 7, union: 81, municipality: 4 };
+const EXPECTED = { district: 1, upazila: 7, union: 81 };
 const supabaseUrl = process.env.SUPABASE_URL ?? process.env.NEXT_PUBLIC_SUPABASE_URL;
 const serviceKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
 const apply = process.argv.includes("--apply");
@@ -137,7 +137,7 @@ const [districtFeatures, upazilaFeatures, localFeatures] = await Promise.all([
 ]);
 
 const records = [];
-const counts = { district: 0, upazila: 0, union: 0, municipality: 0 };
+const counts = { district: 0, upazila: 0, union: 0 };
 
 for (const feature of districtFeatures) {
   const props = feature.properties ?? {};
@@ -158,15 +158,9 @@ for (const feature of localFeatures) {
   const props = feature.properties ?? {};
   if (normalize(props.District) !== normalize("Gaibandha")) continue;
 
-  const municipalValue = String(props.Municipal ?? "").trim();
-  const isMunicipality = municipalValue !== "" &&
-    !["0", "-", "null", "none"].includes(municipalValue.toLowerCase());
-
-  if (isMunicipality) {
-    const entity = uniqueMatch(municipalValue, municipalityMap, "municipality", normalizeMunicipality);
-    records.push(recordFor(feature, { municipality_id: entity.id }, 123));
-    counts.municipality++;
-  } else if (props.UnName) {
+  // BBS 2022 layer 123 is a Union Boundary layer, not a Pourashava layer.
+  // Never infer municipal polygons from union attributes.
+  if (props.UnName) {
     const parent = uniqueMatch(props.Upazila, upazilaMap, "parent upazila");
     const key = `${parent.id}:${normalize(props.UnName)}`;
     const entity = uniqueMatch(props.UnName, new Map([[normalize(props.UnName), unionMapByUpazila.get(key) ?? []]]), "union within parent upazila");
