@@ -18,7 +18,7 @@ ArcGIS service-এর BBS 2022-লেবেলযুক্ত District, Upazila 
 - সব imported row `is_published=false`, `is_verified=false` থাকবে।
 - সরকারি LGED/BBS GIS source-এর সঙ্গে cross-check না হওয়া পর্যন্ত public website-এ দেখানো যাবে না।
 - Ward boundary এই তিনটি layer-এ নেই; তাই ৭৬৫টি ward-এর boundary এখানে আমদানি করা হয় না।
-- জেলা ১, উপজেলা ৭, ইউনিয়ন ৮১ এবং পৌরসভা ৪—প্রত্যাশিত feature count না মিললে কোনো write হবে না।
+- এই source থেকে প্রত্যাশিত feature count: জেলা ১, উপজেলা ৭, ইউনিয়ন ৮১ (মোট ৮৯)। পৌরসভা ৪টির polygon এই তিনটি BBS layer-এ নিশ্চিত নয়; LGED বা অন্য যাচাইকৃত source না পাওয়া পর্যন্ত সেগুলো বাদ থাকবে।
 - ইউনিয়ন matching-এ parent upazila-ও যাচাই করা হয়; একই নামে একাধিক ইউনিয়ন থাকলেও ভুল entity-তে যুক্ত হবে না।
 
 ## চালানোর নিয়ম
