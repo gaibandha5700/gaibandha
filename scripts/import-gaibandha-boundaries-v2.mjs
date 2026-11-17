@@ -6,7 +6,7 @@
  */
 const ARCGIS_BASE = "https://www.arcgisbd.com/server/rest/services/ADB005/CRIIPS/MapServer";
 const SOURCE_NAME = "ArcGIS Bangladesh CRIIPS — BBS 2022 administrative boundary layers";
-const EXPECTED = { district: 1, upazila: 7, union: 81 };
+const EXPECTED = { district: 1, upazila: 7, union: 79, municipalWard: 36 };
 const supabaseUrl = process.env.SUPABASE_URL ?? process.env.NEXT_PUBLIC_SUPABASE_URL;
 const serviceKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
 const apply = process.argv.includes("--apply");
@@ -104,9 +104,11 @@ const districts = await supabase("districts?select=id,name_en,slug&slug=eq.gaiba
 if (districts.length !== 1) throw new Error("Expected exactly one Gaibandha district row.");
 const district = districts[0];
 
-const [upazilas, unions, currentBoundaries] = await Promise.all([
+const [upazilas, unions, municipalities, wards, currentBoundaries] = await Promise.all([
   supabase(`upazilas?select=id,name_en,slug,district_id&district_id=eq.${district.id}`),
   supabase("unions?select=id,name_en,slug,upazila_id"),
+  supabase("municipalities?select=id,name_en,slug,upazila_id"),
+  supabase("wards?select=id,municipality_id,ward_number"),
   supabase("administrative_boundaries?select=id,district_id,upazila_id,union_id,municipality_id,ward_id&is_current=eq.true"),
 ]);
 
@@ -123,12 +125,22 @@ for (const item of unions) {
   const key = `${item.upazila_id}:${normalize(item.name_en)}`;
   unionMapByUpazila.set(key, [...(unionMapByUpazila.get(key) ?? []), item]);
 }
+const municipalityMap = new Map();
+for (const item of municipalities) {
+  const key = normalizeMunicipality(item.name_en);
+  municipalityMap.set(key, [...(municipalityMap.get(key) ?? []), item]);
+}
+const wardMap = new Map(wards.map((item) => [
+  `${item.municipality_id}:${item.ward_number}`, item,
+]));
+
 const [districtFeatures, upazilaFeatures, localFeatures] = await Promise.all([
   arcgisFeatures(121), arcgisFeatures(122), arcgisFeatures(123),
 ]);
 
 const records = [];
-const counts = { district: 0, upazila: 0, union: 0 };
+const counts = { district: 0, upazila: 0, union: 0, municipalWard: 0 };
+const unresolvedUnions = [];
 
 for (const feature of districtFeatures) {
   const props = feature.properties ?? {};
@@ -149,13 +161,29 @@ for (const feature of localFeatures) {
   const props = feature.properties ?? {};
   if (normalize(props.District) !== normalize("Gaibandha")) continue;
 
-  // BBS 2022 layer 123 is a Union Boundary layer, not a Pourashava layer.
-  // Never infer municipal polygons from union attributes.
-  if (props.UnName) {
+  const municipalValue = String(props.Municipal ?? "").trim();
+  const isMunicipalWard = municipalValue !== "" &&
+    !["0", "-", "null", "none"].includes(municipalValue.toLowerCase());
+
+  if (isMunicipalWard) {
+    const municipality = uniqueMatch(municipalValue, municipalityMap, "municipality", normalizeMunicipality);
+    const wardNumberMatch = String(props.UnName ?? "").match(/(\\d+)/);
+    if (!wardNumberMatch) throw new Error(`Could not read ward number from "${props.UnName}".`);
+    const wardNumber = Number(wardNumberMatch[1]);
+    const ward = wardMap.get(`${municipality.id}:${wardNumber}`);
+    if (!ward) throw new Error(`No database ward matches ${municipalValue} / ${props.UnName}.`);
+    records.push(recordFor(feature, { ward_id: ward.id }, 123));
+    counts.municipalWard++;
+  } else if (props.UnName) {
     const parent = uniqueMatch(props.Upazila, upazilaMap, "parent upazila");
     const key = `${parent.id}:${normalize(props.UnName)}`;
-    const entity = uniqueMatch(props.UnName, new Map([[normalize(props.UnName), unionMapByUpazila.get(key) ?? []]]), "union within parent upazila");
-    records.push(recordFor(feature, { union_id: entity.id }, 123));
+    const matches = unionMapByUpazila.get(key) ?? [];
+    if (matches.length === 0) {
+      unresolvedUnions.push({ upazila: props.Upazila, sourceName: props.UnName });
+      continue;
+    }
+    if (matches.length !== 1) throw new Error(`Ambiguous union match: ${props.Upazila} / ${props.UnName}.`);
+    records.push(recordFor(feature, { union_id: matches[0].id }, 123));
     counts.union++;
   }
 }
@@ -165,7 +193,7 @@ for (const [level, expected] of Object.entries(EXPECTED)) {
     throw new Error(`Validation stopped: expected ${expected} ${level} features, received ${counts[level]}. No database rows were written.`);
   }
 }
-const entityIds = records.map((r) => r.district_id ?? r.upazila_id ?? r.union_id ?? r.municipality_id);
+const entityIds = records.map((r) => r.district_id ?? r.upazila_id ?? r.union_id ?? r.municipality_id ?? r.ward_id);
 if (new Set(entityIds).size !== records.length) throw new Error("Duplicate boundary feature detected.");
 
 console.log(JSON.stringify({
@@ -174,6 +202,7 @@ console.log(JSON.stringify({
   expected: EXPECTED,
   matched: counts,
   total: records.length,
+  unresolvedUnions,
   existingCurrentBoundaries: currentBoundaries.length,
   publicStatus: "All imported rows remain unpublished and unverified.",
 }, null, 2));
