@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useMemo, useRef, useState } from "react";
 import Link from "next/link";
 import type { PublicBoundaryFeature, PublicBoundaryCollection } from "@/lib/map-data";
 
@@ -38,6 +38,9 @@ export default function AdministrativeMap({ data }: { data: PublicBoundaryCollec
   const [layer, setLayer] = useState<Layer>("upazila");
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [zoom, setZoom] = useState(1);
+  const [pan, setPan] = useState<Point>([0, 0]);
+  const dragRef = useRef<{ pointerId: number; startX: number; startY: number; startPan: Point; featureId: string | null } | null>(null);
+  const movedRef = useRef(false);
   const features = useMemo(() => data.features.filter(f => f.properties.level === layer), [data, layer]);
   const selected = features.find(f => f.id === selectedId) ?? features[0] ?? null;
 
@@ -65,34 +68,47 @@ export default function AdministrativeMap({ data }: { data: PublicBoundaryCollec
   const paths = useMemo(() => projection ? features.map(f => ({ feature: f, d: pathFor(f, projection) })) : [], [features, projection]);
   const labelPoint = selected && projection ? projection([selected.properties.label_lon, selected.properties.label_lat]) : null;
 
+  function updateZoom(next: number) {
+    const value = Math.max(1, Math.min(3, next));
+    setZoom(value);
+    const maxX = 500 * (value - 1), maxY = 325 * (value - 1);
+    setPan(([x, y]) => [Math.max(-maxX, Math.min(maxX, x)), Math.max(-maxY, Math.min(maxY, y))]);
+  }
+
+  function resetMap() {
+    setZoom(1);
+    setPan([0, 0]);
+    setSelectedId(null);
+  }
+
   return (
     <section className="space-y-4">
       <div className="flex flex-wrap items-center justify-between gap-4 border-b border-[#d8dfd3] pb-4">
         <label className="flex items-center gap-3 text-sm font-semibold">
           <span>মানচিত্রের স্তর</span>
-          <select className="rounded border border-[#ccd7cb] bg-white px-3 py-2" value={layer} onChange={e => { setLayer(e.target.value as Layer); setSelectedId(null); setZoom(1); }}>
+          <select className="rounded border border-[#ccd7cb] bg-white px-3 py-2" value={layer} onChange={e => { setLayer(e.target.value as Layer); setSelectedId(null); resetMap(); }}>
             {layerOptions.map(o => <option key={o.value} value={o.value}>{o.label}</option>)}
           </select>
         </label>
         <div className="flex flex-wrap items-center gap-3">
           <label className="flex items-center gap-3 text-sm">
             <span>জুম</span>
-            <input type="range" min="1" max="3" step=".1" value={zoom} onChange={e => setZoom(Number(e.target.value))} aria-label="মানচিত্র জুম" />
+            <input type="range" min="1" max="3" step=".1" value={zoom} onChange={e => updateZoom(Number(e.target.value))} aria-label="মানচিত্র জুম" />
             <span className="w-12 text-right tabular-nums">{zoom.toFixed(1)}×</span>
           </label>
           <div className="flex items-center gap-1" aria-label="মানচিত্র জুম নিয়ন্ত্রণ">
-            <button type="button" onClick={() => setZoom(z => Math.max(1, +(z - .2).toFixed(1)))} disabled={zoom <= 1} aria-label="জুম কমান" className="rounded border border-[#ccd7cb] bg-white px-3 py-2 text-sm font-semibold disabled:opacity-40">−</button>
-            <button type="button" onClick={() => setZoom(z => Math.min(3, +(z + .2).toFixed(1)))} disabled={zoom >= 3} aria-label="জুম বাড়ান" className="rounded border border-[#ccd7cb] bg-white px-3 py-2 text-sm font-semibold disabled:opacity-40">+</button>
-            <button type="button" onClick={() => { setZoom(1); setSelectedId(null); }} aria-label="পূর্ণ মানচিত্রে ফিরুন" className="rounded border border-[#ccd7cb] bg-white px-3 py-2 text-sm font-semibold">পূর্ণ মানচিত্র</button>
+            <button type="button" onClick={() => updateZoom(zoom - .2)} disabled={zoom <= 1} aria-label="জুম কমান" className="rounded border border-[#ccd7cb] bg-white px-3 py-2 text-sm font-semibold disabled:opacity-40">−</button>
+            <button type="button" onClick={() => updateZoom(zoom + .2)} disabled={zoom >= 3} aria-label="জুম বাড়ান" className="rounded border border-[#ccd7cb] bg-white px-3 py-2 text-sm font-semibold disabled:opacity-40">+</button>
+            <button type="button" onClick={resetMap} aria-label="পূর্ণ মানচিত্রে ফিরুন" className="rounded border border-[#ccd7cb] bg-white px-3 py-2 text-sm font-semibold">পূর্ণ মানচিত্র</button>
           </div>
         </div>
       </div>
       <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_300px]">
         <div className="overflow-hidden rounded border border-[#d6dfd4] bg-[#edf1e7]">
           {projection && paths.length ? (
-            <svg viewBox="0 0 1000 650" role="img" aria-label="প্রকাশিত প্রশাসনিক সীমানার মানচিত্র" className="block w-full touch-pan-y">
+            <svg viewBox="0 0 1000 650" role="img" aria-label="প্রকাশিত প্রশাসনিক সীমানার মানচিত্র। জুম করার পর টেনে সরানো যায়; এলাকা নির্বাচন করতে ক্লিক বা কীবোর্ড ব্যবহার করুন।" className="block w-full touch-none" onPointerDown={e => { if (e.pointerType === "mouse" && e.button !== 0) return; const target = e.target as SVGElement; const featureId = target.dataset.featureId ?? null; e.currentTarget.setPointerCapture(e.pointerId); dragRef.current = { pointerId: e.pointerId, startX: e.clientX, startY: e.clientY, startPan: pan, featureId }; movedRef.current = false; }} onPointerMove={e => { const drag = dragRef.current; if (!drag || drag.pointerId !== e.pointerId || zoom <= 1) return; const distance = Math.hypot(e.clientX - drag.startX, e.clientY - drag.startY); if (distance < 4) return; movedRef.current = true; const rect = e.currentTarget.getBoundingClientRect(); const dx = (e.clientX - drag.startX) * 1000 / rect.width; const dy = (e.clientY - drag.startY) * 650 / rect.height; const maxX = 500 * (zoom - 1), maxY = 325 * (zoom - 1); setPan([Math.max(-maxX, Math.min(maxX, drag.startPan[0] + dx)), Math.max(-maxY, Math.min(maxY, drag.startPan[1] + dy))]); }} onPointerUp={e => { const drag = dragRef.current; if (drag && drag.pointerId === e.pointerId) { if (!movedRef.current && drag.featureId) setSelectedId(drag.featureId); dragRef.current = null; } }} onPointerCancel={() => { dragRef.current = null; movedRef.current = false; }}>
               <rect width="1000" height="650" fill="#edf1e7" />
-              <g transform={`translate(500 325) scale(${zoom}) translate(-500 -325)`}>
+              <g transform={`translate(${pan[0]} ${pan[1]}) translate(500 325) scale(${zoom}) translate(-500 -325)`}>
                 {paths.map(({ feature, d }) => (
                   <path
                     key={feature.id}
@@ -101,11 +117,11 @@ export default function AdministrativeMap({ data }: { data: PublicBoundaryCollec
                     stroke={selected?.id === feature.id ? "#1d6348" : "#91aa91"}
                     strokeWidth={selected?.id === feature.id ? 2.3 : 1.1}
                     vectorEffect="non-scaling-stroke"
+                    data-feature-id={feature.id}
                     role="button"
                     tabIndex={0}
                     aria-label={feature.properties.name_bn}
                     aria-pressed={selected?.id === feature.id}
-                    onClick={() => setSelectedId(feature.id)}
                     onKeyDown={e => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); setSelectedId(feature.id); } }}
                     className="cursor-pointer outline-none focus-visible:stroke-[#b1782c]"
                   >
@@ -119,6 +135,7 @@ export default function AdministrativeMap({ data }: { data: PublicBoundaryCollec
                 )}
               </g>
             </svg>
+            <p className="border-t border-[#d6dfd4] px-3 py-2 text-xs leading-5 text-slate-600">১×-এর বেশি জুমে মানচিত্র টেনে সরানো যাবে। এলাকাটি নির্বাচন করতে ক্লিক বা Enter/Space ব্যবহার করুন।</p>
           ) : <div className="p-12 text-center text-slate-600">এই স্তরের সীমানা এখন পাওয়া যায়নি।</div>}
         </div>
         <aside className="border-t border-[#d8dfd3] pt-4 lg:border-l lg:border-t-0 lg:pl-5">
