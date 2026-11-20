@@ -75,6 +75,14 @@ export default function AdministrativeMap({ data }: { data: PublicBoundaryCollec
     setPan(([x, y]) => [Math.max(-maxX, Math.min(maxX, x)), Math.max(-maxY, Math.min(maxY, y))]);
   }
 
+  function panBy(dx: number, dy: number) {
+    const maxX = 500 * (zoom - 1), maxY = 325 * (zoom - 1);
+    setPan(([x, y]) => [
+      Math.max(-maxX, Math.min(maxX, x + dx)),
+      Math.max(-maxY, Math.min(maxY, y + dy)),
+    ]);
+  }
+
   function resetMap() {
     setZoom(1);
     setPan([0, 0]);
@@ -123,7 +131,14 @@ export default function AdministrativeMap({ data }: { data: PublicBoundaryCollec
                     tabIndex={0}
                     aria-label={feature.properties.name_bn}
                     aria-pressed={selected?.id === feature.id}
-                    onKeyDown={e => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); setSelectedId(feature.id); } }}
+                    onKeyDown={e => {
+                    if (e.key === "Enter" || e.key === " ") { e.preventDefault(); setSelectedId(feature.id); }
+                    else if (zoom > 1 && ["ArrowLeft", "ArrowRight", "ArrowUp", "ArrowDown"].includes(e.key)) {
+                      e.preventDefault();
+                      const step = 40;
+                      panBy(e.key === "ArrowLeft" ? -step : e.key === "ArrowRight" ? step : 0, e.key === "ArrowUp" ? -step : e.key === "ArrowDown" ? step : 0);
+                    }
+                  }}
                     className="cursor-pointer outline-none focus-visible:stroke-[#b1782c]"
                   >
                     <title>{feature.properties.name_bn}</title>
@@ -136,7 +151,7 @@ export default function AdministrativeMap({ data }: { data: PublicBoundaryCollec
                 )}
               </g>
             </svg>
-            <p className="border-t border-[#d6dfd4] px-3 py-2 text-xs leading-5 text-slate-600">১×-এর বেশি জুমে মানচিত্র টেনে সরানো যাবে। এলাকাটি নির্বাচন করতে ক্লিক বা Enter/Space ব্যবহার করুন।</p>
+            <p className="border-t border-[#d6dfd4] px-3 py-2 text-xs leading-5 text-slate-600">১×-এর বেশি জুমে মানচিত্র টেনে বা নির্বাচিত এলাকার ওপর কীবোর্ডের তীর দিয়ে সরানো যাবে। এলাকা নির্বাচন করতে ক্লিক বা Enter/Space ব্যবহার করুন।</p>
             </>
           ) : <div className="p-12 text-center text-slate-600">এই স্তরের সীমানা এখন পাওয়া যায়নি।</div>}
         </div>
