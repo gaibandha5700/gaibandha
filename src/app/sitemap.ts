@@ -19,6 +19,8 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { url: new URL("/upazila", siteUrl).toString(), lastModified: now, changeFrequency: "weekly", priority: 0.9 },
     { url: new URL("/municipality", siteUrl).toString(), lastModified: now, changeFrequency: "weekly", priority: 0.8 },
     { url: new URL("/directory", siteUrl).toString(), lastModified: now, changeFrequency: "weekly", priority: 0.9 },
+    { url: new URL("/statistics", siteUrl).toString(), lastModified: now, changeFrequency: "weekly", priority: 0.8 },
+    { url: new URL("/data", siteUrl).toString(), lastModified: now, changeFrequency: "weekly", priority: 0.7 },
   ];
 
   const upazilas = await getUpazilas();
