@@ -43,11 +43,11 @@ AS $$
         WHEN b.ward_id IS NOT NULL THEN 5
       END AS level_order
     FROM public.administrative_boundaries b
-    LEFT JOIN public.districts d ON d.id = b.district_id
-    LEFT JOIN public.upazilas u ON u.id = b.upazila_id
     LEFT JOIN public.unions un ON un.id = b.union_id
     LEFT JOIN public.municipalities m ON m.id = b.municipality_id
     LEFT JOIN public.wards w ON w.id = b.ward_id
+    LEFT JOIN public.upazilas u ON u.id = COALESCE(b.upazila_id, un.upazila_id, m.upazila_id)
+    LEFT JOIN public.districts d ON d.id = COALESCE(b.district_id, u.district_id)
     WHERE b.is_current = true
       AND b.is_published = true
       AND b.is_verified = true
