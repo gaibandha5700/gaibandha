@@ -106,6 +106,7 @@ export default function AdministrativeMap({ data }: { data: PublicBoundaryCollec
       <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_300px]">
         <div className="overflow-hidden rounded border border-[#d6dfd4] bg-[#edf1e7]">
           {projection && paths.length ? (
+            <>
             <svg viewBox="0 0 1000 650" role="img" aria-label="প্রকাশিত প্রশাসনিক সীমানার মানচিত্র। জুম করার পর টেনে সরানো যায়; এলাকা নির্বাচন করতে ক্লিক বা কীবোর্ড ব্যবহার করুন।" className="block w-full touch-none" onPointerDown={e => { if (e.pointerType === "mouse" && e.button !== 0) return; const target = e.target as SVGElement; const featureId = target.dataset.featureId ?? null; e.currentTarget.setPointerCapture(e.pointerId); dragRef.current = { pointerId: e.pointerId, startX: e.clientX, startY: e.clientY, startPan: pan, featureId }; movedRef.current = false; }} onPointerMove={e => { const drag = dragRef.current; if (!drag || drag.pointerId !== e.pointerId || zoom <= 1) return; const distance = Math.hypot(e.clientX - drag.startX, e.clientY - drag.startY); if (distance < 4) return; movedRef.current = true; const rect = e.currentTarget.getBoundingClientRect(); const dx = (e.clientX - drag.startX) * 1000 / rect.width; const dy = (e.clientY - drag.startY) * 650 / rect.height; const maxX = 500 * (zoom - 1), maxY = 325 * (zoom - 1); setPan([Math.max(-maxX, Math.min(maxX, drag.startPan[0] + dx)), Math.max(-maxY, Math.min(maxY, drag.startPan[1] + dy))]); }} onPointerUp={e => { const drag = dragRef.current; if (drag && drag.pointerId === e.pointerId) { if (!movedRef.current && drag.featureId) setSelectedId(drag.featureId); dragRef.current = null; } }} onPointerCancel={() => { dragRef.current = null; movedRef.current = false; }}>
               <rect width="1000" height="650" fill="#edf1e7" />
               <g transform={`translate(${pan[0]} ${pan[1]}) translate(500 325) scale(${zoom}) translate(-500 -325)`}>
@@ -136,6 +137,7 @@ export default function AdministrativeMap({ data }: { data: PublicBoundaryCollec
               </g>
             </svg>
             <p className="border-t border-[#d6dfd4] px-3 py-2 text-xs leading-5 text-slate-600">১×-এর বেশি জুমে মানচিত্র টেনে সরানো যাবে। এলাকাটি নির্বাচন করতে ক্লিক বা Enter/Space ব্যবহার করুন।</p>
+            </>
           ) : <div className="p-12 text-center text-slate-600">এই স্তরের সীমানা এখন পাওয়া যায়নি।</div>}
         </div>
         <aside className="border-t border-[#d8dfd3] pt-4 lg:border-l lg:border-t-0 lg:pl-5">
