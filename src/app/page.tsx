@@ -1,14 +1,14 @@
 import Link from "next/link";
 import { SiteHeader, SiteFooter } from "@/components/site-chrome";
-import { getMunicipalitiesByUpazila, getUpazilas, getUnionsByUpazila, getDirectoryEntries, DIRECTORY_CATEGORIES } from "@/lib/directory";
+import { getMunicipalitiesByUpazila, getUpazilas, getUnionsByUpazila, getAllDirectoryEntries, DIRECTORY_CATEGORIES } from "@/lib/directory";
 import { ArrowUpRight, Search, MapPinned, BookOpen } from "lucide-react";
 export const revalidate = 3600;
 export default async function Home() {
  const upazilas=await getUpazilas();
- const [unionGroups,municipalityGroups,categoryGroups]=await Promise.all([
+ const [unionGroups,municipalityGroups,allEntries]=await Promise.all([
   Promise.all(upazilas.map(u=>getUnionsByUpazila(u.id))),
   Promise.all(upazilas.map(u=>getMunicipalitiesByUpazila(u.id))),
-  Promise.all(DIRECTORY_CATEGORIES.map(async c=>({...c,entries:await getDirectoryEntries({category:c.slug})})))
+  getAllDirectoryEntries()
  ]);
  const unionCount=unionGroups.reduce((n,g)=>n+g.length,0);
  const municipalityCount=municipalityGroups.reduce((n,g)=>n+g.length,0);
