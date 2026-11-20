@@ -10,9 +10,7 @@ async function getDistrictSnapshot() {
   const url = process.env.NEXT_PUBLIC_SUPABASE_URL, key = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
   if (!url || !key) return null;
   const headers = { apikey: key, Authorization: `Bearer ${key}` };
-  const [districtResponse, censusResponse] = await Promise.all([
-    fetch(`${url}/rest/v1/districts?select=id,name_bn,name_en,district_code,population_total_2022,population_male_2022,population_female_2022,population_hijra_2022,households_total_2022,households_general_2022,households_institutional_2022,households_other_2022,census_source_name,census_source_url,census_checked_at&is_published=eq.true&is_verified=eq.true&limit=1`, { headers, next: { revalidate: 3600 } }),
-  ]);
+  const districtResponse = await fetch(`${url}/rest/v1/districts?select=id,name_bn,name_en,district_code,population_total_2022,population_male_2022,population_female_2022,population_hijra_2022,households_total_2022,households_general_2022,households_institutional_2022,households_other_2022,census_source_name,census_source_url,census_checked_at&is_published=eq.true&is_verified=eq.true&limit=1`, { headers, next: { revalidate: 3600 } });
   if (!districtResponse.ok) return null;
   const districts = await districtResponse.json() as Array<{id:string;name_bn:string;name_en:string;district_code:string;population_total_2022:number|null;population_male_2022:number|null;population_female_2022:number|null;population_hijra_2022:number|null;households_total_2022:number|null;households_general_2022:number|null;households_institutional_2022:number|null;households_other_2022:number|null;census_source_name:string|null;census_source_url:string|null;census_checked_at:string|null}>;
   const district = districts[0];
