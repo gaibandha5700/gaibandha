@@ -81,8 +81,6 @@ export function SiteFooter() {
           <Link href="/contact">যোগাযোগ</Link>
           <Link href="/privacy">গোপনীয়তা</Link>
           <Link href="/search">তথ্য খুঁজুন</Link>
-          <Link href="/district">জেলা পরিচিতি</Link>
-          <Link href="/map">মানচিত্র</Link>
         </div>
         <div className="site-footer-links">
           <strong>অংশ নিন</strong>
