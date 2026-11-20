@@ -45,5 +45,6 @@ Bengali-only, mobile-first public information platform. This document tracks the
 - [x] Verify preview build, typecheck and generated route output via Vercel build (READY); preview routes return expected HTTP statuses.
 - [ ] Visual mobile viewport audit (not available in this run; static responsive-code review only).
 - [x] Verify map RPC/feature count under anon RLS: 129 geometries, no missing geometry/profile URL; levels 1/7/81/4/36.
-- [ ] Check interactive map on a real mobile viewport and screen reader.
+- [x] Add keyboard-friendly zoom slider, explicit zoom-in/zoom-out buttons and a full-map reset control.
+- [ ] Check interactive map on a real mobile viewport and screen reader; drag/pan support remains a future usability decision.
 - [ ] Merge after refreshed map-preview evidence and static responsive audit; then verify production deployment.
