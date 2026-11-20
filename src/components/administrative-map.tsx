@@ -44,12 +44,12 @@ export default function AdministrativeMap({ data }: { data: PublicBoundaryCollec
   const bounds = useMemo(() => {
     const pairs = features.flatMap(coordinatePairs);
     if (!pairs.length) return null;
-    return {
-      minX: Math.min(...pairs.map(p => p[0])),
-      maxX: Math.max(...pairs.map(p => p[0])),
-      minY: Math.min(...pairs.map(p => p[1])),
-      maxY: Math.max(...pairs.map(p => p[1])),
-    };
+    return pairs.reduce((b, p) => ({
+      minX: Math.min(b.minX, p[0]),
+      maxX: Math.max(b.maxX, p[0]),
+      minY: Math.min(b.minY, p[1]),
+      maxY: Math.max(b.maxY, p[1]),
+    }), { minX: Number.POSITIVE_INFINITY, maxX: Number.NEGATIVE_INFINITY, minY: Number.POSITIVE_INFINITY, maxY: Number.NEGATIVE_INFINITY });
   }, [features]);
 
   const projection = useMemo(() => {
