@@ -379,3 +379,22 @@ body { font-family:"Hind Siliguri","Noto Sans Bengali",sans-serif; }
 .site-footer-about p{max-width:340px!important}
 .site-footer-bottom{max-width:1160px!important;display:flex!important;align-items:center!important;justify-content:space-between!important;gap:20px!important}
 @media(max-width:560px){.site-header-inner{min-height:65px!important}.site-brand-image{max-height:46px!important}.site-footer-bottom{align-items:flex-start!important;flex-direction:column!important;gap:7px!important}}
+
+/* Consistent typography and restrained visual treatment on internal pages */
+main.min-h-screen.bg-slate-50{background:#fbfaf6!important;color:#19372a!important}
+main.min-h-screen.bg-slate-50>section.mx-auto,main.min-h-screen.bg-slate-50>article.mx-auto{padding-top:48px!important;padding-bottom:72px!important}
+main.min-h-screen.bg-slate-50 h1{font-family:"Noto Serif Bengali","Hind Siliguri",serif!important;letter-spacing:-.025em!important;line-height:1.35!important}
+main.min-h-screen.bg-slate-50 h2{letter-spacing:-.02em}
+main.min-h-screen.bg-slate-50 form input,main.min-h-screen.bg-slate-50 form select{border-radius:4px!important;background:#fff!important}
+main.min-h-screen.bg-slate-50 form button{border-radius:4px!important;background:#153d2d!important}
+main.min-h-screen.bg-slate-50 a.rounded-xl,main.min-h-screen.bg-slate-50 a.rounded-2xl{border-radius:5px!important;box-shadow:none!important}
+main.min-h-screen.bg-slate-50 a.rounded-xl:hover,main.min-h-screen.bg-slate-50 a.rounded-2xl:hover{border-color:#9bbda8!important;background:#f4f5ee!important}
+main.min-h-screen.bg-slate-50 .rounded-2xl{border-radius:6px!important}
+main.min-h-screen.bg-slate-50 .rounded-xl{border-radius:5px!important}
+main.min-h-screen.bg-slate-50 .shadow-sm,main.min-h-screen.bg-slate-50 .shadow-md{box-shadow:none!important}
+main.min-h-screen.bg-slate-50 .bg-emerald-50{background:#e8eee5!important}
+main.min-h-screen.bg-slate-50 .text-emerald-700{color:#287154!important}
+main.min-h-screen.bg-slate-50 .text-emerald-800{color:#194632!important}
+main.min-h-screen.bg-slate-50 .bg-emerald-700{background:#153d2d!important}
+main.min-h-screen.bg-slate-50 .border-emerald-100{border-color:#d6e2d5!important}
+@media(max-width:560px){main.min-h-screen.bg-slate-50>section.mx-auto,main.min-h-screen.bg-slate-50>article.mx-auto{padding-top:32px!important;padding-bottom:48px!important}}
