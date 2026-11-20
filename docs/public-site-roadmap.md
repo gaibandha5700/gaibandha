@@ -27,7 +27,7 @@ Bengali-only, mobile-first public information platform. This document tracks the
 - Union-ward polygons are not covered. Administrative locations table has no published records.
 - RLS on administrative boundaries limits public reads to published + verified rows.
 - GIS attribution: ArcGIS Bangladesh CRIIPS, MapServer layers 121/122/123, BBS 2022 attribution. Four municipal polygons are derived from municipal ward geometries.
-- The new GeoJSON RPC uses SECURITY INVOKER and relies on existing RLS and verified/published parent filters. It is additive and is not applied to the live database in this batch.
+- The new GeoJSON RPC uses SECURITY INVOKER and relies on existing RLS and verified/published parent filters. It was applied as an additive migration on 2026-11-21 and tested as `anon`; 129 FeatureCollection entries were returned with complete geometry/profile links. Preview `/map` was built before the migration, so its cached fallback must be refreshed by a new deployment.
 
 ## Roadmap
 1. Route audit, navigation, sitemap and this document.
@@ -41,7 +41,9 @@ Bengali-only, mobile-first public information platform. This document tracks the
 ## Quality gates / status
 - [x] Inspect main branch tree, routes, shared chrome, data helper, schema, RLS and deployment.
 - [x] Add route coverage and transparency page batch on a branch.
-- [ ] Apply GeoJSON RPC migration (reviewed, additive; requires database deployment review).
-- [ ] Verify preview build, typecheck/lint and routes via Vercel/GitHub checks.
-- [ ] Verify map RPC/feature count against live RLS and check mobile interaction.
-- [ ] Merge only after preview evidence and build checks pass; then verify production deployment.
+- [x] Apply GeoJSON RPC migration (additive; applied 2026-11-21 and tested under the anon role).
+- [x] Verify preview build, typecheck and generated route output via Vercel build (READY); preview routes return expected HTTP statuses.
+- [ ] Visual mobile viewport audit (not available in this run; static responsive-code review only).
+- [x] Verify map RPC/feature count under anon RLS: 129 geometries, no missing geometry/profile URL; levels 1/7/81/4/36.
+- [ ] Check interactive map on a real mobile viewport and screen reader.
+- [ ] Merge after refreshed map-preview evidence and static responsive audit; then verify production deployment.
