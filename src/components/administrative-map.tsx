@@ -74,11 +74,18 @@ export default function AdministrativeMap({ data }: { data: PublicBoundaryCollec
             {layerOptions.map(o => <option key={o.value} value={o.value}>{o.label}</option>)}
           </select>
         </label>
-        <label className="flex items-center gap-3 text-sm">
-          <span>জুম</span>
-          <input type="range" min="1" max="3" step=".1" value={zoom} onChange={e => setZoom(Number(e.target.value))} aria-label="মানচিত্র জুম" />
-          <span className="w-12 text-right">{zoom.toFixed(1)}×</span>
-        </label>
+        <div className="flex flex-wrap items-center gap-3">
+          <label className="flex items-center gap-3 text-sm">
+            <span>জুম</span>
+            <input type="range" min="1" max="3" step=".1" value={zoom} onChange={e => setZoom(Number(e.target.value))} aria-label="মানচিত্র জুম" />
+            <span className="w-12 text-right tabular-nums">{zoom.toFixed(1)}×</span>
+          </label>
+          <div className="flex items-center gap-1" aria-label="মানচিত্র জুম নিয়ন্ত্রণ">
+            <button type="button" onClick={() => setZoom(z => Math.max(1, +(z - .2).toFixed(1)))} disabled={zoom <= 1} aria-label="জুম কমান" className="rounded border border-[#ccd7cb] bg-white px-3 py-2 text-sm font-semibold disabled:opacity-40">−</button>
+            <button type="button" onClick={() => setZoom(z => Math.min(3, +(z + .2).toFixed(1)))} disabled={zoom >= 3} aria-label="জুম বাড়ান" className="rounded border border-[#ccd7cb] bg-white px-3 py-2 text-sm font-semibold disabled:opacity-40">+</button>
+            <button type="button" onClick={() => { setZoom(1); setSelectedId(null); }} aria-label="পূর্ণ মানচিত্রে ফিরুন" className="rounded border border-[#ccd7cb] bg-white px-3 py-2 text-sm font-semibold">পূর্ণ মানচিত্র</button>
+          </div>
+        </div>
       </div>
       <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_300px]">
         <div className="overflow-hidden rounded border border-[#d6dfd4] bg-[#edf1e7]">
