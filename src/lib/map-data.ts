@@ -39,7 +39,7 @@ export async function getPublicBoundaryGeoJSON(): Promise<PublicBoundaryCollecti
         Authorization: `Bearer ${key}`,
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ p_tolerance: 0.00015 }),
+      body: JSON.stringify({ p_tolerance: 0.0005 }),
     });
     if (!response.ok) return null;
     const data = await response.json() as PublicBoundaryCollection;
