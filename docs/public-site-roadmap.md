@@ -8,10 +8,10 @@ Bengali-only, mobile-first public information platform. This document tracks the
 - [x] `/municipality`, `/municipality/[slug]`, municipality ward route
 - [x] `/directory`, category, detail, submission API and submission page
 - [x] `/search`, `/statistics`, `/data`
-- [ ] `/district` — this batch adds the profile page
-- [ ] `/map` — this batch adds the GIS page and client SVG explorer; public GeoJSON RPC migration must be applied before the feed is available
-- [ ] `/sources`, `/about`, `/privacy`, `/contact` — this batch adds concise transparency pages
-- [ ] Route-level error/empty states and accessibility review
+- [x] `/district` — district profile added (branch preview pending)
+- [x] `/map` — GIS page and client SVG explorer added; GeoJSON RPC migration must be applied before the feed is available
+- [x] `/sources`, `/about`, `/privacy`, `/contact` — concise transparency pages added
+- [ ] Route-level error/empty states and accessibility review (custom not-found page added; audit pending)
 - [ ] Verify sitemap and mobile navigation coverage after preview
 
 ## Data presentation and publication rules
