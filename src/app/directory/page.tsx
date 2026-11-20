@@ -12,13 +12,8 @@ export const metadata: Metadata = {
 };
 
 export default async function DirectoryPage() {
-  const counts = await Promise.all(
-    DIRECTORY_CATEGORIES.map(async (category) => ({
-      ...category,
-      count: (await getDirectoryEntries({ category: category.slug })).length,
-    })),
-  );
-  const publishedCategories = counts.filter((category) => category.count > 0);
+  const entries = await getAllDirectoryEntries();
+  const publishedCategories = DIRECTORY_CATEGORIES.map((category) => ({ ...category, count: entries.filter((entry) => entry.category === category.slug).length })).filter((category) => category.count > 0);
 
   return (
     <main className="min-h-screen bg-slate-50 text-slate-900">
