@@ -47,5 +47,5 @@ Bengali-only, mobile-first public information platform. This document tracks the
 - [x] Verify map RPC/feature count under anon RLS: 129 geometries, no missing geometry/profile URL; levels 1/7/81/4/36.
 - [x] Add keyboard-friendly zoom slider, explicit zoom-in/zoom-out buttons and a full-map reset control.
 - [x] Implement pointer-based pan when zoomed above 1×, with drag selection suppression and bounded pan; keyboard Enter/Space selection remains.
-- [ ] Check interactive map pan/selection on a real mobile viewport and screen reader; new pan commit is awaiting preview build.
+- [ ] Check interactive map pan/selection on a real mobile viewport and screen reader. The first pan build exposed a JSX sibling/fragment syntax error; the fragment fix is committed (`b42db49`) and awaits a fresh preview build.
 - [ ] Merge after pan preview evidence, mobile viewport and screen-reader audit; then verify production deployment.
