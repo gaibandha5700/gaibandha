@@ -3,7 +3,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import {
   DIRECTORY_CATEGORIES,
-  getDirectoryEntries,
+  getAllDirectoryEntries,
   getMunicipalitiesByUpazila,
   getUnionsByUpazila,
   getUpazilas,
@@ -27,7 +27,7 @@ export async function generateMetadata({ params, searchParams }: PageProps): Pro
   if (!isDirectoryCategory(slug)) return { title: "বিভাগ পাওয়া যায়নি", robots: { index: false, follow: true } };
   const category = DIRECTORY_CATEGORIES.find((item) => item.slug === slug)!;
   const hasFilters = Boolean(filters.q?.trim() || filters.upazila || filters.area);
-  const hasPublishedEntries = (await getDirectoryEntries({ category: slug, limit: 1 })).length > 0;
+  const hasPublishedEntries = (await getAllDirectoryEntries()).some((item) => item.category === slug);
   return {
     title: `${category.label} — গাইবান্ধা`,
     description: `গাইবান্ধা জেলার ${category.label} সম্পর্কিত প্রকাশিত ও যাচাইকৃত স্থানীয় তথ্য, ঠিকানা ও যোগাযোগের বিবরণ দেখুন।`,
@@ -45,7 +45,7 @@ export default async function DirectoryCategoryPage({ params, searchParams }: Pa
   const area = filters.area ?? "";
   const [upazilas, allEntries] = await Promise.all([
     getUpazilas(),
-    getDirectoryEntries({ category: slug, upazilaId: upazilaId || undefined }),
+    getAllDirectoryEntries(),
   ]);
   const areaGroups = await Promise.all(upazilas
     .filter((item) => !upazilaId || item.id === upazilaId)
@@ -60,7 +60,7 @@ export default async function DirectoryCategoryPage({ params, searchParams }: Pa
       };
     }));
   const areas = areaGroups.flatMap((group) => [...group.unions, ...group.municipalities]);
-  let entries = allEntries;
+  let entries = allEntries.filter((item) => item.category === slug && (!upazilaId || item.upazila_id === upazilaId));
   if (area.startsWith("union:")) entries = entries.filter((item) => item.union_id === area.slice(6));
   if (area.startsWith("municipality:")) entries = entries.filter((item) => item.municipality_id === area.slice(12));
   if (q) {

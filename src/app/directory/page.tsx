@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { getDirectoryEntries, DIRECTORY_CATEGORIES } from "@/lib/directory";
+import { getAllDirectoryEntries, DIRECTORY_CATEGORIES } from "@/lib/directory";
 import { SiteHeader, SiteFooter } from "@/components/site-chrome";
 
 export const revalidate = 3600;
@@ -18,6 +18,7 @@ export default async function DirectoryPage() {
       count: (await getDirectoryEntries({ category: category.slug })).length,
     })),
   );
+  const publishedCategories = counts.filter((category) => category.count > 0);
 
   return (
     <main className="min-h-screen bg-slate-50 text-slate-900">
@@ -32,7 +33,7 @@ export default async function DirectoryPage() {
           <button className="rounded-xl bg-emerald-700 px-5 py-3 font-bold text-white">খুঁজুন</button>
         </form>
         <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {counts.map((category) => (
+          {publishedCategories.map((category) => (
             <Link key={category.slug} href={`/directory/${category.slug}`} className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm transition hover:border-emerald-300 hover:shadow-md">
               <h2 className="text-lg font-bold">{category.label}</h2>
               <p className="mt-2 text-sm leading-6 text-slate-600">{category.description}</p>

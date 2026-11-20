@@ -316,3 +316,11 @@ export async function getAllDirectoryEntries(): Promise<DirectoryEntry[]> {
     offset += pageSize;
   }
 }
+
+
+/** Fetch every public directory record with bounded pagination. */
+export async function getAllPublicUnions(): Promise<Union[]> {
+  const upazilas = await getUpazilas();
+  const groups = await Promise.all(upazilas.map((item) => getUnionsByUpazila(item.id)));
+  return groups.flat();
+}
