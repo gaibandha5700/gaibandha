@@ -9,7 +9,7 @@ Bengali-only, mobile-first public information platform. This document tracks the
 - [x] `/directory`, category, detail, submission API and submission page
 - [x] `/search`, `/statistics`, `/data`
 - [x] `/district` — district profile added (branch preview pending)
-- [x] `/map` — GIS page and client SVG explorer added; GeoJSON RPC migration must be applied before the feed is available
+- [x] `/map` — GIS page and client SVG explorer added; additive GeoJSON RPC migration is applied and tested under `anon`
 - [x] `/sources`, `/about`, `/privacy`, `/contact` — concise transparency pages added
 - [ ] Route-level error/empty states and accessibility review (custom not-found page added; audit pending)
 - [ ] Verify sitemap and mobile navigation coverage after preview
@@ -42,9 +42,10 @@ Bengali-only, mobile-first public information platform. This document tracks the
 - [x] Inspect main branch tree, routes, shared chrome, data helper, schema, RLS and deployment.
 - [x] Add route coverage and transparency page batch on a branch.
 - [x] Apply GeoJSON RPC migration (additive; applied 2026-11-21 and tested under the anon role).
-- [x] Verify preview build, typecheck and generated route output via Vercel build (READY); preview routes return expected HTTP statuses.
+- [x] Verify Vercel build, typecheck and generated route output (READY). The preview for commit `b7e1d4f7` returned HTTP 200 on `/map`, `/district`, `/sources`, `/about`, `/privacy`, `/contact`, `/statistics`, `/search`, and `/directory`; these route probes predate the new pan commit.
 - [ ] Visual mobile viewport audit (not available in this run; static responsive-code review only).
 - [x] Verify map RPC/feature count under anon RLS: 129 geometries, no missing geometry/profile URL; levels 1/7/81/4/36.
 - [x] Add keyboard-friendly zoom slider, explicit zoom-in/zoom-out buttons and a full-map reset control.
-- [ ] Check interactive map on a real mobile viewport and screen reader; drag/pan support remains a future usability decision.
-- [ ] Merge after refreshed map-preview evidence and static responsive audit; then verify production deployment.
+- [x] Implement pointer-based pan when zoomed above 1×, with drag selection suppression and bounded pan; keyboard Enter/Space selection remains.
+- [ ] Check interactive map pan/selection on a real mobile viewport and screen reader; new pan commit is awaiting preview build.
+- [ ] Merge after pan preview evidence, mobile viewport and screen-reader audit; then verify production deployment.
