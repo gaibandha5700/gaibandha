@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { getDirectoryEntries, DIRECTORY_CATEGORIES } from "@/lib/directory";
+import { getAllDirectoryEntries, DIRECTORY_CATEGORIES } from "@/lib/directory";
 import { SiteHeader, SiteFooter } from "@/components/site-chrome";
 
 export const revalidate = 3600;
