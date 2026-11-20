@@ -365,3 +365,17 @@ body { font-family:"Hind Siliguri","Noto Sans Bengali",sans-serif; }
 .home-contribute h2{font-size:32px}.home-contribute p:not(.home-section-label){max-width:530px;color:#66766b;line-height:1.85}.home-contribute>a{padding:15px 18px;background:#153d2d;color:#fff;font-weight:700;white-space:nowrap}
 @media(max-width:850px){.home-intro-inner{grid-template-columns:1fr;padding-top:65px}.home-intro-art{height:250px;max-width:450px;margin:0 auto;width:100%}.home-facts-inner{grid-template-columns:repeat(4,1fr)}.home-fact-lead{grid-column:1/-1;border-bottom:1px solid #ffffff20;padding:20px 0}.home-fact{padding:20px 7px}.home-fact strong{font-size:26px}.home-section-head{align-items:start;flex-direction:column}.home-directory-layout{grid-template-columns:1fr}.home-map-callout{grid-template-columns:1fr}.home-map-art{height:260px}}
 @media(max-width:560px){.home-intro-inner{padding:48px 18px 54px;gap:25px}.home-intro h1{font-size:58px}.home-lead{font-size:16px}.home-search{gap:8px;padding-left:12px}.home-search button{padding:12px 12px}.home-intro-art{height:220px}.art-ring-one{width:240px;height:240px}.art-ring-two{width:310px;height:200px}.home-facts-inner{padding:0 14px;grid-template-columns:repeat(2,1fr)}.home-fact-lead{grid-column:1/-1}.home-fact{border-left:0;border-bottom:1px solid #ffffff20;padding:16px 9px}.home-fact:nth-last-child(1){grid-column:1/-1}.home-section{padding:56px 18px}.home-section-head{gap:15px;margin-bottom:25px}.home-upazila-row{grid-template-columns:34px 1fr 25px;gap:12px;padding:17px 6px}.home-row-description{display:none}.home-upazila-row strong{font-size:16px}.home-directory-feature{padding:27px}.home-category-row{padding:15px 2px}.home-map-callout{padding:55px 18px}.home-map-art{height:225px}.home-contribute{margin:0 12px 42px;padding:25px 22px;align-items:flex-start;flex-direction:column}.home-contribute h2{font-size:28px}.home-contribute>a{white-space:normal}}
+
+/* Shared chrome: quieter branding, stronger navigation rhythm */
+.site-topbar{background:#153d2d!important}.site-topbar-inner{min-height:30px!important;letter-spacing:.02em}
+.site-header{box-shadow:none!important;background:rgba(251,250,246,.96)!important;border-bottom:1px solid #deded4!important}
+.site-header-inner{min-height:76px!important;max-width:1160px!important}
+.site-brand-image{object-fit:contain;max-height:55px!important;width:auto!important}
+.site-nav{gap:25px!important;color:#354c40!important}.site-nav a{transition:color .18s ease}
+.site-submit-link{background:#173f2e!important;border-radius:3px!important;padding:11px 16px!important}
+.site-mobile-nav summary{border-radius:3px!important;background:#f5f3ea}
+.site-footer{background:#102f24!important;margin-top:0!important;padding:48px 24px 20px!important}
+.site-footer-inner{max-width:1160px!important;gap:40px!important}
+.site-footer-about p{max-width:340px!important}
+.site-footer-bottom{max-width:1160px!important;display:flex!important;align-items:center!important;justify-content:space-between!important;gap:20px!important}
+@media(max-width:560px){.site-header-inner{min-height:65px!important}.site-brand-image{max-height:46px!important}.site-footer-bottom{align-items:flex-start!important;flex-direction:column!important;gap:7px!important}}
