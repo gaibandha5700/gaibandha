@@ -12,8 +12,8 @@ export default async function Home() {
  ]);
  const unionCount=unionGroups.reduce((n,g)=>n+g.length,0);
  const municipalityCount=municipalityGroups.reduce((n,g)=>n+g.length,0);
- const categories=categoryGroups.filter(c=>c.entries.length>0);
- const directoryCount=categories.reduce((n,c)=>n+c.entries.length,0);
+ const categories=DIRECTORY_CATEGORIES.map(c=>({...c,entries:allEntries.filter(e=>e.category===c.slug)})).filter(c=>c.entries.length>0);
+ const directoryCount=allEntries.length;
  return <main className="home-editorial"><SiteHeader/>
  <section className="home-intro"><div className="home-intro-inner"><div className="home-intro-copy">
  <p className="home-overline"><span className="home-overline-dot"/> জেলার তথ্য, এক জায়গায়</p>
