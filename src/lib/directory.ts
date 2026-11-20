@@ -302,3 +302,17 @@ export async function getMunicipalityById(id: string): Promise<Municipality | nu
   const rows = await directoryFetch<Municipality[]>(`municipalities?select=${municipalitySelect}&id=eq.${encodeURIComponent(id)}&is_published=eq.true&is_verified=eq.true&limit=1`);
   return rows[0] ?? null;
 }
+
+
+/** Fetch all public directory records in bounded PostgREST pages. */
+export async function getAllDirectoryEntries(): Promise<DirectoryEntry[]> {
+  const pageSize = 500;
+  const rows: DirectoryEntry[] = [];
+  let offset = 0;
+  while (true) {
+    const page = await getDirectoryEntries({ limit: pageSize, offset });
+    rows.push(...page);
+    if (page.length < pageSize) return rows;
+    offset += pageSize;
+  }
+}

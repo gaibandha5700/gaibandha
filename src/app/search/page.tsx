@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { DIRECTORY_CATEGORIES, getDirectoryEntries, getMunicipalitiesByUpazila, getUpazilas, getUnionsByUpazila } from "@/lib/directory";
+import { DIRECTORY_CATEGORIES, getAllDirectoryEntries, getMunicipalitiesByUpazila, getUpazilas, getUnionsByUpazila } from "@/lib/directory";
 import { SiteHeader, SiteFooter } from "@/components/site-chrome";
 
 export const revalidate = 60;
@@ -15,7 +15,7 @@ type Props = { searchParams: Promise<{ q?: string }> };
 export default async function SearchPage({ searchParams }: Props) {
   const { q = "" } = await searchParams;
   const query = q.trim().toLocaleLowerCase("bn-BD");
-  const [entries, upazilas] = await Promise.all([getDirectoryEntries(), getUpazilas()]);
+  const [entries, upazilas] = await Promise.all([getAllDirectoryEntries(), getUpazilas()]);
   const [unionGroups, municipalityGroups] = await Promise.all([
     Promise.all(upazilas.map((u) => getUnionsByUpazila(u.id))),
     Promise.all(upazilas.map((u) => getMunicipalitiesByUpazila(u.id))),
