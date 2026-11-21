@@ -6,7 +6,7 @@ import { getPublicBoundaryGeoJSON } from "@/lib/map-data";
 export const revalidate = 3600;
 export const metadata = {
   title: "প্রশাসনিক মানচিত্র",
-  description: "গাইবান্ধা জেলার প্রকাশিত ও যাচাইকৃত প্রশাসনিক সীমানা মানচিত্রে দেখুন।",
+  description: "গাইবান্ধা জেলার জেলা, উপজেলা, ইউনিয়ন ও পৌরসভার প্রকাশিত ও যাচাইকৃত সীমানা মানচিত্রে দেখুন।",
 };
 
 export default async function MapPage() {
@@ -20,7 +20,7 @@ export default async function MapPage() {
       <h1 className="mt-2 font-bold text-3xl md:text-5xl">গাইবান্ধার মানচিত্র</h1>
       <p className="mt-4 max-w-3xl leading-8 text-slate-600">প্রকাশিত ও যাচাইকৃত জেলা, উপজেলা, ইউনিয়ন ও পৌরসভার সীমানা অন্বেষণ করুন। নির্বাচন করে সংশ্লিষ্ট তথ্যপৃষ্ঠায় যেতে পারবেন।</p>
       <div className="mt-8">
-        {data?.features.length ? <AdministrativeMap data={data}/> : <div className="border border-amber-200 bg-amber-50 p-6 leading-7 text-slate-700"><strong>মানচিত্রের তথ্য সাময়িকভাবে পাওয়া যাচ্ছে না।</strong><p className="mt-2">GeoJSON feed চালু বা সংযোগ যাচাই করা হয়নি। পরবর্তী আপডেটে এই অবস্থার সমাধান হবে; এ সময়ে এলাকার তথ্য পৃষ্ঠাগুলো ব্যবহার করুন।</p><Link href="/upazila" className="mt-4 inline-block font-semibold text-[#287154] underline">উপজেলা তালিকা দেখুন</Link></div>}
+        {data?.features.length ? <AdministrativeMap data={data}/> : <div className="border border-amber-200 bg-amber-50 p-6 leading-7 text-slate-700"><strong>মানচিত্রের তথ্য সাময়িকভাবে পাওয়া যাচ্ছে না।</strong><p className="mt-2">সীমানার তথ্য এই মুহূর্তে লোড করা যাচ্ছে না। আবার চেষ্টা করুন অথবা উপজেলা ও ইউনিয়নের তথ্যপৃষ্ঠাগুলো ব্যবহার করুন।</p><Link href="/upazila" className="mt-4 inline-block font-semibold text-[#287154] underline">উপজেলা তালিকা দেখুন</Link></div>}
       </div>
       <div className="mt-8 border-l-2 border-[#b68a48] pl-4 text-sm leading-7 text-slate-600">
         <p>সীমানা উৎস: ArcGIS Bangladesh CRIIPS, BBS 2022 attribution.</p>
