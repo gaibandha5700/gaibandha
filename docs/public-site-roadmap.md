@@ -96,3 +96,12 @@ Bengali-only, mobile-first public information platform. This document tracks the
 - Each run re-evaluates priorities against current evidence and marks items complete only after code and verification.
 - Avoid speculative features or features requiring unsupported/incomplete data.
 - Consolidate active work into the integration branch; keep production/main promotion gated by explicit authorization.
+
+
+## Branch consolidation review — 2026-11-21
+
+- [x] PR #7 route/map work and PR #10 label fix are on current main; no production promotion was made in this batch.
+- [x] Close PR #9 as superseded by the merged main map implementation; its map page/component are older and main is more complete.
+- [x] Close PR #13 as superseded; current main already includes published/verified ward search, numeral normalization, stable pagination, English/slug matches and district matching.
+- [ ] PR #2 is draft and diverged (25 commits behind); its directory-page patch removes shared header/footer. Preserve the remaining potentially useful ward-filter behavior for a selective review, not wholesale merge.
+- [ ] PR #14 is the current integration branch for this statistics upgrade; preview is READY and HTTP 200 smoke checks were completed for /statistics and /search. Responsive/device interaction testing remains pending.
