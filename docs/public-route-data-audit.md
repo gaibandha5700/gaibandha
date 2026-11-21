@@ -167,3 +167,26 @@ The initial full search-page build for commit `dbddc25` failed the lint gate bec
 - Production deployment is READY on main commit `83f8e59acbde9d5f4b2f10049a20249adbf0d6a2`.
 - Protected-fetch smoke checks returned HTTP 200 for `/`, `/statistics`, `/map`, `/search`, and `/sitemap.xml` on `https://amadergaibandha.vercel.app`.
 - Route-title checks confirmed the expected Bengali titles for homepage, statistics, map and search. This is an HTTP/render smoke check, not a mobile-device or screen-reader test.
+
+
+## Current audit — 2026-11-22 (Run 7)
+
+### Current production baseline
+- `main` remains at `83f8e59acbde9d5f4b2f10049a20249adbf0d6a2`; the latest production deployment inspected was READY. The custom-domain homepage, `/statistics`, `/map`, and `/search` were fetched successfully (HTTP 200) in this run. This does not prove mobile, keyboard, or screen-reader behavior.
+- The active integration branch is PR #14. A ward-level directory category filter and empty-state category submission link were added; its new preview verification is pending.
+
+### Read-only Supabase audit
+- Correct project ref: `tpqwauxufaydzhpkuvtk` (`amadergaibandha`, ACTIVE_HEALTHY). No production data or schema writes.
+- All 11 public tables have RLS enabled; public read policies scope administrative entities, directory entries, census data, boundaries, and education records to published/verified rows and verified parent entities. Submissions permit public INSERT only with pending status; no public SELECT policy.
+- Public verified counts: district 1, upazila 7, union 81, municipality 4, wards 765, directory entries 67, education detail rows 22, census statistics 129, boundaries 129, administrative locations 0.
+- Directory-entry assignment coverage: 37 union-linked, 7 municipality-linked, 4 ward-linked; 0 coordinate pairs. All 67 have source URLs; category distribution is education 22, health 43, government 2.
+- Security/health advisors returned no lints. Performance advisor reported 8 unused indexes; no cleanup attempted. RLS remains unchanged.
+
+### Branch reconciliation
+- PR #14 remains the active integration branch and is 10 commits ahead/0 behind main before this run's new code/docs commits; refresh the compare after the preview.
+- PR #2 (`feat/public-directory-data-integration`) is 53 commits ahead/25 behind, diverged, Draft, and not mergeable. It removes shared header/footer on several pages. The ward-filter behavior was selectively extracted; do not merge the branch wholesale. Preserve the branch and close the PR only after the new feature is verified.
+- Production/main promotion remains gated; no production merge or deployment was made.
+
+### Verification limits and next step
+- The new ward-filter preview build and route smoke test are pending. Earlier READY previews predate this commit and must not be used as evidence for this change.
+- Next: verify filtered directory routes, empty-state submission link, keyboard behavior, mobile layout, and the statistics chart; update this record with the actual Vercel evidence.
