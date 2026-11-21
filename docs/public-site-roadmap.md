@@ -182,3 +182,11 @@ Bengali-only, mobile-first public information platform. This document tracks the
 - [ready] Added a consistent high-visibility focus ring for links, buttons, form controls, summaries and tabindex elements; footer uses a contrasting focus ring on its dark background.
 - [ready] Expanded reduced-motion handling to all animations, transitions and smooth scrolling, while retaining the existing navigation motion override.
 - Preview commit `c208249` is READY; compilation, lint/type checks and static generation (184/184) passed. Vercel Preview SSO blocks browser route inspection. Keyboard-only, mobile viewport and assistive-technology testing remain pending. No data/schema change.
+
+
+## Run 9 — statistics CSV export (2026-11-22)
+
+- [in progress] Add a CSV export for the selected upazila comparison metric, preserving the current descending order and exact available rows; include Bengali headers, 2022, source name, source URL and source-check timestamp, and a UTF-8 BOM for spreadsheet compatibility.
+- Export is client-side and uses the existing verified/published census fields. It adds no dependency, database write or schema change.
+- Acceptance: the selected metric and rows match the chart/table; all fields are quoted and escaped; formula-leading text is guarded; download filename is metric-specific; preview build and browser download behavior are verified separately.
+- [ready] Continue mobile/keyboard/screen-reader audit and DGHS source cross-check; do not add ward GIS or infer coordinates.
