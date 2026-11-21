@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import { SiteHeader, SiteFooter } from "@/components/site-chrome";
 import { getMunicipalitiesByUpazila, getUpazilas, getUnionsByUpazila, getAllDirectoryEntries, DIRECTORY_CATEGORIES } from "@/lib/directory";
@@ -5,6 +6,7 @@ import { ArrowUpRight, Search, MapPinned, BookOpen } from "lucide-react";
 import { getPublicBoundaryGeoJSON, type PublicBoundaryFeature } from "@/lib/map-data";
 
 export const revalidate = 3600;
+export const metadata: Metadata = { alternates: { canonical: "/" } };
 
 function districtMapGeometry(feature: PublicBoundaryFeature) {
   const polygons: number[][][][] = feature.geometry.type === "Polygon"
