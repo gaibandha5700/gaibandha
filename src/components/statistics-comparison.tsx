@@ -84,7 +84,7 @@ export default function StatisticsComparison({ data, sourceName, sourceUrl, sour
         ))}
       </div>
       <div className="mt-3 flex flex-wrap items-center justify-between gap-3"><p className="text-sm text-slate-600">সর্বোচ্চ মান থেকে নিচের দিকে সাজানো · {label} · জনশুমারি ২০২২</p><button type="button" onClick={downloadCsv} className="rounded-lg border border-[#287154] bg-white px-4 py-2 text-sm font-semibold text-[#19372a] hover:bg-[#eeefe7]">CSV ডাউনলোড</button></div>
-      <div className="mt-3 overflow-x-auto rounded-xl border bg-[#fcfcfa] p-2 sm:p-4">
+      <div role="region" aria-label="উপজেলা তুলনা বার চার্ট; আড়াআড়ি স্ক্রল করে দেখুন" tabIndex={0} className="mt-3 overflow-x-auto rounded-xl border bg-[#fcfcfa] p-2 sm:p-4">
         <svg
           role="img"
           aria-labelledby="upazila-chart-title upazila-chart-desc"
