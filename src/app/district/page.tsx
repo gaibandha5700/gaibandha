@@ -3,7 +3,7 @@ import { SiteHeader, SiteFooter } from "@/components/site-chrome";
 import { getUpazilas, getUnionsByUpazila, getMunicipalitiesByUpazila } from "@/lib/directory";
 
 export const revalidate = 3600;
-export const metadata = { title: "জেলা পরিচিতি", description: "গাইবান্ধা জেলার প্রশাসনিক পরিচিতি ও জনশুমারি ২০২২-এর প্রকাশিত তথ্য।" };
+export const metadata = { title: "জেলা পরিচিতি", description: "গাইবান্ধা জেলার প্রশাসনিক পরিচিতি ও জনশুমারি ২০২২-এর প্রকাশিত তথ্য।", alternates: { canonical: "/district" } };
 const fmt = (value: number | string | null | undefined) => value == null ? "তথ্য পাওয়া যায়নি" : Number(value).toLocaleString("bn-BD");
 
 async function getDistrictSnapshot() {
