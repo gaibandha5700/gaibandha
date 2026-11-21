@@ -161,6 +161,7 @@ export default function AdministrativeMap({ data }: { data: PublicBoundaryCollec
               <h2 className="mt-2 text-2xl font-bold">{selected.properties.name_bn}</h2>
               <p className="mt-2 text-sm text-slate-600">{layerOptions.find(o => o.value === layer)?.label}</p>
               {selected.properties.source_name && <p className="mt-4 text-xs leading-6 text-slate-600">সীমানার উৎস: {selected.properties.source_name}</p>}
+              {selected.properties.source_checked_at && <p className="mt-1 text-xs text-slate-500">উৎস যাচাইয়ের তারিখ: {selected.properties.source_checked_at.slice(0, 10)}</p>}
               {selected.properties.source_url && <a className="mt-1 inline-block break-all text-xs text-[#287154] underline" href={selected.properties.source_url} target="_blank" rel="noreferrer">সীমানার উৎস দেখুন</a>}
               {selected.properties.profile_url && <Link className="mt-5 inline-flex border border-[#1b6246] px-4 py-2 text-sm font-semibold text-[#1b6246] hover:bg-[#e5eee3]" href={selected.properties.profile_url}>এলাকার তথ্য খুলুন ↗</Link>}
             </>
