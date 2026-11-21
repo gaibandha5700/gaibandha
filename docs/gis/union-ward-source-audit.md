@@ -60,3 +60,12 @@ A source package should include source URL, publisher, edition/date, license/ter
 - Investigate whether BBS Census 2022 enumeration-area/mouza data includes a documented crosswalk to the nine Union Parishad wards.
 - Check DLRS mouza-map availability/terms and seek a documented ward-to-mouza crosswalk before considering any derived dissolve.
 - Investigate OSM/other community sources when network access is available, but treat any found polygons as independently mapped and unverified until reviewed.
+
+
+## Additional official Union map candidate located
+
+- **Mohdipur Union (Palashbari), National Portal map page**, last updated 18 October 2016: https://mohdipurup.gaibandha.gov.bd/pages/static-pages/69772bbbc4774958d7c0c21c
+- Published map image: https://objectstorage.ap-dcc-gazipur-1.oraclecloud15.com/n/axvjbnqprylg/b/V2Ministry/o/office-mohdipurup-gaibandha/2024/12/5e2284a26f1e4d53969637213056e090.jpg
+- The scanned map shows colored internal regions and locality labels. The page calls it a union map, but the reviewed image does **not** identify the colors with ward numbers or provide coordinate control/scale. It is therefore a candidate for evidence review only, not a polygon source ready to digitize/import.
+- Other National Portal union pages expose “মানচিত্রে ইউনিয়ন” and ward-based population pages. These may be useful acquisition targets, but map images and ward population/village tables must not be assumed to be spatially aligned or to define ward boundaries. Each map would need source-specific review, an evidenced ward crosswalk, georeferencing evidence, and validation before any digitization.
+- Example ward table found: Sreepur Union (2014) lists ward numbers and villages, but its historical village crosswalk is not proof of current boundary lines: https://sreepurup.gaibandha.gov.bd/pages/static-pages/ওয়ার্ড-ভিত্তিক-লোক-সংখ্যা-1c6543-69770476c4774958d7bf634e
