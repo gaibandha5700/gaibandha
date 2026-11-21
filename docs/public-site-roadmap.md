@@ -49,7 +49,8 @@ Bengali-only, mobile-first public information platform. This document tracks the
 7. Search, SEO, canonical/breadcrumbs and sitemap.
 8. Responsive/accessibility/performance/security/testing review.
 
-## Search refinement (2026-11-21)\n- Search matching now normalizes Bengali numerals to Arabic for text matching and includes English administrative names/slugs for upazilas, unions, municipalities, wards, and directory records. Pure numeric ward queries match the exact ward number rather than substring values. The updated preview build is pending verification.\n\n## Quality gates / status
+## Search refinement (2026-11-21)
+- Search matching now normalizes Bengali numerals to Arabic for text matching and includes English administrative names/slugs for upazilas, unions, municipalities, wards, and directory records. Pure numeric ward queries match the exact ward number rather than substring values. The updated preview build is pending verification.\n\n## Quality gates / status
 - [x] Approved map scope excludes all ward GIS layers; server-side page filtering limits client map data to district, upazila, union and municipality features.
 - [x] Static SVG accessibility review: interactive map features are contained in a labelled group (not flattened under image semantics); selected-area panel uses a polite live region. Real screen-reader/mobile-device testing remains pending.
 - [x] Inspect main branch tree, routes, shared chrome, data helper, schema, RLS and deployment.
