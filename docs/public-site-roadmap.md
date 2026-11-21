@@ -105,3 +105,30 @@ Bengali-only, mobile-first public information platform. This document tracks the
 - [x] Close PR #13 as superseded; current main already includes published/verified ward search, numeral normalization, stable pagination, English/slug matches and district matching.
 - [ ] PR #2 is draft and diverged (25 commits behind); its directory-page patch removes shared header/footer. Preserve the remaining potentially useful ward-filter behavior for a selective review, not wholesale merge.
 - [ ] PR #14 is the current integration branch for this statistics upgrade; preview is READY and HTTP 200 smoke checks were completed for /statistics and /search. Responsive/device interaction testing remains pending.
+
+
+## Run 7 — 2026-11-22: directory ward-filter upgrade
+
+### Delivered on the active integration branch
+- [x] Added a ward selector to directory category pages. Selecting a union/municipality exposes its published, verified ward options; the selected `ward_id` filters results exactly. Filtered URLs remain noindex, and empty results now link to a category-specific submission.
+- [x] Selectively extracted this useful behavior from draft PR #2; its wholesale branch remains rejected because it diverges and removes the shared site chrome from multiple pages.
+- [ ] Preview/build verification is pending for the new commit; do not mark this upgrade verified until the preview is READY and the route smoke check passes.
+
+### Fresh database coverage audit
+- Project ref corrected to `tpqwauxufaydzhpkuvtk` (the previously recorded ID was one character too long).
+- 67 published/verified directory entries: 22 education, 43 health and 2 government entries; all 67 have a source URL.
+- 37 entries have union assignment, 7 municipality assignment and 4 ward assignment; none have validated coordinates. Directory GIS remains unsupported until coordinates are sourced and verified.
+- Public verified administrative coverage: district 1, upazila 7, union 81, municipality 4, wards 765; 129 census-statistics records and 129 boundary records. Administrative-location records remain 0.
+- Supabase security and health advisors reported no lints. Performance advisor reported 8 unused indexes (informational only; no indexes removed). No schema/data writes were made.
+
+### Next priorities
+1. **P1 — Preview and interaction verification:** test `/directory/health` and `/directory/government` with area/ward filters, keyboard flow and narrow viewport; test statistics chart controls and table alternative.
+2. **P1 — Accessibility/mobile audit:** real viewport, focus order, labels, touch targets, reduced-motion and screen-reader behavior for chart, map and navigation.
+3. **P2 — Data coverage:** identify authoritative coordinate sources for public directory records and administrative locations; avoid guessed points.
+4. **P2 — Submission trust:** validate rate limiting and spam protection for public submissions.
+5. **P3 — Reproducible dependency install:** review and add a lockfile, then run clean install/build/audit.
+
+### Branch/PR record
+- PR #14 remains the single active integration branch; new work is added there. Production/main promotion is not authorized.
+- PR #2 is draft, diverged, 53 commits ahead and 25 behind main, and not mergeable. Preserve its branch; after preview verification and selective extraction, close it as superseded rather than merging it wholesale.
+- Other branch refs remain preserved; no branch deletion or production merge/deployment occurred.
