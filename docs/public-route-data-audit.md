@@ -244,18 +244,15 @@ The initial full search-page build for commit `dbddc25` failed the lint gate bec
 - Preview commit `c208249` is READY; compilation, lint/type checks and static generation (184/184) passed. Browser route inspection is blocked by Preview SSO. Keyboard-only, mobile viewport and screen-reader testing remain pending; local browser testing was unavailable. No production promotion.
 
 
-## Run 9 — statistics CSV export implementation (2026-11-22)
-
-- Implemented a client-side CSV download for the selected upazila comparison metric in PR #14. Export includes the sorted rows, Bengali headers, 2022, source name, source URL and source checked timestamp; UTF-8 BOM and quoted/escaped cells support spreadsheet import, and formula-leading text is guarded.
-- Read-only database coverage cross-check: all 129 census-statistics records for 2022 are published/verified, have population values and source URLs. Directory categories: 22 education, 43 health and 2 government; each is published/verified and sourced. Ward assignment is sparse (2 health and 2 government records) and verified coordinates remain 0.
-- Preview/build and actual download interaction still require verification. No production data, schema, RLS or deployment changes.
 
 
-## Run 9 implementation review — 2026-11-22
+## Run 10 — CSV export verification and current state (2026-11-22)
 
-- Corrected the missing CSV download callback detected during source review before declaring the feature ready. The selected metric export includes sorted rows, 2022, source name, URL and source-check timestamp; spreadsheet-safe quoting/BOM and formula-leading text guard are implemented. The latest Vercel build and browser download test remain pending.
-
-
-## CSV export encoding correction — 2026-11-22
-
-- Corrected the source literals for CSV row separators and UTF-8 BOM after reviewing the committed handler; the file now uses actual escaped CRLF/BOM literals in JavaScript. Preview build and download interaction remain unverified.
+- Fixed CSV download lifecycle: the object URL is now revoked after a 1-second delay rather than immediately after the synthetic click.
+- Local jsdom harness PASS: download button/filename, UTF-8 BOM, formula-leading text protection, source URL and delayed object-URL cleanup.
+- Latest code Preview for commit `f8d20ce` is READY; Vercel build completed. Local lint and typecheck also passed after the fix. Preview routes remain SSO-protected from this audit environment.
+- Earlier clean sandbox `npm ci`, build (184/184 static pages), lint/typecheck and `npm audit` (0 vulnerabilities) passed using the generated temporary lockfile and existing public Supabase environment values. The lockfile was not committed; reproducibility remains an open priority.
+- Production route smoke: `/`, `/statistics`, `/search`, `/map`, `/robots.txt`, `/sitemap.xml`, `/directory/health`, `/district`, `/data` and `/sources` all returned HTTP 200.
+- Production runtime error/log queries for the last 30 minutes returned no errors and no logs. The 24-hour error aggregation still contains seven historical municipality UUID-parsing errors; the fix is in PR #14 and is not in production.
+- Branch review: PR #14 is the sole open integration PR (Draft). No stale branch was deleted; closed/superseded work remains preserved. No production merge or deployment.
+- Remaining P1/P2 work: commit a lockfile after review, real mobile/keyboard/screen-reader testing, protected-preview route inspection, and DGHS facility source cross-check (no bulk import or inferred coordinates).
