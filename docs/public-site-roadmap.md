@@ -190,3 +190,8 @@ Bengali-only, mobile-first public information platform. This document tracks the
 - Export is client-side and uses the existing verified/published census fields. It adds no dependency, database write or schema change.
 - Acceptance: the selected metric and rows match the chart/table; all fields are quoted and escaped; formula-leading text is guarded; download filename is metric-specific; preview build and browser download behavior are verified separately.
 - [ready] Continue mobile/keyboard/screen-reader audit and DGHS source cross-check; do not add ward GIS or infer coordinates.
+
+
+## Run 9 implementation review — 2026-11-22
+
+- Code review found the export button callback missing from the first implementation commit; it was corrected before marking the feature ready. The download handler now builds a UTF-8 BOM CSV, quotes/escapes all cells, guards formula-leading text and includes source provenance. Preview build/download verification is still pending.
