@@ -41,13 +41,13 @@ Bengali-only, mobile-first public information platform. This document tracks the
 
 ## Roadmap
 1. Route audit, navigation, sitemap and this document.
-2. Unified search coverage now includes all published/verified ward records, alongside directory and administrative names; verify the preview with Bengali and Arabic numeral queries.
+2. Unified search coverage across published/verified administrative and directory records; verify Bengali and Arabic numeral queries.
 3. Complete data coverage and pagination/filters at every admin level and directory.
-3. Area profiles and statistical presentation.
-4. GIS map with verified-only GeoJSON, district/upazila/union/municipality layers only, accessible list alternative and coverage gaps.
-5. Sources, verification, correction path and update transparency.
-6. Search, SEO, canonical/breadcrumbs and sitemap.
-7. Responsive/accessibility/performance/security/testing review.
+4. Area profiles and statistical presentation.
+5. GIS map with verified-only GeoJSON, district/upazila/union/municipality layers only, accessible list alternative and coverage gaps.
+6. Sources, verification, correction path and update transparency.
+7. Search, SEO, canonical/breadcrumbs and sitemap.
+8. Responsive/accessibility/performance/security/testing review.
 
 ## Search refinement (2026-11-21)\n- Search matching now normalizes Bengali numerals to Arabic for text matching and includes English administrative names/slugs for upazilas, unions, municipalities, wards, and directory records. Pure numeric ward queries match the exact ward number rather than substring values. The updated preview build is pending verification.\n\n## Quality gates / status
 - [x] Approved map scope excludes all ward GIS layers; server-side page filtering limits client map data to district, upazila, union and municipality features.
