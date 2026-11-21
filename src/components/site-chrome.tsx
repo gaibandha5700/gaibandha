@@ -3,7 +3,8 @@ import Link from "next/link";
 
 const navigation = [
   { href: "/", label: "হোম" },
-  { href: "/upazila", label: "উপজেলা" },
+  { href: "/map", label: "মানচিত্র" },
+  { href: "/upazila", label: "উপজেলা" }
   { href: "/municipality", label: "পৌরসভা" },
   { href: "/directory", label: "তথ্যভান্ডার" },
   { href: "/statistics", label: "পরিসংখ্যান" },
@@ -65,6 +66,7 @@ export function SiteFooter() {
         </div>
         <div className="site-footer-links">
           <strong>এক্সপ্লোর করুন</strong>
+          <Link href="/map">মানচিত্র</Link>
           <Link href="/upazila">উপজেলা</Link>
           <Link href="/municipality">পৌরসভা</Link>
           <Link href="/directory">তথ্যভান্ডার</Link>
