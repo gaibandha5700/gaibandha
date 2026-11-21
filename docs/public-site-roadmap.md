@@ -112,7 +112,7 @@ Bengali-only, mobile-first public information platform. This document tracks the
 ### Delivered on the active integration branch
 - [x] Added a ward selector to directory category pages. Selecting a union/municipality exposes its published, verified ward options; the selected `ward_id` filters results exactly. Filtered URLs remain noindex, and empty results now link to a category-specific submission.
 - [x] Selectively extracted this useful behavior from draft PR #2; its wholesale branch remains rejected because it diverges and removes the shared site chrome from multiple pages.
-- [ ] Preview/build verification is pending for the new commit; do not mark this upgrade verified until the preview is READY and the route smoke check passes.
+- [x] Preview build READY for commit `a4b7d16`; compilation, lint/type checks, static generation (184/184) and route smoke checks passed. Keyboard and real-device testing remain pending.
 
 ### Fresh database coverage audit
 - Project ref corrected to `tpqwauxufaydzhpkuvtk` (the previously recorded ID was one character too long).
@@ -122,7 +122,7 @@ Bengali-only, mobile-first public information platform. This document tracks the
 - Supabase security and health advisors reported no lints. Performance advisor reported 8 unused indexes (informational only; no indexes removed). No schema/data writes were made.
 
 ### Next priorities
-1. **P1 — Preview and interaction verification:** test `/directory/health` and `/directory/government` with area/ward filters, keyboard flow and narrow viewport; test statistics chart controls and table alternative.
+1. **P1 — Preview verification:** [x] test `/directory/health` and `/directory/government` area/ward filters, `/directory/education` empty-state CTA, statistics, search, map, sitemap and robots. [ ] Keyboard, narrow viewport and screen-reader tests remain.
 2. **P1 — Accessibility/mobile audit:** real viewport, focus order, labels, touch targets, reduced-motion and screen-reader behavior for chart, map and navigation.
 3. **P2 — Data coverage:** identify authoritative coordinate sources for public directory records and administrative locations; avoid guessed points.
 4. **P2 — Submission trust:** validate rate limiting and spam protection for public submissions.
@@ -130,5 +130,14 @@ Bengali-only, mobile-first public information platform. This document tracks the
 
 ### Branch/PR record
 - PR #14 remains the single active integration branch; new work is added there. Production/main promotion is not authorized.
-- PR #2 is draft, diverged, 53 commits ahead and 25 behind main, and not mergeable. Preserve its branch; after preview verification and selective extraction, close it as superseded rather than merging it wholesale.
+- PR #2 was closed (not merged) after the useful ward-filter behavior was selectively extracted into PR #14 and preview-verified; its branch remains preserved. The 53-ahead/25-behind divergent branch was not merged wholesale.
 - Other branch refs remain preserved; no branch deletion or production merge/deployment occurred.
+
+
+### Preview verification follow-up — 2026-11-22
+- [x] `/directory/health` municipality ward 5 returns the 250-bed Gaibandha General Hospital.
+- [x] `/directory/government` municipality ward 6 returns the Gaibandha Sadar Upazila Health Office.
+- [x] `/directory/education` with the same ward filter returns the empty state and category-specific submission link.
+- [x] Area-only municipality filtering returns the health entry. The initial preview exposed a confirmed bug: `slice(12)` left the colon in the UUID. The prefix is 13 characters; both municipality filter sites now use `slice(13)`.
+- [x] `/statistics`, `/search`, `/map`, `/sitemap.xml`, and `/robots.txt` returned HTTP 200 on the READY preview. Chart HTML contains SVG and all four metric controls.
+- [ ] Keyboard navigation, real mobile viewport and screen-reader interaction remain unverified.
