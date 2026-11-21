@@ -242,3 +242,10 @@ The initial full search-page build for commit `dbddc25` failed the lint gate bec
 - Added visible `:focus-visible` outlines across interactive elements and a contrasting footer variant.
 - Expanded `prefers-reduced-motion` to reduce animation, transition and smooth-scroll behavior site-wide.
 - Preview commit `c208249` is READY; compilation, lint/type checks and static generation (184/184) passed. Browser route inspection is blocked by Preview SSO. Keyboard-only, mobile viewport and screen-reader testing remain pending; local browser testing was unavailable. No production promotion.
+
+
+## Run 9 — statistics CSV export implementation (2026-11-22)
+
+- Implemented a client-side CSV download for the selected upazila comparison metric in PR #14. Export includes the sorted rows, Bengali headers, 2022, source name, source URL and source checked timestamp; UTF-8 BOM and quoted/escaped cells support spreadsheet import, and formula-leading text is guarded.
+- Read-only database coverage cross-check: all 129 census-statistics records for 2022 are published/verified, have population values and source URLs. Directory categories: 22 education, 43 health and 2 government; each is published/verified and sourced. Ward assignment is sparse (2 health and 2 government records) and verified coordinates remain 0.
+- Preview/build and actual download interaction still require verification. No production data, schema, RLS or deployment changes.
