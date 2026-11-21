@@ -4,7 +4,7 @@ import Link from "next/link";
 const navigation = [
   { href: "/", label: "হোম" },
   { href: "/map", label: "মানচিত্র" },
-  { href: "/upazila", label: "উপজেলা" }
+  { href: "/upazila", label: "উপজেলা" },
   { href: "/municipality", label: "পৌরসভা" },
   { href: "/directory", label: "তথ্যভান্ডার" },
   { href: "/statistics", label: "পরিসংখ্যান" },
