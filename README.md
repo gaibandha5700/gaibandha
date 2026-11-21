@@ -56,3 +56,7 @@ Create substantive district information pages (history, heritage, geography, riv
 
 ## Data quality
 Public directory records should be reviewed and verified before publication. Search visibility is a result of useful, accurate, accessible content; metadata and sitemap inclusion alone do not guarantee indexing.
+
+
+## Administrative GIS map scope
+The public interactive map covers district, upazila, union, and municipality boundaries only. Union-ward GIS acquisition is not a project requirement. Ward entities and sourced ward-level information may still be shown outside the GIS map. See [the GIS map-scope policy](docs/gis/map-scope.md).
