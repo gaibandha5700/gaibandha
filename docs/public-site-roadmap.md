@@ -141,3 +141,12 @@ Bengali-only, mobile-first public information platform. This document tracks the
 - [x] Area-only municipality filtering returns the health entry. The initial preview exposed a confirmed bug: `slice(12)` left the colon in the UUID. The prefix is 13 characters; both municipality filter sites now use `slice(13)`.
 - [x] `/statistics`, `/search`, `/map`, `/sitemap.xml`, and `/robots.txt` returned HTTP 200 on the READY preview. Chart HTML contains SVG and all four metric controls.
 - [ ] Keyboard navigation, real mobile viewport and screen-reader interaction remain unverified.
+
+
+## Branch audit — 2026-11-22
+
+- **PR #14** is the only open PR and the active integration branch (16 commits ahead/0 behind main). It remains Draft; no production promotion.
+- **Merged and already represented on main:** PR #4 (editorial homepage/shared chrome), #5 (statistics/data catalog), #6 (build fix), #7 (district/transparency/GIS/search/map), #8 (union-ward source audit; still 0/729 union-ward polygon coverage), #10 (municipality labels), #11 (route/data audit), and #12 (PostCSS security override). The PostCSS override is already in main; no duplicate extraction.
+- **Closed/superseded:** PR #1 (header/footer, superseded by #4), #9 (map implementation superseded by #7), #13 (search coverage already in main), and #2 (ward filter selectively extracted and preview-tested; branch preserved). No branch deleted.
+- **Other refs preserved:** stale branches were compared with main; no additional active PR or verified unique implementation was identified to merge this run. Preserve all refs rather than force-delete or rewrite them.
+- One active development branch is maintained; old branch refs remain archival. No production merge/deployment was performed.
