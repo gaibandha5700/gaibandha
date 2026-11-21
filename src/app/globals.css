@@ -380,6 +380,10 @@ body { font-family:"Hind Siliguri","Noto Sans Bengali",sans-serif; }
 .site-footer-bottom{max-width:1160px!important;display:flex!important;align-items:center!important;justify-content:space-between!important;gap:20px!important}
 @media(max-width:560px){.site-header-inner{min-height:65px!important}.site-brand-image{max-height:46px!important}.site-footer-bottom{align-items:flex-start!important;flex-direction:column!important;gap:7px!important}}
 
+/* Header logo: fixed 150x62px sizing */
+.site-header .site-brand-image{width:150px!important;height:62px!important;max-height:62px!important;}
+@media(max-width:560px){.site-header .site-brand-image{width:150px!important;height:62px!important;max-height:62px!important}}
+
 /* Consistent typography and restrained visual treatment on internal pages */
 main.min-h-screen.bg-slate-50{background:#fbfaf6!important;color:#19372a!important}
 main.min-h-screen.bg-slate-50>section.mx-auto,main.min-h-screen.bg-slate-50>article.mx-auto{padding-top:48px!important;padding-bottom:72px!important}
