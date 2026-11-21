@@ -1,8 +1,8 @@
 import Link from "next/link";
 import { SiteHeader, SiteFooter } from "@/components/site-chrome";
-import { getMunicipalitiesByUpazila, getUpazilas, getUnionsByUpazila, getAllDirectoryEntries, DIRECTORY_CATEGORIES, type PublicBoundaryFeature } from "@/lib/directory";
+import { getMunicipalitiesByUpazila, getUpazilas, getUnionsByUpazila, getAllDirectoryEntries, DIRECTORY_CATEGORIES } from "@/lib/directory";
 import { ArrowUpRight, Search, MapPinned, BookOpen } from "lucide-react";
-import { getPublicBoundaryGeoJSON } from "@/lib/map-data";
+import { getPublicBoundaryGeoJSON, type PublicBoundaryFeature } from "@/lib/map-data";
 
 export const revalidate = 3600;
 
