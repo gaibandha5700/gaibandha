@@ -152,3 +152,11 @@ The initial full search-page build for commit `dbddc25` failed the lint gate bec
 - Production runtime error aggregation for the past 24 hours and production error/fatal logs for the latest 30-minute window returned no errors/log entries.
 - Vercel preview SSO protection prevents independent browser inspection from this run environment; chart behavior/build still requires preview verification.
 - No production merge or deployment was initiated.
+
+
+## Branch consolidation update — 2026-11-21
+
+- PR #9 closed as superseded by the merged main map implementation; the current map route/component are more complete.
+- PR #13 closed as superseded; main includes the search enhancements and additional district result.
+- PR #2 remains open as Draft, 25 commits behind and diverged. Its branch removes shared header/footer; the remaining directory ward-filter behavior requires selective review.
+- PR #14 (interactive statistics chart) is the active integration branch. Preview deployment for commit `8c5b50c` reached READY; /statistics and /search returned HTTP 200 through the protected preview fetch. /statistics HTML contains the chart SVG, metric controls, source link and table alternative. Real mobile, screen-reader and interaction testing is still pending.
