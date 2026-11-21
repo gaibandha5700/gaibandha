@@ -59,7 +59,7 @@ export default async function DirectoryCategoryPage({ params, searchParams }: Pa
       ]);
       return {
         unions: unions.map((item) => ({ value: `union:${item.id}`, label: `${item.name_bn} ইউনিয়ন · ${upazila.name_bn}` })),
-        municipalities: municipalities.map((item) => ({ value: `municipality:${item.id}`, label: `${item.name_bn} পৌরসভা · ${upazila.name_bn}` })),
+        municipalities: municipalities.map((item) => ({ value: `municipality:${item.id}`, label: `${item.name_bn.replace(/\s*পৌরসভা\s*$/, "")} পৌরসভা · ${upazila.name_bn}` })),
       };
     }));
   const areas = areaGroups.flatMap((group) => [...group.unions, ...group.municipalities]);
