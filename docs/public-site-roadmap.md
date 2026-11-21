@@ -176,3 +176,9 @@ Bengali-only, mobile-first public information platform. This document tracks the
 - [x] Preview commit 366f593 reached READY. HTTP 200 checks passed for the municipality area-only health filter, exact ward-5 health filter (250-bed General Hospital), ward-6 government filter (Sadar Upazila Health Office), education empty-state + submission CTA, statistics chart, search, map, sitemap and robots.
 - [x] Area option rendered as `গাইবান্ধা পৌরসভা · গাইবান্ধা সদর` (one suffix, context preserved); filtered directory URLs are noindex.
 - The active branch was reconciled against current main and archived the previous head. The latest post-reconciliation preview commit 42f94 is queued; its deployment must be checked separately.
+
+## Run 8 — global keyboard focus and motion preferences
+
+- [ready] Added a consistent high-visibility focus ring for links, buttons, form controls, summaries and tabindex elements; footer uses a contrasting focus ring on its dark background.
+- [ready] Expanded reduced-motion handling to all animations, transitions and smooth scrolling, while retaining the existing navigation motion override.
+- Verification pending on the latest preview: keyboard-only traversal, mobile viewport and assistive technology. No data or schema change.

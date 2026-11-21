@@ -236,3 +236,9 @@ The initial full search-page build for commit `dbddc25` failed the lint gate bec
 - [x] The municipality option shows exactly one suffix and upazila context. Ward filters remain exact, filtered pages render noindex, and the tested results are consistent with read-only published/verified database records.
 - The active branch was rebased onto main commit 2b0382de by resetting the ref after creating archive branch `archive/pr14-head-20261122`, then selectively restoring the five PR files. Compare now reports 5 commits ahead and 0 behind; the PR was reopened and remains Draft.
 - Latest reconciled preview commit 42f94 is queued. Final preview verification including the 150×62 header logo inherited from main remains pending.
+
+## Run 8 — accessibility CSS improvement (2026-11-22)
+
+- Added visible `:focus-visible` outlines across interactive elements and a contrasting footer variant.
+- Expanded `prefers-reduced-motion` to reduce animation, transition and smooth-scroll behavior site-wide.
+- Static source review confirms the rules are present; local build/browser/device testing is unavailable in this execution environment. Preview build and route verification are pending. No production promotion.
