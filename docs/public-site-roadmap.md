@@ -7,7 +7,7 @@ Bengali-only, mobile-first public information platform. This document tracks the
 - [x] `/upazila`, `/upazila/[slug]`, `/upazila/[slug]/[unionSlug]`, union ward route
 - [x] `/municipality`, `/municipality/[slug]`, municipality ward route
 - [x] `/directory`, category, detail, submission API and submission page
-- [x] `/search`, `/statistics`, `/data`
+- [x] `/search`, `/statistics` (municipal-ward census tables now added; union-ward census coverage remains unavailable), `/data`
 - [x] `/district` — district profile added (preview build READY; latest route HTTP probes remain blocked by preview protection)
 - [x] `/map` — GIS page and client SVG explorer added; additive GeoJSON RPC migration is applied and tested under `anon`; zoom/reset, bounded pointer pan and keyboard pan added
 - [x] `/sources`, `/about`, `/privacy`, `/contact` — concise transparency pages added
@@ -29,6 +29,10 @@ Bengali-only, mobile-first public information platform. This document tracks the
 - GIS attribution: ArcGIS Bangladesh CRIIPS, MapServer layers 121/122/123, BBS 2022 attribution. Four municipal polygons are derived from municipal ward geometries.
 - The new GeoJSON RPC uses SECURITY INVOKER and relies on existing RLS and verified/published parent filters. It was applied as an additive migration on 2026-11-21 and tested as `anon`; 129 FeatureCollection entries were returned with complete geometry/profile links. GeoJSON tolerance was benchmarked under `anon`: 0.0005 reduced payload to 593,335 bytes (~50% smaller than 0.00015 at 1,173,215 bytes) without reducing feature count; the page uses 0.0005. The preview for commit `2cb80a2` returned `/map` HTTP 200 with the SVG, no fallback, and a ~404 KB HTML response (7 upazila paths on the initial layer). Preview `/map` was built before the migration, so its cached fallback must be refreshed by a new deployment.
 
+## Statistical coverage (2026-11-21)
+- The statistics page now includes published/verified municipal-ward census tables (36 ward records) with source links and checked-date labels where available. It explicitly states that union-ward census values are not available and that ward/municipality totals are not added to higher-level totals.
+- Current `census_statistics` coverage: district 1, upazila 7, union 81, municipality 4, municipal wards 36 (129 records total). The `wards` table contains 765 published/verified administrative ward records; union-ward census data is not present in the census-statistics coverage.
+
 ## Homepage coverage (2026-11-21)
 - The homepage now renders the actual published district boundary geometry from the public GeoJSON feed as a server-rendered SVG preview, rather than a decorative contour graphic. It retains a clearly labelled fallback if the geometry is unavailable.
 - The homepage lists the three most recently updated public, verified directory entries. It distinguishes source-check dates from record-update dates and does not label record edits as verification.
@@ -49,7 +53,7 @@ Bengali-only, mobile-first public information platform. This document tracks the
 - [x] Apply GeoJSON RPC migration (additive; applied 2026-11-21 and tested under the anon role).
 - [x] Verify Vercel build, typecheck and generated route output: commit `39611f7` is READY; the build compiled, checked types and generated 184/184 pages. The route table includes `/map`, `/district`, `/sources`, `/about`, `/privacy`, `/contact`, `/statistics`, `/search`, and `/directory`. Direct HTTP probes of the latest preview are blocked by Vercel preview protection; earlier HTTP probes predate the pan commit.
 - [ ] Visual mobile viewport audit (not available in this run; static responsive-code review only).
-- [ ] Verify homepage SVG preview and recent-update section in a new READY preview; geometry fetch is server-side and uses the existing RPC.
+- [ ] Verify homepage SVG preview, recent-update section and municipal-ward statistics tables in a new READY preview; geometry fetch is server-side and uses the existing RPC.
 - [x] Verify map RPC/feature count under anon RLS: 129 geometries, no missing geometry/profile URL; levels 1/7/81/4/36.
 - [x] Add keyboard-friendly zoom slider, explicit zoom-in/zoom-out buttons and a full-map reset control.
 - [x] Implement pointer-based pan when zoomed above 1×, with drag selection suppression and bounded pan; keyboard Enter/Space selection remains.
