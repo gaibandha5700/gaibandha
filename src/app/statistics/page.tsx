@@ -6,6 +6,8 @@ export const revalidate = 3600;
 export const metadata = {
   title: "জনসংখ্যা ও পরিসংখ্যান",
   description: "গাইবান্ধা জেলার প্রকাশিত প্রশাসনিক ও জনসংখ্যার পরিসংখ্যান।",
+
+  alternates: { canonical: "/statistics" },
 };
 const fmt = (n: number | null | undefined) => n == null ? "—" : n.toLocaleString("bn-BD");
 const dateFmt = (date: string | null | undefined) => date ? new Date(date).toLocaleDateString("bn-BD") : "তথ্য পাওয়া যায়নি";
