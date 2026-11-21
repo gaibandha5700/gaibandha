@@ -209,3 +209,22 @@ The initial full search-page build for commit `dbddc25` failed the lint gate bec
 - PRs #4/#5/#6/#7/#8/#10/#11/#12 are merged and their work is represented on main; #12's PostCSS override is already present in main's package.json. No duplicate merge was needed.
 - PR #1 was closed and superseded by #4; PR #9 was closed as redundant with #7; PR #13 was closed as superseded by the current search implementation; PR #2 was closed after its ward-filter feature was selectively extracted and preview-tested. Their branch refs remain preserved.
 - All remaining refs were compared to main. No other open PR or verified unique, safe change was selected for this integration batch. No branch was deleted or rewritten.
+
+
+## Run 7 — current production and integration evidence (2026-11-22)
+
+- Production routes rechecked through Vercel protected fetch: homepage, statistics, search, map and health-directory category returned HTTP 200. This was server-rendered smoke testing, not device/browser interaction testing.
+- Production main still has the earlier municipality-area UUID parsing bug: a filtered /directory/health request returned HTTP 200 but the empty-state HTML, while Vercel's aggregated runtime error showed 7 UUID parse failures for the leading colon in the UUID. The corrected slice(13) code remains in PR #14; no production merge was made.
+- PR #14 preview (latest inspected commit before the new label fix) returned HTTP 200 for a Gaibandha municipality ward-5 health filter and included the 250-bed General Hospital. The area dropdown was visibly duplicated: the database name already ends with পৌরসভা, and the formatter appends another suffix.
+- [x] UI formatter corrected on the PR #14 branch to normalize municipality suffixes before display; next preview must be checked.
+- Supabase read-only inspection confirmed all four published municipalities include the পৌরসভা suffix in name_bn; the duplicate label is a UI formatting issue, not bad source data.
+- Production runtime logs for the latest 30-minute window returned no records. The 24-hour error aggregation still contains the earlier 7 UUID failures; this is historical aggregation, not proof of a new error in the last hour.
+- Current schema/advisors read: 11 public tables, RLS enabled; security/health lint lists empty; performance advisor shows 8 unused-index notices only. No SQL writes, data changes or index removals.
+- Verification limitation: Vercel Hobby runtime log retention prevented wider historical log queries. Full real-device, screen-reader and keyboard-only testing remain outstanding.
+
+### Roadmap / acceptance criteria
+- [ ] New preview READY after suffix patch.
+- [ ] Area options display exactly one পৌরসভা suffix; preserve upazila context.
+- [ ] Municipality-area and exact ward filter return the same verified directory result as the earlier passing preview.
+- [ ] Empty-state and clear-filter controls remain usable, and filtered URLs remain noindex.
+- [ ] No production merge/deployment without explicit authorization.
