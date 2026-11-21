@@ -7,7 +7,7 @@ Bengali-only, mobile-first public information platform. This document tracks the
 - [x] `/upazila`, `/upazila/[slug]`, `/upazila/[slug]/[unionSlug]`, union ward route
 - [x] `/municipality`, `/municipality/[slug]`, municipality ward route
 - [x] `/directory`, category, detail, submission API and submission page
-- [x] `/search`, `/statistics` (municipal-ward census tables now added; union-ward census coverage remains unavailable), `/data`
+- [x] `/search` now searches published/verified district, upazila, union, municipality, union-ward, municipal-ward and directory records (paginated ward fetch; new preview build pending). `/statistics` (municipal-ward census tables now added; union-ward census coverage remains unavailable), `/data`
 - [x] `/district` — district profile added (preview build READY; latest route HTTP probes remain blocked by preview protection)
 - [x] `/map` — GIS page and client SVG explorer added; additive GeoJSON RPC migration is applied and tested under `anon`; zoom/reset, bounded pointer pan and keyboard pan added
 - [x] `/sources`, `/about`, `/privacy`, `/contact` — concise transparency pages added
@@ -40,6 +40,7 @@ Bengali-only, mobile-first public information platform. This document tracks the
 
 ## Roadmap
 1. Route audit, navigation, sitemap and this document.
+2. Unified search coverage now includes all published/verified ward records, alongside directory and administrative names; verify the preview with Bengali and Arabic numeral queries.
 2. Complete data coverage and pagination/filters at every admin level and directory.
 3. Area profiles and statistical presentation.
 4. GIS map with verified-only GeoJSON, accessible list alternative and coverage gaps.
