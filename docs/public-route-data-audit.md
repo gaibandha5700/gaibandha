@@ -67,7 +67,7 @@ Census snapshot coverage: district 1, upazila 7, union 81, municipality 4 and mu
 ## Verification limits
 
 - Production custom domain: homepage and `/search` returned HTTP 200; `/map` returned HTTP 404.
-- Latest PR #7 and PR #9 Vercel checks are successful; PR #10 Vercel check is successful. PR #11 documentation preview and PR #12 security preview are also now READY.
+- The previous PR #7 build and PR #9 / PR #10 builds are successful. PR #12 security preview is READY. PR #7's search-label fix build is pending; the latest PR #11 documentation-refresh deployment is queued.
 - Preview URLs redirect to Vercel SSO from this audit environment, so the latest preview routes could not be independently browser-inspected here.
 - This audit is a route/data-flow review, not an independent ground-truth boundary verification or mobile-device test.
 
@@ -80,7 +80,9 @@ Census snapshot coverage: district 1, upazila 7, union 81, municipality 4 and mu
 
 ## Current follow-up evidence (2026-11-21)
 
-- PR #11's documentation preview is READY; the PR #12 PostCSS security preview is READY and its Vercel status is successful.
+- PR #11's previous documentation preview was READY; the latest documentation refresh commit `e29c73b` is QUEUED. PR #12 PostCSS security preview is READY and its Vercel status is successful.
 - PR #7's Vercel check is successful. A search-result display correction (use the stored municipality name without appending a second `পৌরসভা`) was committed to its branch as `4681736cdad4d964bb0c2e7b6f58b45e4543ba35`; preview verification is pending.
 - PR #7 and #9 still overlap. No PR was merged and production remains unchanged.
 - A local clone/lockfile generation attempt was blocked by DNS resolution for GitHub; a committed lockfile and clean `npm ci` remain unverified.
+
+- PR #7 comparison against current `main`: 68 commits ahead and 1 behind; PR #9: 13 commits ahead and 0 behind. Both contain the map component/page and scope documentation, so they overlap materially.
