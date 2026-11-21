@@ -2,7 +2,7 @@ import Link from "next/link";
 import { SiteHeader, SiteFooter } from "@/components/site-chrome";
 import { DIRECTORY_CATEGORIES, getAllDirectoryEntries, getUpazilas, getUnionsByUpazila, getMunicipalitiesByUpazila } from "@/lib/directory";
 export const revalidate=3600;
-export const metadata={title:"প্রকাশিত তথ্যের ক্যাটালগ",description:"আমাদের গাইবান্ধার প্রকাশিত তথ্য, প্রশাসনিক এলাকা, পরিসংখ্যান ও প্রতিষ্ঠানসমূহের সূচি।"};
+export const metadata={title:"প্রকাশিত তথ্যের ক্যাটালগ",description:"আমাদের গাইবান্ধার প্রকাশিত তথ্য, প্রশাসনিক এলাকা, পরিসংখ্যান ও প্রতিষ্ঠানসমূহের সূচি।",alternates:{canonical:"/data"}};
 export default async function DataCatalogPage(){
  const up=await getUpazilas();const [unions,municipalities,entries]=await Promise.all([Promise.all(up.map(u=>getUnionsByUpazila(u.id))),Promise.all(up.map(u=>getMunicipalitiesByUpazila(u.id))),getAllDirectoryEntries()]); const cats=DIRECTORY_CATEGORIES.map(c=>({...c,count:entries.filter(e=>e.category===c.slug).length}));
  const uCount=unions.reduce((n,g)=>n+g.length,0),mCount=municipalities.reduce((n,g)=>n+g.length,0),cCount=cats.reduce((n,c)=>n+c.count,0);
