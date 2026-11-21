@@ -1,12 +1,12 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { DIRECTORY_CATEGORIES, getAllDirectoryEntries, getMunicipalitiesByUpazila, getUpazilas, getUnionsByUpazila } from "@/lib/directory";
+import { DIRECTORY_CATEGORIES, getAllDirectoryEntries, getAllPublicWards, getMunicipalitiesByUpazila, getUpazilas, getUnionsByUpazila } from "@/lib/directory";
 import { SiteHeader, SiteFooter } from "@/components/site-chrome";
 
 export const revalidate = 60;
 export const metadata: Metadata = {
   title: "তথ্য খুঁজুন",
-  description: "গাইবান্ধা জেলার উপজেলা, ইউনিয়ন, প্রতিষ্ঠান ও স্থানীয় সেবা খুঁজুন।",
+  description: "গাইবান্ধা জেলার উপজেলা, ইউনিয়ন, পৌরসভা, ওয়ার্ড, প্রতিষ্ঠান ও স্থানীয় সেবা খুঁজুন।",
   robots: { index: false, follow: true },
 };
 
@@ -15,7 +15,7 @@ type Props = { searchParams: Promise<{ q?: string }> };
 export default async function SearchPage({ searchParams }: Props) {
   const { q = "" } = await searchParams;
   const query = q.trim().toLocaleLowerCase("bn-BD");
-  const [entries, upazilas] = await Promise.all([getAllDirectoryEntries(), getUpazilas()]);
+  const [entries, upazilas, wardRows] = await Promise.all([getAllDirectoryEntries(), getUpazilas(), getAllPublicWards()]);
   const [unionGroups, municipalityGroups] = await Promise.all([
     Promise.all(upazilas.map((u) => getUnionsByUpazila(u.id))),
     Promise.all(upazilas.map((u) => getMunicipalitiesByUpazila(u.id))),
@@ -25,7 +25,10 @@ export default async function SearchPage({ searchParams }: Props) {
     upazilaName: upazilas.find((u) => u.id === union.upazila_id)?.name_bn ?? "",
     upazilaSlug: upazilas.find((u) => u.id === union.upazila_id)?.slug ?? "",
   }));
-  const municipalities = municipalityGroups.flat().map((municipality) => ({ ...municipality, upazilaName: upazilas.find((u) => u.id === municipality.upazila_id)?.name_bn ?? "" }));
+  const municipalities = municipalityGroups.flat().map((municipality) => ({
+    ...municipality,
+    upazilaName: upazilas.find((u) => u.id === municipality.upazila_id)?.name_bn ?? "",
+  }));
   const matchingMunicipalities = query ? municipalities.filter((item) => item.name_bn.toLocaleLowerCase("bn-BD").includes(query)) : [];
   const matches = query ? entries.filter((entry) =>
     [entry.name_bn, entry.name_en, entry.summary, entry.description, entry.address]
@@ -33,21 +36,42 @@ export default async function SearchPage({ searchParams }: Props) {
   ) : [];
   const matchingUpazilas = query ? upazilas.filter((item) => item.name_bn.toLocaleLowerCase("bn-BD").includes(query)) : [];
   const matchingUnions = query ? unions.filter((item) => item.name_bn.toLocaleLowerCase("bn-BD").includes(query)) : [];
+  const matchingDistrict = query && ["গাইবান্ধা", "gaibandha"].some((name) => name.includes(query) || query.includes(name));
+  const matchingWards = query ? wardRows.filter((ward) =>
+    ward.name_bn.toLocaleLowerCase("bn-BD").includes(query) ||
+    ward.ward_number.toLocaleString("bn-BD").includes(query) ||
+    String(ward.ward_number).includes(query)
+  ) : [];
+  const unionWardMatches = matchingWards.flatMap((ward) => {
+    if (!ward.union_id) return [];
+    const parent = unions.find((item) => item.id === ward.union_id);
+    return parent ? [{ ward, parent }] : [];
+  });
+  const municipalityWardMatches = matchingWards.flatMap((ward) => {
+    if (!ward.municipality_id) return [];
+    const parent = municipalities.find((item) => item.id === ward.municipality_id);
+    return parent ? [{ ward, parent }] : [];
+  });
+  const resultCount = matches.length + matchingUpazilas.length + matchingUnions.length + matchingMunicipalities.length + unionWardMatches.length + municipalityWardMatches.length + (matchingDistrict ? 1 : 0);
 
   return (
     <main className="min-h-screen bg-slate-50 text-slate-900">
       <SiteHeader />
       <section className="mx-auto max-w-5xl px-4 py-12">
+        <nav aria-label="Breadcrumb" className="mb-5 text-sm text-slate-500"><Link href="/">হোম</Link> / তথ্য খুঁজুন</nav>
         <p className="text-sm font-bold text-emerald-700">গাইবান্ধা জেলার তথ্যভান্ডার</p><h1 className="mt-2 text-3xl font-extrabold">তথ্য খুঁজুন</h1>
-        <form action="/search" className="mt-6 flex gap-2"><input name="q" defaultValue={q} autoFocus placeholder="উপজেলা, ইউনিয়ন বা প্রতিষ্ঠানের নাম" className="min-w-0 flex-1 rounded-xl border border-slate-300 bg-white px-4 py-3 outline-none focus:border-emerald-600" /><button className="rounded-xl bg-emerald-700 px-5 py-3 font-bold text-white">খুঁজুন</button></form>
-        {!query ? <p className="mt-8 text-slate-600">খোঁজার জন্য কোনো উপজেলা, ইউনিয়ন, প্রতিষ্ঠান বা সেবার নাম লিখুন।</p> : <p className="mt-7 text-sm text-slate-600">“{q}” অনুসন্ধানে { (matches.length + matchingUpazilas.length + matchingUnions.length + matchingMunicipalities.length).toLocaleString("bn-BD") }টি ফলাফল পাওয়া গেছে।</p>}
+        <form action="/search" className="mt-6 flex gap-2"><input name="q" type="search" defaultValue={q} placeholder="উপজেলা, ইউনিয়ন, ওয়ার্ড বা প্রতিষ্ঠানের নাম" aria-label="তথ্য খুঁজুন" className="min-w-0 flex-1 rounded-xl border border-slate-300 bg-white px-4 py-3 outline-none focus:border-emerald-600" /><button className="rounded-xl bg-emerald-700 px-5 py-3 font-bold text-white">খুঁজুন</button></form>
+        {!query ? <p className="mt-8 text-slate-600">খোঁজার জন্য কোনো এলাকা, ওয়ার্ড, প্রতিষ্ঠান বা সেবার নাম লিখুন।</p> : <p className="mt-7 text-sm text-slate-600">“{q}” অনুসন্ধানে {resultCount.toLocaleString("bn-BD")}টি ফলাফল পাওয়া গেছে।</p>}
+        {matchingDistrict && <section className="mt-8"><h2 className="text-xl font-bold">জেলা</h2><Link href="/district" className="mt-3 block rounded-xl border bg-white p-4 font-semibold">গাইবান্ধা জেলা · জেলা পরিচিতি</Link></section>}
         {matchingUpazilas.length > 0 && <section className="mt-8"><h2 className="text-xl font-bold">উপজেলা</h2><div className="mt-3 grid gap-3 sm:grid-cols-2">{matchingUpazilas.map((item) => <Link key={item.id} href={`/upazila/${item.slug}`} className="rounded-xl border bg-white p-4 font-semibold">{item.name_bn} উপজেলা</Link>)}</div></section>}
         {matchingMunicipalities.length > 0 && <section className="mt-8"><h2 className="text-xl font-bold">পৌরসভা</h2><div className="mt-3 grid gap-3 sm:grid-cols-2">{matchingMunicipalities.map((item) => <Link key={item.id} href={`/municipality/${item.slug}`} className="rounded-xl border bg-white p-4 font-semibold">{item.name_bn} পৌরসভা <span className="block text-xs font-normal text-slate-500">{item.upazilaName} উপজেলা</span></Link>)}</div></section>}
         {matchingUnions.length > 0 && <section className="mt-8"><h2 className="text-xl font-bold">ইউনিয়ন</h2><div className="mt-3 grid gap-3 sm:grid-cols-2">{matchingUnions.map((item) => <Link key={item.id} href={`/upazila/${item.upazilaSlug}/${item.slug}`} className="rounded-xl border bg-white p-4 font-semibold">{item.name_bn} ইউনিয়ন <span className="block text-xs font-normal text-slate-500">{item.upazilaName} উপজেলা</span></Link>)}</div></section>}
+        {unionWardMatches.length > 0 && <section className="mt-8"><h2 className="text-xl font-bold">ইউনিয়ন ওয়ার্ড</h2><div className="mt-3 divide-y border-y">{unionWardMatches.map(({ward,parent}) => <Link key={ward.id} href={`/upazila/${parent.upazilaSlug}/${parent.slug}/ward/${ward.ward_number}`} className="flex flex-col gap-1 py-3 sm:flex-row sm:justify-between"><strong>{ward.name_bn || `${ward.ward_number.toLocaleString("bn-BD")} নম্বর ওয়ার্ড`}</strong><span className="text-sm text-slate-500">{parent.name_bn} ইউনিয়ন · {parent.upazilaName} উপজেলা</span></Link>)}</div></section>}
+        {municipalityWardMatches.length > 0 && <section className="mt-8"><h2 className="text-xl font-bold">পৌর ওয়ার্ড</h2><div className="mt-3 divide-y border-y">{municipalityWardMatches.map(({ward,parent}) => <Link key={ward.id} href={`/municipality/${parent.slug}/ward/${ward.ward_number}`} className="flex flex-col gap-1 py-3 sm:flex-row sm:justify-between"><strong>{ward.name_bn || `${ward.ward_number.toLocaleString("bn-BD")} নম্বর ওয়ার্ড`}</strong><span className="text-sm text-slate-500">{parent.name_bn} পৌরসভা · {parent.upazilaName} উপজেলা</span></Link>)}</div></section>}
         {matches.length > 0 && <section className="mt-8"><h2 className="text-xl font-bold">প্রতিষ্ঠান ও সেবা</h2><div className="mt-3 grid gap-3 sm:grid-cols-2">{matches.map((item) => <Link key={item.id} href={`/directory/${item.category}/${item.slug}`} className="rounded-xl border bg-white p-4"><span className="text-xs font-semibold text-emerald-700">{DIRECTORY_CATEGORIES.find((c) => c.slug === item.category)?.label}</span><strong className="mt-1 block">{item.name_bn}</strong>{item.address && <span className="mt-1 block text-sm text-slate-500">{item.address}</span>}</Link>)}</div></section>}
-        {query && !matches.length && !matchingUpazilas.length && !matchingUnions.length && !matchingMunicipalities.length && <p className="mt-8 rounded-xl border border-dashed bg-white p-6 text-slate-600">এই নামে কোনো প্রকাশিত ও যাচাইকৃত তথ্য পাওয়া যায়নি। বানান পরিবর্তন করে আবার চেষ্টা করুন।</p>}
+        {query && resultCount === 0 && <p className="mt-8 rounded-xl border border-dashed bg-white p-6 text-slate-600">এই নামে কোনো প্রকাশিত ও যাচাইকৃত তথ্য পাওয়া যায়নি। বানান পরিবর্তন করে আবার চেষ্টা করুন।</p>}
       </section>
-    <SiteFooter />
-      </main>
+      <SiteFooter />
+    </main>
   );
 }
