@@ -48,6 +48,7 @@ Bengali-only, mobile-first public information platform. This document tracks the
 7. Responsive/accessibility/performance/security/testing review.
 
 ## Quality gates / status
+- [x] Static SVG accessibility review: interactive map features are contained in a labelled group (not flattened under image semantics); selected-area panel uses a polite live region. Real screen-reader/mobile-device testing remains pending.
 - [x] Inspect main branch tree, routes, shared chrome, data helper, schema, RLS and deployment.
 - [x] Add route coverage and transparency page batch on a branch.
 - [x] Apply GeoJSON RPC migration (additive; applied 2026-11-21 and tested under the anon role).
