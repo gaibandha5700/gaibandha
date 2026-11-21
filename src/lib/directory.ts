@@ -333,7 +333,7 @@ export async function getAllPublicWards(): Promise<Array<Pick<Ward, "id" | "unio
   let offset = 0;
   while (true) {
     const page = await directoryFetch<typeof rows>(
-      `wards?select=id,union_id,municipality_id,ward_number,name_bn,name_en&is_published=eq.true&is_verified=eq.true&order=ward_number.asc&limit=${pageSize}&offset=${offset}`,
+      `wards?select=id,union_id,municipality_id,ward_number,name_bn,name_en&is_published=eq.true&is_verified=eq.true&order=ward_number.asc,id.asc&limit=${pageSize}&offset=${offset}`,
     );
     rows.push(...page);
     if (page.length < pageSize) return rows;
