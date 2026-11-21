@@ -65,3 +65,12 @@ Bengali-only, mobile-first public information platform. This document tracks the
 - [x] Add bounded arrow-key panning when a map feature is focused and zoom exceeds 1× (new commit; preview build pending).
 - [ ] Check interactive map pan/selection and arrow-key panning on a real mobile viewport and screen reader. Pointer-pan JSX fragment fix (`b42db49`) preview build is READY; latest route HTTP probes and real-device checks remain pending.
 - [ ] Merge after the latest keyboard-pan preview build, mobile viewport and screen-reader audit; then verify production deployment.
+
+
+## Latest preview audit (2026-11-21)
+- Vercel preview for the current GIS/route branch is READY; the map, district, statistics, homepage, data, sources, about, privacy, and contact routes were directly fetched with HTTP 200.
+- Canonical URLs were confirmed in rendered HTML for homepage, district, map, statistics, data, sources, about, privacy, and contact. Search remains intentionally noindex/follow.
+- The preview sitemap returned 174 URLs and `/robots.txt` returned HTTP 200. This is a route/sitemap smoke check, not a query-by-query search or mobile-device audit.
+- Preview `/map` returned HTTP 200 with the SVG map. Production on `main` (commit `b7f0c551`) still returns HTTP 404 for `/map` because the map/route batch is not merged.
+- The PR branch is 66 commits ahead and 1 commit behind `main`; GitHub reports it mergeable. Update/review the branch against current main before merging. No merge or production deployment was performed.
+- Real-device/mobile, screen-reader, keyboard interaction, live search-result smoke tests, and independent official boundary validation remain outstanding.
