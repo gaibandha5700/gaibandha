@@ -327,13 +327,13 @@ export async function getAllPublicUnions(): Promise<Union[]> {
 
 
 /** Fetch all published and verified administrative wards for the public search index. */
-export async function getAllPublicWards(): Promise<Array<Pick<Ward, "id" | "union_id" | "municipality_id" | "ward_number" | "name_bn">>> {
+export async function getAllPublicWards(): Promise<Array<Pick<Ward, "id" | "union_id" | "municipality_id" | "ward_number" | "name_bn" | "name_en">>> {
   const pageSize = 500;
-  const rows: Array<Pick<Ward, "id" | "union_id" | "municipality_id" | "ward_number" | "name_bn">> = [];
+  const rows: Array<Pick<Ward, "id" | "union_id" | "municipality_id" | "ward_number" | "name_bn" | "name_en">> = [];
   let offset = 0;
   while (true) {
     const page = await directoryFetch<typeof rows>(
-      `wards?select=id,union_id,municipality_id,ward_number,name_bn&is_published=eq.true&is_verified=eq.true&order=ward_number.asc&limit=${pageSize}&offset=${offset}`,
+      `wards?select=id,union_id,municipality_id,ward_number,name_bn,name_en&is_published=eq.true&is_verified=eq.true&order=ward_number.asc&limit=${pageSize}&offset=${offset}`,
     );
     rows.push(...page);
     if (page.length < pageSize) return rows;
