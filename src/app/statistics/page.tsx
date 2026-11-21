@@ -20,7 +20,8 @@ export default async function StatisticsPage() {
   const wardGroups = await Promise.all(municipalities.map(m => getWardsByMunicipality(m.id)));
   const known = upazilas.filter(u => u.population_total_2022 != null);
   const populationSum = known.reduce((sum, u) => sum + (u.population_total_2022 ?? 0), 0);
-  const householdSum = upazilas.filter(u => u.households_total_2022 != null).reduce((sum, u) => sum + (u.households_total_2022 ?? 0), 0);
+  const knownHouseholds = upazilas.filter(u => u.households_total_2022 != null);
+  const householdSum = knownHouseholds.reduce((sum, u) => sum + (u.households_total_2022 ?? 0), 0);
   const municipalWardCount = wardGroups.reduce((sum, group) => sum + group.length, 0);
 
   return <main className="min-h-screen bg-[#fbfaf6] text-[#19372a]"><SiteHeader/>
