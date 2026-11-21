@@ -142,7 +142,9 @@ The 129 boundary records are 1 district, 7 upazila, 81 union, 4 municipality and
 ### PR #13 build review update
 
 The initial full search-page build for commit `dbddc25` failed the lint gate because the input element had two `aria-label` attributes (`react/jsx-no-duplicate-props`). This was confirmed from Vercel build logs and corrected in commit `7902e9d`. The ward pagination query was also changed to a stable `ward_number,id` ordering in commit `48680d6`. The latest Vercel Preview for `48680d6` is queued; no build-success claim is made until its final logs are available.
-\n\n## Current audit refresh — 2026-11-21
+
+
+## Current audit refresh — 2026-11-21
 
 - Repository and deployment rechecked: the production deployment is READY at main commit `83f8e59acbde9d5f4b2f10049a20249adbf0d6a2`; the older baseline above is historical, not current.
 - PR #7 route/map implementation and PR #10 municipality-label fix are now reflected in production main; the previous route-status statements above are historical and should not be used as the current production snapshot.
@@ -256,3 +258,20 @@ The initial full search-page build for commit `dbddc25` failed the lint gate bec
 - Production runtime error/log queries for the last 30 minutes returned no errors and no logs. The 24-hour error aggregation still contains seven historical municipality UUID-parsing errors; the fix is in PR #14 and is not in production.
 - Branch review: PR #14 is the sole open integration PR (Draft). No stale branch was deleted; closed/superseded work remains preserved. No production merge or deployment.
 - Remaining P1/P2 work: commit a lockfile after review, real mobile/keyboard/screen-reader testing, protected-preview route inspection, and DGHS facility source cross-check (no bulk import or inferred coordinates).
+
+
+## Run 7 — 2026-11-22 keyboard-accessible chart scroll and fresh evidence
+
+- [x] The statistics comparison chart's horizontal overflow region now has a keyboard focus target and Bengali region label, so keyboard users can focus the chart viewport and scroll horizontally. Commit: `6b84337`.
+- [ ] Verify the new code preview build and keyboard interaction; deployment was BUILDING at the time of this record.
+- Current production baseline: `main` at `2b0382de0e920e5fe4cabe84246e050814dd3242`; its production deployment is READY.
+- Production runtime logs for the last 30 minutes returned no entries. The 24-hour error aggregation still reports seven historic UUID parsing errors from 2026-11-21 18:38–18:39 UTC; the invalid value included the leading colon in `municipality:`. The corrected `slice(13)` code is in PR #14 only and has not been promoted.
+- Read-only Supabase audit reconfirmed project `tpqwauxufaydzhpkuvtk` is ACTIVE_HEALTHY, 11/11 public tables have RLS, published/verified totals: district 1, upazila 7, union 81, municipality 4, wards 765, directory entries 67, census statistics 129, boundaries 129, administrative locations 0, education records 22.
+- Preview SSO and external DNS access from the run environment prevented direct browser route inspection and a local clone. The local clone attempt failed with DNS resolution for `github.com`; no local clean build is claimed.
+- No schema/data write, branch deletion, production merge or production deployment.
+
+### Acceptance criteria
+- [ ] READY Vercel preview for `6b84337` (or a newer branch commit).
+- [ ] Keyboard Tab can focus the chart scroll region and arrow/page scrolling can reach the chart's right edge.
+- [ ] Chart labels, accessible SVG title/description and data-table alternative remain available.
+- [ ] No regressions in metric switches or CSV download.
