@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { SiteHeader, SiteFooter } from "@/components/site-chrome";
+import StatisticsComparison from "@/components/statistics-comparison";
 import { getUpazilas, getUnionsByUpazila, getMunicipalitiesByUpazila, getWardsByMunicipality } from "@/lib/directory";
 
 export const revalidate = 3600;
@@ -25,6 +26,8 @@ export default async function StatisticsPage() {
   const knownHouseholds = upazilas.filter(u => u.households_total_2022 != null);
   const householdSum = knownHouseholds.reduce((sum, u) => sum + (u.households_total_2022 ?? 0), 0);
   const municipalWardCount = wardGroups.reduce((sum, group) => sum + group.length, 0);
+  const comparisonData = upazilas.map(u => ({ name: u.name_bn, population: u.population_total_2022, households: u.households_total_2022, male: u.population_male_2022, female: u.population_female_2022 }));
+  const statisticsSource = upazilas.find(u => u.census_source_url);
 
   return <main className="min-h-screen bg-[#fbfaf6] text-[#19372a]"><SiteHeader/>
     <section className="mx-auto max-w-6xl px-5 py-12">
@@ -34,7 +37,7 @@ export default async function StatisticsPage() {
       <p className="mt-4 max-w-3xl leading-8 text-slate-600">প্রকাশিত ও যাচাইকৃত প্রশাসনিক স্তরের তথ্য। অনুপস্থিত মানকে শূন্য ধরা হয়নি; টেবিলে “—” মানে তথ্য পাওয়া যায়নি।</p>
       <div className="mt-8 grid gap-3 sm:grid-cols-2 lg:grid-cols-3"><Stat label="উপজেলা" value={fmt(upazilas.length)}/><Stat label="উপজেলা রেকর্ডের জনসংখ্যার যোগফল*" value={fmt(known.length ? populationSum : null)}/><Stat label="উপজেলা রেকর্ডের খানার যোগফল*" value={fmt(householdSum || null)}/></div>
 
-      <h2 className="mt-12 text-2xl font-bold">উপজেলা তুলনা</h2>
+      <section className="mt-12 rounded-2xl border border-slate-200 bg-white p-4 sm:p-6"><h2 className="text-2xl font-bold">উপজেলা তুলনা—ইন্টার‌্যাক্টিভ চার্ট</h2><p className="mt-2 leading-7 text-slate-600">জনসংখ্যা, খানা, পুরুষ ও নারীর সংখ্যা আলাদাভাবে তুলনা করুন। চার্টটি শুধু উপলভ্য উপজেলা রেকর্ড ব্যবহার করে।</p><StatisticsComparison data={comparisonData}/>{statisticsSource?.census_source_url && <p className="mt-4 text-xs leading-6 text-slate-500">উৎস: {statisticsSource.census_source_name ?? "জনশুমারি ২০২২"} · <a className="underline" href={statisticsSource.census_source_url} target="_blank" rel="noreferrer">মূল প্রতিবেদন</a></p>}</section>\n\n      <h2 className="mt-12 text-2xl font-bold">উপজেলা তুলনা—তথ্য টেবিল</h2>
       <div className="mt-4 overflow-x-auto border-y border-slate-200"><table className="w-full min-w-[620px] text-sm"><thead className="bg-[#eeefe7]"><tr>{["উপজেলা","জনসংখ্যা","পুরুষ","নারী","খানা"].map(x=><th key={x} className="px-4 py-3 text-left">{x}</th>)}</tr></thead><tbody>{upazilas.map(u=><tr key={u.id} className="border-t"><td className="px-4 py-3"><Link className="font-semibold underline" href={"/upazila/"+u.slug}>{u.name_bn}</Link></td><td className="px-4 py-3">{fmt(u.population_total_2022)}</td><td className="px-4 py-3">{fmt(u.population_male_2022)}</td><td className="px-4 py-3">{fmt(u.population_female_2022)}</td><td className="px-4 py-3">{fmt(u.households_total_2022)}</td></tr>)}</tbody></table></div>
 
       <h2 className="mt-12 text-2xl font-bold">ইউনিয়ন পরিসংখ্যান</h2>
