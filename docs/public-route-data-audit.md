@@ -183,10 +183,21 @@ The initial full search-page build for commit `dbddc25` failed the lint gate bec
 - Security/health advisors returned no lints. Performance advisor reported 8 unused indexes; no cleanup attempted. RLS remains unchanged.
 
 ### Branch reconciliation
-- PR #14 remains the active integration branch and is 10 commits ahead/0 behind main before this run's new code/docs commits; refresh the compare after the preview.
-- PR #2 (`feat/public-directory-data-integration`) is 53 commits ahead/25 behind, diverged, Draft, and not mergeable. It removes shared header/footer on several pages. The ward-filter behavior was selectively extracted; do not merge the branch wholesale. Preserve the branch and close the PR only after the new feature is verified.
+- PR #14 remains the active integration branch; at the preview-test snapshot it was 14 commits ahead/0 behind main (docs updates follow).
+- PR #2 (`feat/public-directory-data-integration`) was 53 commits ahead/25 behind, diverged, Draft and not mergeable; it removes shared header/footer on several pages. Its useful ward-filter behavior was extracted and verified on PR #14; PR #2 is now closed (not merged) and its branch is preserved.
 - Production/main promotion remains gated; no production merge or deployment was made.
 
 ### Verification limits and next step
-- The new ward-filter preview build and route smoke test are pending. Earlier READY previews predate this commit and must not be used as evidence for this change.
-- Next: verify filtered directory routes, empty-state submission link, keyboard behavior, mobile layout, and the statistics chart; update this record with the actual Vercel evidence.
+- Preview commit `a4b7d16` reached READY; compilation, lint/type checks, and static generation 184/184 succeeded.
+- Preview HTTP 200: `/directory/health` area+ward 5 (hospital found), `/directory/government` area+ward 6 (health office found), `/directory/education` same filter (empty state + submission CTA), area-only health filter, `/statistics` (SVG + metric controls), `/search`, `/map`, `/sitemap.xml`, `/robots.txt`.
+- The first code preview returned 500 for municipality filters. Vercel logs confirmed UUID parsing error from `area.slice(12)` including the colon. Both municipality filter sites were corrected to `slice(13)`; the new preview tests passed.
+- Production `main` still has the old municipality-filter bug: an upazila-only health query finds the hospital, but adding the municipality filter returns no result (HTTP 200). The fix remains in PR #14 only.
+- Keyboard navigation, real mobile viewport and screen-reader testing remain pending.
+
+
+## Preview verification and branch consolidation — 2026-11-22
+
+- PR #14 is the sole active integration PR; it now includes the statistics chart, category ward filters, empty-state CTA and municipality-prefix fix. Preview commit `a4b7d16` is READY; static generation 184/184, compilation, lint/type checks and route smoke tests passed.
+- PR #2 closed as superseded after the useful ward-filter behavior was extracted and verified. Its branch is preserved; no merge or deletion.
+- No production merge or deployment. `main` remains at the verified production baseline until explicit authorization.
+- Remaining verification: keyboard-only interaction, real mobile viewport, screen reader, reduced motion and touch-target audit.
