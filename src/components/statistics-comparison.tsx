@@ -34,8 +34,8 @@ export default function StatisticsComparison({ data, sourceName, sourceUrl, sour
   const downloadCsv = () => {
     const escapeCell = (value: string | number) => {
       let text = String(value);
-      if (/^[=+\\-@\\t\\r]/.test(text)) text = "'" + text;
-      return `"${text.replace(/"/g, '""')}"`;
+      if (/^[=+\-@\t\r]/.test(text)) text = "'" + text;
+      return '"' + text.replace(/"/g, '""') + '"';
     };
     const csvRows = [
       ["উপজেলা", "সূচক", "মান", "তথ্যবর্ষ", "উৎস", "উৎস URL", "উৎস যাচাই তারিখ"],
@@ -49,12 +49,12 @@ export default function StatisticsComparison({ data, sourceName, sourceUrl, sour
         sourceCheckedAt ?? "",
       ]),
     ];
-    const csv = csvRows.map((row) => row.map(escapeCell).join(",")).join("\\r\\n");
-    const blob = new Blob(["\\uFEFF", csv], { type: "text/csv;charset=utf-8" });
+    const csv = csvRows.map((row) => row.map(escapeCell).join(",")).join("\r\n");
+    const blob = new Blob(["\uFEFF", csv], { type: "text/csv;charset=utf-8" });
     const url = URL.createObjectURL(blob);
     const link = document.createElement("a");
     link.href = url;
-    link.download = `gaibandha-upazila-${metric}-2022.csv`;
+    link.download = "gaibandha-upazila-" + metric + "-2022.csv";
     link.hidden = true;
     document.body.appendChild(link);
     link.click();
