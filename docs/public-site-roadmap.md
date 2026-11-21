@@ -9,14 +9,14 @@ Bengali-only, mobile-first public information platform. This document tracks the
 - [x] `/directory`, category, detail, submission API and submission page
 - [x] `/search` now searches published/verified district, upazila, union, municipality, union-ward, municipal-ward and directory records (paginated ward fetch; new preview build pending). `/statistics` (municipal-ward census tables now added; union-ward census coverage remains unavailable), `/data`
 - [x] `/district` — district profile added (preview build READY; latest route HTTP probes remain blocked by preview protection)
-- [x] `/map` — GIS page and client SVG explorer added; additive GeoJSON RPC migration is applied and tested under `anon`; zoom/reset, bounded pointer pan and keyboard pan added
+- [x] `/map` — GIS page and accessible SVG explorer added; active map layers are district, upazila, union and municipality only; zoom/reset, bounded pointer pan, keyboard pan and list alternative added
 - [x] `/sources`, `/about`, `/privacy`, `/contact` — concise transparency pages added
 - [ ] Route-level error/empty states and accessibility review (custom not-found page added; audit pending)
 - [ ] Verify sitemap and mobile navigation coverage after preview
 - [x] Search matches administrative names in Bengali/English and normalizes Bengali/Arabic digits; numeric ward queries use exact number matches
 
 ## Data presentation and publication rules
-- District → upazila → union / municipality → wards only where the actual published dataset supports them.
+- District → upazila → union / municipality on the interactive map only. Ward data may remain in sourced text/profile pages; ward GIS is not a map layer.
 - Use only verified and published public records. Do not expose raw submissions, contacts, review statuses, internal fields or credentials.
 - Display source, data year, checked date and methodology where available. Missing values are not zero.
 - Never sum overlapping administrative levels into district totals.
@@ -24,8 +24,8 @@ Bengali-only, mobile-first public information platform. This document tracks the
 - Derived municipal polygons remain explicitly identified; independent official polygon verification is not implied.
 
 ## GIS coverage (database audit, 2026-11-21)
-- 129 published/verified current boundary rows: district 1, upazila 7, union 81, municipality 4, municipal ward 36.
-- Union-ward polygons are not covered. Administrative locations table has no published records.
+- 129 published/verified current boundary rows: district 1, upazila 7, union 81, municipality 4, ward 36. The interactive map uses the 93 non-ward boundaries only.
+- Ward polygons are excluded from the map. Union-ward GIS acquisition is not a completion requirement. Administrative locations table has no published records.
 - RLS on administrative boundaries limits public reads to published + verified rows.
 - GIS attribution: ArcGIS Bangladesh CRIIPS, MapServer layers 121/122/123, BBS 2022 attribution. Four municipal polygons are derived from municipal ward geometries.
 - The new GeoJSON RPC uses SECURITY INVOKER and relies on existing RLS and verified/published parent filters. It was applied as an additive migration on 2026-11-21 and tested as `anon`; 129 FeatureCollection entries were returned with complete geometry/profile links. GeoJSON tolerance was benchmarked under `anon`: 0.0005 reduced payload to 593,335 bytes (~50% smaller than 0.00015 at 1,173,215 bytes) without reducing feature count; the page uses 0.0005. The preview for commit `2cb80a2` returned `/map` HTTP 200 with the SVG, no fallback, and a ~404 KB HTML response (7 upazila paths on the initial layer). Preview `/map` was built before the migration, so its cached fallback must be refreshed by a new deployment.
@@ -42,14 +42,15 @@ Bengali-only, mobile-first public information platform. This document tracks the
 ## Roadmap
 1. Route audit, navigation, sitemap and this document.
 2. Unified search coverage now includes all published/verified ward records, alongside directory and administrative names; verify the preview with Bengali and Arabic numeral queries.
-2. Complete data coverage and pagination/filters at every admin level and directory.
+3. Complete data coverage and pagination/filters at every admin level and directory.
 3. Area profiles and statistical presentation.
-4. GIS map with verified-only GeoJSON, accessible list alternative and coverage gaps.
+4. GIS map with verified-only GeoJSON, district/upazila/union/municipality layers only, accessible list alternative and coverage gaps.
 5. Sources, verification, correction path and update transparency.
 6. Search, SEO, canonical/breadcrumbs and sitemap.
 7. Responsive/accessibility/performance/security/testing review.
 
 ## Search refinement (2026-11-21)\n- Search matching now normalizes Bengali numerals to Arabic for text matching and includes English administrative names/slugs for upazilas, unions, municipalities, wards, and directory records. Pure numeric ward queries match the exact ward number rather than substring values. The updated preview build is pending verification.\n\n## Quality gates / status
+- [x] Approved map scope excludes all ward GIS layers; server-side page filtering limits client map data to district, upazila, union and municipality features.
 - [x] Static SVG accessibility review: interactive map features are contained in a labelled group (not flattened under image semantics); selected-area panel uses a polite live region. Real screen-reader/mobile-device testing remains pending.
 - [x] Inspect main branch tree, routes, shared chrome, data helper, schema, RLS and deployment.
 - [x] Add route coverage and transparency page batch on a branch.
