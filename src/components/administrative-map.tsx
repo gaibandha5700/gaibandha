@@ -9,7 +9,6 @@ const layerOptions = [
   { value: "upazila", label: "উপজেলা" },
   { value: "union", label: "ইউনিয়ন" },
   { value: "municipality", label: "পৌরসভা" },
-  { value: "ward", label: "পৌর ওয়ার্ড" },
 ] as const;
 
 type Layer = (typeof layerOptions)[number]["value"];
