@@ -201,3 +201,11 @@ The initial full search-page build for commit `dbddc25` failed the lint gate bec
 - PR #2 closed as superseded after the useful ward-filter behavior was extracted and verified. Its branch is preserved; no merge or deletion.
 - No production merge or deployment. `main` remains at the verified production baseline until explicit authorization.
 - Remaining verification: keyboard-only interaction, real mobile viewport, screen reader, reduced motion and touch-target audit.
+
+
+## Full branch review — 2026-11-22
+
+- PR #14 is the only open PR and active integration branch (16 commits ahead, 0 behind main at this snapshot). It remains Draft; production merge/deployment is not authorized.
+- PRs #4/#5/#6/#7/#8/#10/#11/#12 are merged and their work is represented on main; #12's PostCSS override is already present in main's package.json. No duplicate merge was needed.
+- PR #1 was closed and superseded by #4; PR #9 was closed as redundant with #7; PR #13 was closed as superseded by the current search implementation; PR #2 was closed after its ward-filter feature was selectively extracted and preview-tested. Their branch refs remain preserved.
+- All remaining refs were compared to main. No other open PR or verified unique, safe change was selected for this integration batch. No branch was deleted or rewritten.
