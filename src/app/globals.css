@@ -402,3 +402,22 @@ main.min-h-screen.bg-slate-50 .text-emerald-800{color:#194632!important}
 main.min-h-screen.bg-slate-50 .bg-emerald-700{background:#153d2d!important}
 main.min-h-screen.bg-slate-50 .border-emerald-100{border-color:#d6e2d5!important}
 @media(max-width:560px){main.min-h-screen.bg-slate-50>section.mx-auto,main.min-h-screen.bg-slate-50>article.mx-auto{padding-top:32px!important;padding-bottom:48px!important}}
+
+/* Accessibility: a clear keyboard focus ring across controls and navigation. */
+:where(a,button,input,select,textarea,summary,[tabindex]):focus-visible{
+  outline:3px solid #0b7b53!important;
+  outline-offset:3px!important;
+}
+.site-footer :where(a,button,input,select,textarea,summary,[tabindex]):focus-visible{
+  outline-color:#c8f7dc!important;
+}
+
+/* Honor motion preferences beyond the shared navigation transitions. */
+@media(prefers-reduced-motion:reduce){
+  *,*::before,*::after{
+    animation-duration:.01ms!important;
+    animation-iteration-count:1!important;
+    transition-duration:.01ms!important;
+    scroll-behavior:auto!important;
+  }
+}
