@@ -254,3 +254,8 @@ The initial full search-page build for commit `dbddc25` failed the lint gate bec
 ## Run 9 implementation review — 2026-11-22
 
 - Corrected the missing CSV download callback detected during source review before declaring the feature ready. The selected metric export includes sorted rows, 2022, source name, URL and source-check timestamp; spreadsheet-safe quoting/BOM and formula-leading text guard are implemented. The latest Vercel build and browser download test remain pending.
+
+
+## CSV export encoding correction — 2026-11-22
+
+- Corrected the source literals for CSV row separators and UTF-8 BOM after reviewing the committed handler; the file now uses actual escaped CRLF/BOM literals in JavaScript. Preview build and download interaction remain unverified.
