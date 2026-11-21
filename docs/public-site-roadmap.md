@@ -156,3 +156,16 @@ Bengali-only, mobile-first public information platform. This document tracks the
 
 - **P2 idea/ready for research:** cross-check the 43 existing health-directory entries against the Ministry of Health/DGHS Facility Registry. The registry is an authoritative discovery source, but records must be individually reconciled, source-linked and verified before any additions; do not bulk-import or infer coordinates.
 - **Dependencies/constraints:** existing publication/verification workflow, source provenance, duplicate handling and privacy review. This is coverage research only; no data write was made in this run.
+
+
+## Directory filter label refinement — 2026-11-22
+
+- [x] Remove repeated `পৌরসভা` suffix from directory area options when the verified municipality name already contains it. Keep one suffix and the upazila context.
+- Confirmed root cause in the current published municipality data: all four municipality names already include `পৌরসভা`, while the directory filter formatter adds the suffix again.
+- This UI-only change is in PR #14; no data/schema change. Preview verification is pending after the commit.
+- [ready] Cross-check the 43 published health directory records against the official DGHS Facility Registry, using source identifiers and location context; only propose corrections or additions with traceable evidence. Do not bulk-import or replace records automatically.
+
+### Next highest priorities
+1. P1: keyboard/touch/reduced-motion/accessibility audit of directory filters and the map/statistics controls.
+2. P1: verify search, area and exact ward filters on the newest PR preview after this patch.
+3. P2: source-coverage review for health records using the official DGHS registry; keep corrections reviewable and avoid duplicate records.
