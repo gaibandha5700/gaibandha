@@ -137,3 +137,8 @@ The 129 boundary records are 1 district, 7 upazila, 81 union, 4 municipality and
 3. Review PR #10 mobile rendering and PR #12 security override before any merge.
 4. Resolve the lockfile/reproducible install issue and the non-fatal npm cache-dir warning.
 5. Continue the route-to-database and mobile/accessibility audit; do not create administrative coordinates without verified sources.
+
+
+### PR #13 build review update
+
+The initial full search-page build for commit `dbddc25` failed the lint gate because the input element had two `aria-label` attributes (`react/jsx-no-duplicate-props`). This was confirmed from Vercel build logs and corrected in commit `7902e9d`. The ward pagination query was also changed to a stable `ward_number,id` ordering in commit `48680d6`. The latest Vercel Preview for `48680d6` is queued; no build-success claim is made until its final logs are available.
