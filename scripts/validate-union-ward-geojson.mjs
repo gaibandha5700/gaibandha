@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 /**
- * Read-only staging validator for sourced Gaibandha union-ward GeoJSON.
+ * LEGACY / ARCHIVED: read-only validator for sourced union-ward GeoJSON.
+ * Union-ward GIS is no longer an active public-map completion target (see docs/gis/map-scope.md).
  * It does not import, publish, verify or modify database records.
  *
  * Usage:
