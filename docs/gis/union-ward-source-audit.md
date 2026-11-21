@@ -1,3 +1,5 @@
+> **ARCHIVED — 2026-11-21 scope decision:** Union-ward GIS acquisition and 729-polygon coverage are no longer project requirements. This file is retained as historical source research only. The active GIS map scope is district, upazila, union, and municipality; see [map-scope.md](./map-scope.md). Ward entities and existing municipal-ward records remain in the database, but are not interactive map layers.
+
 # Gaibandha Union-Ward Polygon Source Audit
 
 **Audit date:** 2026-11-21  
