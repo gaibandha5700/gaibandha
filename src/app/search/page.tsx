@@ -12,9 +12,13 @@ export const metadata: Metadata = {
 
 type Props = { searchParams: Promise<{ q?: string }> };
 
+const bnDigits = "০১২৩৪৫৬৭৮৯";
+const normalizeSearchText = (value: string | null | undefined) => (value ?? "").trim().toLocaleLowerCase("bn-BD").replace(/[০-৯]/g, (digit) => String(bnDigits.indexOf(digit)));
+const containsSearch = (value: string | null | undefined, query: string) => normalizeSearchText(value).includes(query);
+
 export default async function SearchPage({ searchParams }: Props) {
   const { q = "" } = await searchParams;
-  const query = q.trim().toLocaleLowerCase("bn-BD");
+  const query = normalizeSearchText(q);
   const [entries, upazilas, wardRows] = await Promise.all([getAllDirectoryEntries(), getUpazilas(), getAllPublicWards()]);
   const [unionGroups, municipalityGroups] = await Promise.all([
     Promise.all(upazilas.map((u) => getUnionsByUpazila(u.id))),
@@ -29,18 +33,18 @@ export default async function SearchPage({ searchParams }: Props) {
     ...municipality,
     upazilaName: upazilas.find((u) => u.id === municipality.upazila_id)?.name_bn ?? "",
   }));
-  const matchingMunicipalities = query ? municipalities.filter((item) => item.name_bn.toLocaleLowerCase("bn-BD").includes(query)) : [];
+  const matchingMunicipalities = query ? municipalities.filter((item) => [item.name_bn, item.name_en, item.slug].some((value) => containsSearch(value, query))) : [];
   const matches = query ? entries.filter((entry) =>
-    [entry.name_bn, entry.name_en, entry.summary, entry.description, entry.address]
-      .some((value) => value?.toLocaleLowerCase("bn-BD").includes(query))
+    [entry.name_bn, entry.name_en, entry.summary, entry.description, entry.address, entry.slug]
+      .some((value) => containsSearch(value, query))
   ) : [];
-  const matchingUpazilas = query ? upazilas.filter((item) => item.name_bn.toLocaleLowerCase("bn-BD").includes(query)) : [];
-  const matchingUnions = query ? unions.filter((item) => item.name_bn.toLocaleLowerCase("bn-BD").includes(query)) : [];
-  const matchingDistrict = query && ["গাইবান্ধা", "gaibandha"].some((name) => name.includes(query) || query.includes(name));
-  const matchingWards = query ? wardRows.filter((ward) =>
-    ward.name_bn.toLocaleLowerCase("bn-BD").includes(query) ||
-    ward.ward_number.toLocaleString("bn-BD").includes(query) ||
-    String(ward.ward_number).includes(query)
+  const matchingUpazilas = query ? upazilas.filter((item) => [item.name_bn, item.name_en, item.slug].some((value) => containsSearch(value, query))) : [];
+  const matchingUnions = query ? unions.filter((item) => [item.name_bn, item.name_en, item.slug].some((value) => containsSearch(value, query))) : [];
+  const matchingDistrict = query && ["গাইবান্ধা", "gaibandha", "gaibandha district", "জেলা"].some((name) => containsSearch(name, query) || query.includes(normalizeSearchText(name)));
+  const numericQuery = query && /^[0-9]+$/.test(query) ? Number(query) : null;
+  const matchingWards = query ? wardRows.filter((ward) => numericQuery !== null
+    ? ward.ward_number === numericQuery
+    : [ward.name_bn, ward.name_en, `ওয়ার্ড ${ward.ward_number.toLocaleString("bn-BD")}`, `ward ${ward.ward_number}`, String(ward.ward_number)].some((value) => containsSearch(value, query))
   ) : [];
   const unionWardMatches = matchingWards.flatMap((ward) => {
     if (!ward.union_id) return [];
