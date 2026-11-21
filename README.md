@@ -54,5 +54,10 @@ After deployment:
 ## Content strategy
 Create substantive district information pages (history, heritage, geography, rivers, tourism, culture, economy, education, and public services) only when the content can be supported by reliable sources and kept current. Do not invent historical or statistical facts.
 
+## Administrative map scope
+- Interactive map layers: district, upazila, union and municipality only.
+- Ward records remain available outside the map where sourced and verified; ward GIS layers are not a project requirement.
+- The map client receives only the four supported administrative levels.
+
 ## Data quality
 Public directory records should be reviewed and verified before publication. Search visibility is a result of useful, accurate, accessible content; metadata and sitemap inclusion alone do not guarantee indexing.
