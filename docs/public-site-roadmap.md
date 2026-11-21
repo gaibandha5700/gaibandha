@@ -150,3 +150,9 @@ Bengali-only, mobile-first public information platform. This document tracks the
 - **Closed/superseded:** PR #1 (header/footer, superseded by #4), #9 (map implementation superseded by #7), #13 (search coverage already in main), and #2 (ward filter selectively extracted and preview-tested; branch preserved). No branch deleted.
 - **Other refs preserved:** stale branches were compared with main; no additional active PR or verified unique implementation was identified to merge this run. Preserve all refs rather than force-delete or rewrite them.
 - One active development branch is maintained; old branch refs remain archival. No production merge/deployment was performed.
+
+
+## Feature discovery — official health-directory coverage
+
+- **P2 idea/ready for research:** cross-check the 43 existing health-directory entries against the Ministry of Health/DGHS Facility Registry. The registry is an authoritative discovery source, but records must be individually reconciled, source-linked and verified before any additions; do not bulk-import or infer coordinates.
+- **Dependencies/constraints:** existing publication/verification workflow, source provenance, duplicate handling and privacy review. This is coverage research only; no data write was made in this run.
