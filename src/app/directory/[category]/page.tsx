@@ -8,6 +8,8 @@ import {
   getUnionsByUpazila,
   getUpazilas,
   isDirectoryCategory,
+  getWardsByUnion,
+  getWardsByMunicipality,
 } from "@/lib/directory";
 import { SiteHeader, SiteFooter } from "@/components/site-chrome";
 
@@ -15,7 +17,7 @@ export const revalidate = 60;
 export const dynamicParams = true;
 type PageProps = {
   params: Promise<{ category: string }>;
-  searchParams: Promise<{ q?: string; upazila?: string; area?: string }>;
+  searchParams: Promise<{ q?: string; upazila?: string; area?: string; ward?: string }>;
 };
 
 export async function generateStaticParams() {
@@ -26,7 +28,7 @@ export async function generateMetadata({ params, searchParams }: PageProps): Pro
   const [{ category: slug }, filters] = await Promise.all([params, searchParams]);
   if (!isDirectoryCategory(slug)) return { title: "বিভাগ পাওয়া যায়নি", robots: { index: false, follow: true } };
   const category = DIRECTORY_CATEGORIES.find((item) => item.slug === slug)!;
-  const hasFilters = Boolean(filters.q?.trim() || filters.upazila || filters.area);
+  const hasFilters = Boolean(filters.q?.trim() || filters.upazila || filters.area || filters.ward);
   const hasPublishedEntries = (await getAllDirectoryEntries()).some((item) => item.category === slug);
   return {
     title: `${category.label} — গাইবান্ধা`,
@@ -43,6 +45,7 @@ export default async function DirectoryCategoryPage({ params, searchParams }: Pa
   const q = (filters.q ?? "").trim();
   const upazilaId = filters.upazila ?? "";
   const area = filters.area ?? "";
+  const wardId = filters.ward ?? "";
   const [upazilas, allEntries] = await Promise.all([
     getUpazilas(),
     getAllDirectoryEntries(),
@@ -60,9 +63,15 @@ export default async function DirectoryCategoryPage({ params, searchParams }: Pa
       };
     }));
   const areas = areaGroups.flatMap((group) => [...group.unions, ...group.municipalities]);
+  const selectedWards = area.startsWith("union:")
+    ? await getWardsByUnion(area.slice(6))
+    : area.startsWith("municipality:")
+      ? await getWardsByMunicipality(area.slice(12))
+      : [];
   let entries = allEntries.filter((item) => item.category === slug && (!upazilaId || item.upazila_id === upazilaId));
   if (area.startsWith("union:")) entries = entries.filter((item) => item.union_id === area.slice(6));
   if (area.startsWith("municipality:")) entries = entries.filter((item) => item.municipality_id === area.slice(12));
+  if (wardId) entries = entries.filter((item) => item.ward_id === wardId);
   if (q) {
     const term = q.toLocaleLowerCase("bn-BD");
     entries = entries.filter((item) => [item.name_bn, item.name_en, item.summary, item.description, item.address]
@@ -79,11 +88,12 @@ export default async function DirectoryCategoryPage({ params, searchParams }: Pa
         <p className="text-sm font-bold text-emerald-700">গাইবান্ধা জেলা · স্থানীয় তথ্য</p>
         <h1 className="mt-2 text-3xl font-extrabold sm:text-4xl">{category.label}</h1>
         <p className="mt-3 leading-7 text-slate-600">{category.description} — প্রকাশিত ও যাচাইকৃত প্রতিষ্ঠানের তালিকা।</p>
-        <form action={`/directory/${slug}`} method="get" className="mt-7 grid gap-3 rounded-2xl border border-slate-200 bg-white p-4 sm:grid-cols-4">
+        <form action={`/directory/${slug}`} method="get" className="mt-7 grid gap-3 rounded-2xl border border-slate-200 bg-white p-4 sm:grid-cols-5">
           <label className="sm:col-span-2"><span className="mb-1 block text-xs font-semibold text-slate-600">নাম দিয়ে খুঁজুন</span><input name="q" defaultValue={q} placeholder="প্রতিষ্ঠানের নাম বা ঠিকানা" className="w-full rounded-xl border border-slate-300 px-3 py-3 outline-none focus:border-emerald-600" /></label>
           <label><span className="mb-1 block text-xs font-semibold text-slate-600">উপজেলা</span><select name="upazila" defaultValue={upazilaId} className="w-full rounded-xl border border-slate-300 bg-white px-3 py-3"><option value="">সব উপজেলা</option>{upazilas.map((item) => <option key={item.id} value={item.id}>{item.name_bn}</option>)}</select></label>
           <label><span className="mb-1 block text-xs font-semibold text-slate-600">ইউনিয়ন / পৌরসভা</span><select name="area" defaultValue={area} className="w-full rounded-xl border border-slate-300 bg-white px-3 py-3"><option value="">সব এলাকা</option>{areas.map((item) => <option key={item.value} value={item.value}>{item.label}</option>)}</select></label>
-          <div className="flex items-center gap-2 sm:col-span-4"><button className="rounded-xl bg-emerald-700 px-5 py-3 font-bold text-white">ফিল্টার প্রয়োগ</button><Link href={`/directory/${slug}`} className="rounded-xl border border-slate-300 px-5 py-3 text-sm font-semibold text-slate-700">ফিল্টার মুছুন</Link><span className="ml-auto text-sm text-slate-500">{entries.length.toLocaleString("bn-BD")}টি ফলাফল</span></div>
+          <label><span className="mb-1 block text-xs font-semibold text-slate-600">ওয়ার্ড</span><select name="ward" defaultValue={wardId} disabled={!area || selectedWards.length === 0} className="w-full rounded-xl border border-slate-300 bg-white px-3 py-3 disabled:bg-slate-50 disabled:text-slate-400"><option value="">সব ওয়ার্ড</option>{selectedWards.map((item) => <option key={item.id} value={item.id}>{item.ward_number.toLocaleString("bn-BD")} নম্বর ওয়ার্ড</option>)}</select></label>
+          <div className="flex items-center gap-2 sm:col-span-5"><button className="rounded-xl bg-emerald-700 px-5 py-3 font-bold text-white">ফিল্টার প্রয়োগ</button><Link href={`/directory/${slug}`} className="rounded-xl border border-slate-300 px-5 py-3 text-sm font-semibold text-slate-700">ফিল্টার মুছুন</Link><span className="ml-auto text-sm text-slate-500">{entries.length.toLocaleString("bn-BD")}টি ফলাফল</span></div>
         </form>
         <div className="mt-6 flex justify-end"><Link href="/submit" className="rounded-xl border border-emerald-200 bg-emerald-50 px-4 py-2.5 text-sm font-semibold text-emerald-800">নতুন প্রতিষ্ঠানের তথ্য জমা দিন</Link></div>
         {entries.length ? (
@@ -100,7 +110,8 @@ export default async function DirectoryCategoryPage({ params, searchParams }: Pa
         ) : (
           <div className="mt-8 rounded-2xl border border-dashed border-slate-300 bg-white p-8">
             <h2 className="text-lg font-bold">কোনো তথ্য পাওয়া যায়নি</h2>
-            <p className="mt-2 leading-7 text-slate-600">নির্বাচিত ফিল্টার বা অনুসন্ধান অনুযায়ী প্রকাশিত ও যাচাইকৃত তথ্য নেই। ফিল্টার পরিবর্তন করে আবার চেষ্টা করুন।</p>
+            <p className="mt-2 leading-7 text-slate-600">নির্বাচিত ফিল্টার বা অনুসন্ধান অনুযায়ী প্রকাশিত ও যাচাইকৃত তথ্য নেই। ফিল্টার পরিবর্তন করে আবার চেষ্টা করুন অথবা এই বিভাগের নতুন তথ্য জমা দিন।</p>
+            <Link href={`/submit?category=${slug}`} className="mt-4 inline-flex rounded-xl bg-emerald-700 px-4 py-2.5 text-sm font-bold text-white">এই বিভাগের তথ্য জমা দিন</Link>
           </div>
         )}
       </section>
