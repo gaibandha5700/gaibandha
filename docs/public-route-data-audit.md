@@ -69,3 +69,9 @@ Census snapshot coverage: district 1, upazila 7, union 81, municipality 4 and mu
 - Latest PR #7 and PR #9 Vercel checks are successful; PR #10 Vercel check is successful.
 - Preview URLs redirect to Vercel SSO from this audit environment, so the latest preview routes could not be independently browser-inspected here.
 - This audit is a route/data-flow review, not an independent ground-truth boundary verification or mobile-device test.
+
+## Build and dependency reproducibility
+
+- The repository currently has no `package-lock.json`; `npm ci` fails immediately with the lockfile requirement. Vercel uses `npm install`, so its current builds are not blocked, but dependency resolution is not reproducible.
+- The dependency audit found a high-severity PostCSS advisory and one moderate dependency advisory. A focused PostCSS override is proposed in PR #12; sandbox install/lint/typecheck/build/audit passed with zero vulnerabilities, but its Vercel preview is still building.
+- [ ] Add and review a lockfile separately, then verify clean `npm ci` from the committed tree.
