@@ -13,6 +13,7 @@ Bengali-only, mobile-first public information platform. This document tracks the
 - [x] `/sources`, `/about`, `/privacy`, `/contact` — concise transparency pages added
 - [ ] Route-level error/empty states and accessibility review (custom not-found page added; audit pending)
 - [ ] Verify sitemap and mobile navigation coverage after preview
+- [x] Search matches administrative names in Bengali/English and normalizes Bengali/Arabic digits; numeric ward queries use exact number matches
 
 ## Data presentation and publication rules
 - District → upazila → union / municipality → wards only where the actual published dataset supports them.
@@ -48,7 +49,7 @@ Bengali-only, mobile-first public information platform. This document tracks the
 6. Search, SEO, canonical/breadcrumbs and sitemap.
 7. Responsive/accessibility/performance/security/testing review.
 
-## Quality gates / status
+## Search refinement (2026-11-21)\n- Search matching now normalizes Bengali numerals to Arabic for text matching and includes English administrative names/slugs for upazilas, unions, municipalities, wards, and directory records. Pure numeric ward queries match the exact ward number rather than substring values. The updated preview build is pending verification.\n\n## Quality gates / status
 - [x] Static SVG accessibility review: interactive map features are contained in a labelled group (not flattened under image semantics); selected-area panel uses a polite live region. Real screen-reader/mobile-device testing remains pending.
 - [x] Inspect main branch tree, routes, shared chrome, data helper, schema, RLS and deployment.
 - [x] Add route coverage and transparency page batch on a branch.
