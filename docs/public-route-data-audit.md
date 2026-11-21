@@ -160,3 +160,10 @@ The initial full search-page build for commit `dbddc25` failed the lint gate bec
 - PR #13 closed as superseded; main includes the search enhancements and additional district result.
 - PR #2 remains open as Draft, 25 commits behind and diverged. Its branch removes shared header/footer; the remaining directory ward-filter behavior requires selective review.
 - PR #14 (interactive statistics chart) is the active integration branch. Preview deployment for commit `8c5b50c` reached READY; /statistics and /search returned HTTP 200 through the protected preview fetch. /statistics HTML contains the chart SVG, metric controls, source link and table alternative. Real mobile, screen-reader and interaction testing is still pending.
+
+
+## Production route smoke — 2026-11-21
+
+- Production deployment is READY on main commit `83f8e59acbde9d5f4b2f10049a20249adbf0d6a2`.
+- Protected-fetch smoke checks returned HTTP 200 for `/`, `/statistics`, `/map`, `/search`, and `/sitemap.xml` on `https://amadergaibandha.vercel.app`.
+- Route-title checks confirmed the expected Bengali titles for homepage, statistics, map and search. This is an HTTP/render smoke check, not a mobile-device or screen-reader test.
