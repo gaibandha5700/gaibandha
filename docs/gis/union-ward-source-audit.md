@@ -69,3 +69,22 @@ A source package should include source URL, publisher, edition/date, license/ter
 - The scanned map shows colored internal regions and locality labels. The page calls it a union map, but the reviewed image does **not** identify the colors with ward numbers or provide coordinate control/scale. It is therefore a candidate for evidence review only, not a polygon source ready to digitize/import.
 - Other National Portal union pages expose “মানচিত্রে ইউনিয়ন” and ward-based population pages. These may be useful acquisition targets, but map images and ward population/village tables must not be assumed to be spatially aligned or to define ward boundaries. Each map would need source-specific review, an evidenced ward crosswalk, georeferencing evidence, and validation before any digitization.
 - Example ward table found: Sreepur Union (2014) lists ward numbers and villages, but its historical village crosswalk is not proof of current boundary lines: https://sreepurup.gaibandha.gov.bd/pages/static-pages/ওয়ার্ড-ভিত্তিক-লোক-সংখ্যা-1c6543-69770476c4774958d7bf634e
+
+
+## Legal source attached to the 729 entity rows (clarification)
+
+The live `wards` table has 729/729 union-ward rows marked published and verified, and each row has the same source basis: **Local Government (Union Parishad) Act, 2009, section 3(1)** (https://bdlaws.minlaw.gov.bd/act-1027/act-chapter-print-2253.html), source checked **2026-11-15 15:39:42 UTC**. The source note explicitly says that this establishes the legal nine-ward structure only; local boundaries, village/mouza allocations and ward-level census figures must be separately verified. The population, household, male and female census fields are null for all 729 union-ward rows. These published/verified entity flags must not be read as polygon verification. The coverage CSV now carries this entity-source metadata alongside the polygon status.
+
+## Official National Portal map + ward crosswalk candidate
+
+A second source candidate was located for **Mohdipur Union, Palashbari**:
+
+- Official Union map page (last updated 18 October 2016): https://mohdipurup.gaibandha.gov.bd/pages/static-pages/69772bbbc4774958d7c0c21c
+- Published map image: https://objectstorage.ap-dcc-gazipur-1.oraclecloud15.com/n/axvjbnqprylg/b/V2Ministry/o/office-mohdipurup-gaibandha/2024/12/5e2284a26f1e4d53969637213056e090.jpg
+- Official 2022-era Union profile page containing a ward-to-village crosswalk: https://mohdipurup.gaibandha.gov.bd/pages/static-pages/69772bbbc4774958d7c0c21a
+
+The map image has colored internal regions and locality labels; the profile crosswalk lists villages under ward numbers 1–9. This is a **candidate for source-specific digitization**, not a ready polygon layer: the reviewed map image lacks explicit ward-number labels, coordinate control/scale, and a documented georeferencing accuracy. The map edition (2016) and crosswalk (2022) also need reconciliation. No digitization or import was performed.
+
+## Exact source blocker updated
+
+The legal source supports the nine-ward numbering structure but not ward boundary geometry. No reusable vector source of the 729 polygons has been acquired. The Mohdipur map/crosswalk demonstrates a possible official-map acquisition route, but it cannot be promoted without explicit map-to-ward identification, georeferencing/control evidence, measured accuracy and independent validation. The runtime could not download the source image for geospatial processing because external network/DNS access was unavailable.
