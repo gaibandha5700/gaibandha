@@ -7,6 +7,8 @@ export const revalidate = 3600;
 export const metadata = {
   title: "প্রশাসনিক মানচিত্র",
   description: "গাইবান্ধা জেলার জেলা, উপজেলা, ইউনিয়ন ও পৌরসভার প্রকাশিত ও যাচাইকৃত সীমানা মানচিত্রে দেখুন।",
+
+  alternates: { canonical: "/map" },
 };
 
 export default async function MapPage() {
