@@ -21,8 +21,8 @@ function BrandLogo({ footer = false }: { footer?: boolean }) {
       <Image
         src="/brand/gaibandha-logo.svg"
         alt="আমাদের গাইবান্ধা"
-        width={footer ? 205 : 176}
-        height={footer ? 85 : 72}
+        width={footer ? 205 : 150}
+        height={footer ? 85 : 62}
         priority={!footer}
         className="site-brand-image"
       />
