@@ -54,9 +54,10 @@ Census snapshot coverage: district 1, upazila 7, union 81, municipality 4 and mu
 
 ## Prioritized follow-up
 
-- [ ] Review/reconcile PR #7 against current `main`; it contains the district, sources, transparency, search/statistics improvements and GIS map batch.
-- [ ] Review the PR #7 map implementation alongside PR #9; they overlap. Keep only one map implementation path to avoid duplicate work.
-- [ ] Review and merge the small municipality-label fix (PR #10) only after the preview review; do not merge without authorization.
+- [ ] Review/reconcile PR #7 against current `main`; it contains the district, sources, transparency, search/statistics improvements and GIS map. Its latest Vercel check is successful, but the branch still needs review and reconciliation before merge.
+- [ ] PR #9 overlaps the map implementation in PR #7. Choose one implementation path after review; neither is merged.
+- [ ] PR #10 corrects duplicate municipality suffixes on the index; mobile visual review remains pending.
+- [ ] A duplicate municipality suffix was also confirmed in PR #7 search-result labels and fixed on that branch (commit `4681736`); wait for the new preview check.
 - [ ] Reconcile the older PR #2 with current `main` before considering it; its current comparison contains stale/obsolete GIS files and is not mergeable.
 - [ ] Verify mobile keyboard, screen-reader, responsive map and real search-result behavior after route-batch review.
 - [ ] Review administrative-location coverage. The table currently has no published/verified rows; do not infer office coordinates.
@@ -66,12 +67,20 @@ Census snapshot coverage: district 1, upazila 7, union 81, municipality 4 and mu
 ## Verification limits
 
 - Production custom domain: homepage and `/search` returned HTTP 200; `/map` returned HTTP 404.
-- Latest PR #7 and PR #9 Vercel checks are successful; PR #10 Vercel check is successful.
+- Latest PR #7 and PR #9 Vercel checks are successful; PR #10 Vercel check is successful. PR #11 documentation preview and PR #12 security preview are also now READY.
 - Preview URLs redirect to Vercel SSO from this audit environment, so the latest preview routes could not be independently browser-inspected here.
 - This audit is a route/data-flow review, not an independent ground-truth boundary verification or mobile-device test.
 
 ## Build and dependency reproducibility
 
 - The repository currently has no `package-lock.json`; `npm ci` fails immediately with the lockfile requirement. Vercel uses `npm install`, so its current builds are not blocked, but dependency resolution is not reproducible.
-- The dependency audit found a high-severity PostCSS advisory and one moderate dependency advisory. A focused PostCSS override is proposed in PR #12; sandbox install/lint/typecheck/build/audit passed with zero vulnerabilities, but its Vercel preview is still building.
+- The dependency audit found a high-severity PostCSS advisory and one moderate dependency advisory. A focused PostCSS override is proposed in PR #12; sandbox install/lint/typecheck/build/audit passed with zero vulnerabilities, and its Vercel preview is now READY. The override remains unmerged.
 - [ ] Add and review a lockfile separately, then verify clean `npm ci` from the committed tree.
+
+
+## Current follow-up evidence (2026-11-21)
+
+- PR #11's documentation preview is READY; the PR #12 PostCSS security preview is READY and its Vercel status is successful.
+- PR #7's Vercel check is successful. A search-result display correction (use the stored municipality name without appending a second `পৌরসভা`) was committed to its branch as `4681736cdad4d964bb0c2e7b6f58b45e4543ba35`; preview verification is pending.
+- PR #7 and #9 still overlap. No PR was merged and production remains unchanged.
+- A local clone/lockfile generation attempt was blocked by DNS resolution for GitHub; a committed lockfile and clean `npm ci` remain unverified.
