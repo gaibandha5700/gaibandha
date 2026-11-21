@@ -76,7 +76,9 @@ Bengali-only, mobile-first public information platform. This document tracks the
 - Preview `/map` returned HTTP 200 with the SVG map. Production on `main` (commit `b7f0c551`) still returns HTTP 404 for `/map` because the map/route batch is not merged.
 - The PR branch is 66 commits ahead and 1 commit behind `main`; GitHub reports it mergeable. Update/review the branch against current main before merging. No merge or production deployment was performed.
 - Real-device/mobile, screen-reader, keyboard interaction, live search-result smoke tests, and independent official boundary validation remain outstanding.
-\n\n## Continuous feature roadmap and changelog — 2026-11-21
+
+
+## Continuous feature roadmap and changelog — 2026-11-21
 
 ### Delivered in this development batch
 - [x] Interactive upazila comparison chart on `/statistics`: users can switch among population, households, male and female totals; the chart sorts descending and includes an accessible data-table alternative. Values are sourced from existing published/verified 2022 upazila fields; no database writes or new dependencies.
@@ -198,3 +200,15 @@ Bengali-only, mobile-first public information platform. This document tracks the
 - Production runtime error/log queries for the last 30 minutes returned no errors and no logs. The 24-hour error aggregation still contains seven historical municipality UUID-parsing errors; the fix is in PR #14 and is not in production.
 - Branch review: PR #14 is the sole open integration PR (Draft). No stale branch was deleted; closed/superseded work remains preserved. No production merge or deployment.
 - Remaining P1/P2 work: commit a lockfile after review, real mobile/keyboard/screen-reader testing, protected-preview route inspection, and DGHS facility source cross-check (no bulk import or inferred coordinates).
+
+
+## Run 7 — 2026-11-22: keyboard access to the chart scroll region
+
+- [in progress] Added a labelled, keyboard-focusable region around the horizontal-scroll SVG chart (`src/components/statistics-comparison.tsx`, commit `6b84337`). The region now has `role=region`, a Bengali `aria-label` and `tabIndex=0`.
+- [ ] Verify the new Vercel preview, keyboard scrolling, chart description and data-table alternative before marking this item complete.
+
+### Updated priorities
+1. **P1 — Accessibility verification:** test keyboard focus and horizontal scroll for the statistics chart, then mobile viewport, screen-reader and navigation checks.
+2. **P1 — Production directory UUID fix:** keep the verified `slice(13)` correction in PR #14; production main still has the historic defect. Do not promote without authorization.
+3. **P2 — DGHS source cross-check:** compare the 43 health-directory entries with the official facility registry; record mismatches and source provenance only, no bulk import.
+4. **P3 — Reproducible install:** package-lock remains absent. A local Git clone was blocked by DNS resolution; clean lockfile generation and npm-ci verification remain blocked until network access is available.
