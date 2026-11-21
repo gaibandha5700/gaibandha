@@ -50,7 +50,9 @@ Bengali-only, mobile-first public information platform. This document tracks the
 8. Responsive/accessibility/performance/security/testing review.
 
 ## Search refinement (2026-11-21)
-- Search matching now normalizes Bengali numerals to Arabic for text matching and includes English administrative names/slugs for upazilas, unions, municipalities, wards, and directory records. Pure numeric ward queries match the exact ward number rather than substring values. The updated preview build is pending verification.\n\n## Quality gates / status
+- Search matching now normalizes Bengali numerals to Arabic for text matching and includes English administrative names/slugs for upazilas, unions, municipalities, wards, and directory records. Pure numeric ward queries match the exact ward number rather than substring values. The updated preview build is pending verification.
+
+## Quality gates / status
 - [x] Approved map scope excludes all ward GIS layers; server-side page filtering limits client map data to district, upazila, union and municipality features.
 - [x] Static SVG accessibility review: interactive map features are contained in a labelled group (not flattened under image semantics); selected-area panel uses a polite live region. Real screen-reader/mobile-device testing remains pending.
 - [x] Inspect main branch tree, routes, shared chrome, data helper, schema, RLS and deployment.
@@ -184,19 +186,15 @@ Bengali-only, mobile-first public information platform. This document tracks the
 - Preview commit `c208249` is READY; compilation, lint/type checks and static generation (184/184) passed. Vercel Preview SSO blocks browser route inspection. Keyboard-only, mobile viewport and assistive-technology testing remain pending. No data/schema change.
 
 
-## Run 9 — statistics CSV export (2026-11-22)
-
-- [in progress] Add a CSV export for the selected upazila comparison metric, preserving the current descending order and exact available rows; include Bengali headers, 2022, source name, source URL and source-check timestamp, and a UTF-8 BOM for spreadsheet compatibility.
-- Export is client-side and uses the existing verified/published census fields. It adds no dependency, database write or schema change.
-- Acceptance: the selected metric and rows match the chart/table; all fields are quoted and escaped; formula-leading text is guarded; download filename is metric-specific; preview build and browser download behavior are verified separately.
-- [ready] Continue mobile/keyboard/screen-reader audit and DGHS source cross-check; do not add ward GIS or infer coordinates.
 
 
-## Run 9 implementation review — 2026-11-22
+## Run 10 — CSV export verification and current state (2026-11-22)
 
-- Code review found the export button callback missing from the first implementation commit; it was corrected before marking the feature ready. The download handler now builds a UTF-8 BOM CSV, quotes/escapes all cells, guards formula-leading text and includes source provenance. Preview build/download verification is still pending.
-
-
-## CSV export encoding correction — 2026-11-22
-
-- [in progress] Corrected CSV source-string escaping to produce actual CRLF row separators and a UTF-8 BOM (not literal backslash sequences). The final Preview build and browser download validation are pending.
+- Fixed CSV download lifecycle: the object URL is now revoked after a 1-second delay rather than immediately after the synthetic click.
+- Local jsdom harness PASS: download button/filename, UTF-8 BOM, formula-leading text protection, source URL and delayed object-URL cleanup.
+- Latest code Preview for commit `f8d20ce` is READY; Vercel build completed. Local lint and typecheck also passed after the fix. Preview routes remain SSO-protected from this audit environment.
+- Earlier clean sandbox `npm ci`, build (184/184 static pages), lint/typecheck and `npm audit` (0 vulnerabilities) passed using the generated temporary lockfile and existing public Supabase environment values. The lockfile was not committed; reproducibility remains an open priority.
+- Production route smoke: `/`, `/statistics`, `/search`, `/map`, `/robots.txt`, `/sitemap.xml`, `/directory/health`, `/district`, `/data` and `/sources` all returned HTTP 200.
+- Production runtime error/log queries for the last 30 minutes returned no errors and no logs. The 24-hour error aggregation still contains seven historical municipality UUID-parsing errors; the fix is in PR #14 and is not in production.
+- Branch review: PR #14 is the sole open integration PR (Draft). No stale branch was deleted; closed/superseded work remains preserved. No production merge or deployment.
+- Remaining P1/P2 work: commit a lockfile after review, real mobile/keyboard/screen-reader testing, protected-preview route inspection, and DGHS facility source cross-check (no bulk import or inferred coordinates).
