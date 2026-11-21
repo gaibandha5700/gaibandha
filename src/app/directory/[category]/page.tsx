@@ -66,11 +66,11 @@ export default async function DirectoryCategoryPage({ params, searchParams }: Pa
   const selectedWards = area.startsWith("union:")
     ? await getWardsByUnion(area.slice(6))
     : area.startsWith("municipality:")
-      ? await getWardsByMunicipality(area.slice(12))
+      ? await getWardsByMunicipality(area.slice(13))
       : [];
   let entries = allEntries.filter((item) => item.category === slug && (!upazilaId || item.upazila_id === upazilaId));
   if (area.startsWith("union:")) entries = entries.filter((item) => item.union_id === area.slice(6));
-  if (area.startsWith("municipality:")) entries = entries.filter((item) => item.municipality_id === area.slice(12));
+  if (area.startsWith("municipality:")) entries = entries.filter((item) => item.municipality_id === area.slice(13));
   if (wardId) entries = entries.filter((item) => item.ward_id === wardId);
   if (q) {
     const term = q.toLocaleLowerCase("bn-BD");
