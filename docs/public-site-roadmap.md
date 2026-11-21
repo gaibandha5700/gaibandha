@@ -181,4 +181,4 @@ Bengali-only, mobile-first public information platform. This document tracks the
 
 - [ready] Added a consistent high-visibility focus ring for links, buttons, form controls, summaries and tabindex elements; footer uses a contrasting focus ring on its dark background.
 - [ready] Expanded reduced-motion handling to all animations, transitions and smooth scrolling, while retaining the existing navigation motion override.
-- Verification pending on the latest preview: keyboard-only traversal, mobile viewport and assistive technology. No data or schema change.
+- Preview commit `c208249` is READY; compilation, lint/type checks and static generation (184/184) passed. Vercel Preview SSO blocks browser route inspection. Keyboard-only, mobile viewport and assistive-technology testing remain pending. No data/schema change.
