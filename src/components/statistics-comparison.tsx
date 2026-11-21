@@ -59,7 +59,7 @@ export default function StatisticsComparison({ data, sourceName, sourceUrl, sour
     document.body.appendChild(link);
     link.click();
     link.remove();
-    URL.revokeObjectURL(url);
+    window.setTimeout(() => URL.revokeObjectURL(url), 1000);
   };
 
   if (!rows.length) {
