@@ -31,6 +31,37 @@ export default function StatisticsComparison({ data, sourceName, sourceUrl, sour
   const chartHeight = Math.max(120, rows.length * 54 + 28);
   const barWidth = 520;
 
+  const downloadCsv = () => {
+    const escapeCell = (value: string | number) => {
+      let text = String(value);
+      if (/^[=+\\-@\\t\\r]/.test(text)) text = "'" + text;
+      return `"${text.replace(/"/g, '""')}"`;
+    };
+    const csvRows = [
+      ["উপজেলা", "সূচক", "মান", "তথ্যবর্ষ", "উৎস", "উৎস URL", "উৎস যাচাই তারিখ"],
+      ...rows.map((row) => [
+        row.name,
+        label,
+        row[metric] ?? "",
+        2022,
+        sourceName ?? "জনশুমারি ২০২২",
+        sourceUrl ?? "",
+        sourceCheckedAt ?? "",
+      ]),
+    ];
+    const csv = csvRows.map((row) => row.map(escapeCell).join(",")).join("\\r\\n");
+    const blob = new Blob(["\\uFEFF", csv], { type: "text/csv;charset=utf-8" });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = `gaibandha-upazila-${metric}-2022.csv`;
+    link.hidden = true;
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
+    URL.revokeObjectURL(url);
+  };
+
   if (!rows.length) {
     return <p className="mt-4 rounded-xl border border-dashed p-5 text-slate-600">এই সূচকের তুলনামূলক তথ্য পাওয়া যায়নি।</p>;
   }
