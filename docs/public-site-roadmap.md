@@ -169,3 +169,10 @@ Bengali-only, mobile-first public information platform. This document tracks the
 1. P1: keyboard/touch/reduced-motion/accessibility audit of directory filters and the map/statistics controls.
 2. P1: verify search, area and exact ward filters on the newest PR preview after this patch.
 3. P2: source-coverage review for health records using the official DGHS registry; keep corrections reviewable and avoid duplicate records.
+
+
+### Preview verification update — 2026-11-22
+
+- [x] Preview commit 366f593 reached READY. HTTP 200 checks passed for the municipality area-only health filter, exact ward-5 health filter (250-bed General Hospital), ward-6 government filter (Sadar Upazila Health Office), education empty-state + submission CTA, statistics chart, search, map, sitemap and robots.
+- [x] Area option rendered as `গাইবান্ধা পৌরসভা · গাইবান্ধা সদর` (one suffix, context preserved); filtered directory URLs are noindex.
+- The active branch was reconciled against current main and archived the previous head. The latest post-reconciliation preview commit 42f94 is queued; its deployment must be checked separately.
