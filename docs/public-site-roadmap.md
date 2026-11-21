@@ -195,3 +195,8 @@ Bengali-only, mobile-first public information platform. This document tracks the
 ## Run 9 implementation review — 2026-11-22
 
 - Code review found the export button callback missing from the first implementation commit; it was corrected before marking the feature ready. The download handler now builds a UTF-8 BOM CSV, quotes/escapes all cells, guards formula-leading text and includes source provenance. Preview build/download verification is still pending.
+
+
+## CSV export encoding correction — 2026-11-22
+
+- [in progress] Corrected CSV source-string escaping to produce actual CRLF row separators and a UTF-8 BOM (not literal backslash sequences). The final Preview build and browser download validation are pending.
