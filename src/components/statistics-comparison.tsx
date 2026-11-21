@@ -20,7 +20,7 @@ const metrics: { key: Metric; label: string }[] = [
 
 const format = (value: number) => value.toLocaleString("bn-BD");
 
-export default function StatisticsComparison({ data }: { data: Row[] }) {
+export default function StatisticsComparison({ data, sourceName, sourceUrl, sourceCheckedAt }: { data: Row[]; sourceName?: string | null; sourceUrl?: string | null; sourceCheckedAt?: string | null }) {
   const [metric, setMetric] = useState<Metric>("population");
   const label = metrics.find((item) => item.key === metric)?.label ?? "জনসংখ্যা";
   const rows = useMemo(
@@ -52,7 +52,7 @@ export default function StatisticsComparison({ data }: { data: Row[] }) {
           </button>
         ))}
       </div>
-      <p className="mt-3 text-sm text-slate-600">সর্বোচ্চ মান থেকে নিচের দিকে সাজানো · {label} · জনশুমারি ২০২২</p>
+      <div className="mt-3 flex flex-wrap items-center justify-between gap-3"><p className="text-sm text-slate-600">সর্বোচ্চ মান থেকে নিচের দিকে সাজানো · {label} · জনশুমারি ২০২২</p><button type="button" onClick={downloadCsv} className="rounded-lg border border-[#287154] bg-white px-4 py-2 text-sm font-semibold text-[#19372a] hover:bg-[#eeefe7]">CSV ডাউনলোড</button></div>
       <div className="mt-3 overflow-x-auto rounded-xl border bg-[#fcfcfa] p-2 sm:p-4">
         <svg
           role="img"
