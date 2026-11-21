@@ -71,7 +71,7 @@ export default function StatisticsComparison({ data }: { data: Row[] }) {
                 <text x="8" y={y + 18} fontSize="16" fill="#19372a">{row.name}</text>
                 <rect x="190" y={y} width={barWidth} height="26" rx="6" fill="#e7eee9" />
                 <rect x="190" y={y} width={width} height="26" rx="6" fill="#287154" />
-                <text x={Math.min(190 + width + 10, 790)} y={y + 18} fontSize="15" fontWeight="600" fill="#19372a" textAnchor={width > 430 ? "end" : "start"}>
+                <text x={190 + width + 10} y={y + 18} fontSize="15" fontWeight="600" fill="#19372a" textAnchor="start">
                   {format(value)}
                 </text>
               </g>
