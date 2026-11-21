@@ -249,3 +249,8 @@ The initial full search-page build for commit `dbddc25` failed the lint gate bec
 - Implemented a client-side CSV download for the selected upazila comparison metric in PR #14. Export includes the sorted rows, Bengali headers, 2022, source name, source URL and source checked timestamp; UTF-8 BOM and quoted/escaped cells support spreadsheet import, and formula-leading text is guarded.
 - Read-only database coverage cross-check: all 129 census-statistics records for 2022 are published/verified, have population values and source URLs. Directory categories: 22 education, 43 health and 2 government; each is published/verified and sourced. Ward assignment is sparse (2 health and 2 government records) and verified coordinates remain 0.
 - Preview/build and actual download interaction still require verification. No production data, schema, RLS or deployment changes.
+
+
+## Run 9 implementation review — 2026-11-22
+
+- Corrected the missing CSV download callback detected during source review before declaring the feature ready. The selected metric export includes sorted rows, 2022, source name, URL and source-check timestamp; spreadsheet-safe quoting/BOM and formula-leading text guard are implemented. The latest Vercel build and browser download test remain pending.
