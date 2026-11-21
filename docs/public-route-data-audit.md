@@ -86,3 +86,54 @@ Census snapshot coverage: district 1, upazila 7, union 81, municipality 4 and mu
 - A local clone/lockfile generation attempt was blocked by DNS resolution for GitHub; a committed lockfile and clean `npm ci` remain unverified.
 
 - PR #7 comparison against current `main`: 68 commits ahead and 1 behind; PR #9: 13 commits ahead and 0 behind. Both contain the map component/page and scope documentation, so they overlap materially.
+
+
+## Reconciliation snapshot — 2026-11-21 (follow-up)
+
+### Confirmed repository state
+
+- `main` remains at `b7f0c5510c9994dafbfb4fc1fb9d4232a64ea202`; the latest production-target deployment is READY for this commit.
+- PR #7 (`feat/public-route-audit-gis-map`) is 68 commits ahead and 1 commit behind `main`, diverged from its older merge base (`337fa6f`), and is currently reported not mergeable. Its map page/component and GIS RPC migration overlap with PR #9. Do not merge until the changes are reconciled.
+- PR #9 (`feat/admin-map-no-ward`) is based on current `main`, 13 commits ahead and 0 behind, and reported mergeable. It is a map-only implementation and remains Draft; preview/build review is still required.
+- PR #10 (municipality label fix) is 1 commit ahead of current `main`, 0 behind and reported mergeable. Mobile visual review is pending.
+- PR #12 (PostCSS override) is 1 commit ahead of current `main`, 0 behind and reported mergeable. Its prior clean-install verification was `npm audit` = 0 vulnerabilities, lint/typecheck/build passed; it remains Draft.
+- PR #11 (this audit) is 4 commits ahead of `main`, 0 behind; this documentation-only branch is still Draft.
+- PR #2 is 53 commits ahead and 21 behind `main`, diverged and not mergeable. Its patch removes shared header/footer rendering in directory routes; it is stale and must not be merged without a fresh review/reconciliation.
+
+### Search coverage follow-up
+
+- Main search currently omits published/verified ward entities and English/slug matching for administrative entities. A focused Draft PR #13 now adds paginated ward retrieval and search by names/numbers with Bengali numeral normalization, without depending on the unmerged district route.
+- PR #13 is based directly on current `main`, 2 commits ahead and 0 behind, and reported mergeable. Vercel Preview build and route smoke checks are pending.
+- PR #7 also contains search changes, so its search/map code must be reconciled before it can be merged.
+
+### Live database read-only snapshot
+
+| Table | Total | Published + verified |
+|---|---:|---:|
+| Districts | 1 | 1 |
+| Upazilas | 7 | 7 |
+| Unions | 81 | 81 |
+| Municipalities | 4 | 4 |
+| Wards | 765 | 765 |
+| Directory entries | 67 | 67 |
+| Census statistics | 129 | 129 |
+| Administrative boundaries | 129 | 129 current |
+| Administrative locations | 0 | 0 |
+| Education institution detail rows | 22 | 22 (linked detail records; parent publication governs public exposure) |
+
+The 129 boundary records are 1 district, 7 upazila, 81 union, 4 municipality and 36 ward. The active public GIS target remains the 93 non-ward boundaries only. No production schema or data writes were performed.
+
+### Reproducibility blocker
+
+- The repository still has no `package-lock.json`; `npm ci` cannot be used as a reproducible install.
+- DNS/network access from this audit environment cannot resolve GitHub, preventing a local clone and lockfile generation. Vercel builds can clone and install successfully, but local lint/type/build verification is not available in this environment.
+- Vercel build logs continue to report an unknown npm `cache-dir` configuration warning; it is non-fatal and remains to be traced to the project build configuration.
+- Production runtime error logs in the recent 30-minute window were empty.
+
+### Next priority
+
+1. Review and reconcile overlapping/stale PR #7 and #9; do not merge either automatically.
+2. Verify PR #13's Preview build and search smoke behavior before review.
+3. Review PR #10 mobile rendering and PR #12 security override before any merge.
+4. Resolve the lockfile/reproducible install issue and the non-fatal npm cache-dir warning.
+5. Continue the route-to-database and mobile/accessibility audit; do not create administrative coordinates without verified sources.
