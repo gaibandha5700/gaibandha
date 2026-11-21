@@ -3,11 +3,15 @@ import Link from "next/link";
 
 const navigation = [
   { href: "/", label: "হোম" },
+  { href: "/district", label: "জেলা পরিচিতি" },
+  { href: "/map", label: "মানচিত্র" },
   { href: "/upazila", label: "উপজেলা" },
+
   { href: "/municipality", label: "পৌরসভা" },
   { href: "/directory", label: "তথ্যভান্ডার" },
   { href: "/statistics", label: "পরিসংখ্যান" },
   { href: "/data", label: "তথ্য ক্যাটালগ" },
+
   { href: "/search", label: "তথ্য খুঁজুন" },
 ];
 
@@ -70,6 +74,12 @@ export function SiteFooter() {
           <Link href="/directory">তথ্যভান্ডার</Link>
           <Link href="/statistics">পরিসংখ্যান</Link>
           <Link href="/data">তথ্য ক্যাটালগ</Link>
+          <Link href="/district">জেলা পরিচিতি</Link>
+          <Link href="/map">মানচিত্র</Link>
+          <Link href="/sources">তথ্যসূত্র</Link>
+          <Link href="/about">আমাদের সম্পর্কে</Link>
+          <Link href="/contact">যোগাযোগ</Link>
+          <Link href="/privacy">গোপনীয়তা</Link>
           <Link href="/search">তথ্য খুঁজুন</Link>
         </div>
         <div className="site-footer-links">
