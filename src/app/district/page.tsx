@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { SiteHeader, SiteFooter } from "@/components/site-chrome";
+import { Breadcrumbs } from "@/components/breadcrumbs";
 import { getUpazilas, getUnionsByUpazila, getMunicipalitiesByUpazila } from "@/lib/directory";
 
 export const revalidate = 3600;
@@ -47,7 +48,7 @@ export default async function DistrictPage() {
     ["খানা", d?.households_total_2022], ["আয়তন (বর্গ কিমি)", c?.area_sq_km], ["জনঘনত্ব (প্রতি বর্গ কিমি)", c?.population_density_per_sq_km],
   ];
   return <main className="min-h-screen bg-[#fbfaf6] text-[#19372a]"><SiteHeader/><section className="mx-auto max-w-5xl px-5 py-12">
-    <nav className="mb-5 text-sm text-slate-500"><Link href="/">হোম</Link> / জেলা পরিচিতি</nav><p className="font-semibold text-[#287154]">রংপুর বিভাগ · বাংলাদেশ</p><h1 className="mt-2 text-3xl font-bold md:text-5xl">গাইবান্ধা জেলা</h1>
+    <Breadcrumbs items={[{ href: "/district", label: "জেলা পরিচিতি" }]} /><p className="font-semibold text-[#287154]">রংপুর বিভাগ · বাংলাদেশ</p><h1 className="mt-2 text-3xl font-bold md:text-5xl">গাইবান্ধা জেলা</h1>
     <p className="mt-4 max-w-3xl leading-8 text-slate-600">প্রশাসনিক কাঠামো, জনশুমারি ২০২২-এর প্রকাশিত তথ্য ও এলাকার পরিচিতি। তথ্যের উৎস ও সীমাবদ্ধতা প্রতিটি অংশে উল্লেখ করা হয়েছে।</p>
     <div className="mt-8 grid grid-cols-2 gap-3 sm:grid-cols-3">{[["উপজেলা",upazilas.length],["ইউনিয়ন",unionCount],["পৌরসভা",municipalityCount]].map(([label,value])=><div key={label} className="border-y border-[#d6dfd4] py-4"><p className="text-sm text-slate-500">{label}</p><p className="mt-1 text-2xl font-bold">{Number(value).toLocaleString("bn-BD")}</p></div>)}</div>
     <h2 className="mt-12 text-2xl font-bold">জনশুমারি ও গৃহগণনা ২০২২</h2>{d&&c?<div className="mt-5 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">{facts.map(([label,value])=><div key={label} className="border bg-white p-4"><p className="text-sm text-slate-500">{label}</p><p className="mt-2 text-xl font-semibold">{fmt(value as number|string|null)}</p></div>)}</div>:<p className="mt-4 text-slate-600">প্রকাশিত ও যাচাইকৃত জেলা-স্তরের Census তথ্য পাওয়া যায়নি।</p>}
