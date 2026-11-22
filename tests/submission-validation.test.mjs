@@ -6,8 +6,8 @@ test("trims whitespace and returns database-aligned effective lengths", () => {
   const result = validateSubmissionText("  স্কুল  ", "  একটি যাচাইযোগ্য তথ্য বিবরণ  ");
   assert.equal(result.normalizedItemName, "স্কুল");
   assert.equal(result.normalizedMessage, "একটি যাচাইযোগ্য তথ্য বিবরণ");
-  assert.equal(result.itemNameLength, 4);
-  assert.equal(result.messageLength, result.normalizedMessage.length);
+  assert.equal(result.itemNameLength, Array.from("স্কুল").length);
+  assert.equal(result.messageLength, Array.from(result.normalizedMessage).length);
   assert.equal(result.itemNameValid, true);
   assert.equal(result.messageValid, true);
 });
@@ -25,7 +25,7 @@ test("accepts item-name length boundaries after trimming", () => {
 });
 
 test("rejects details shorter than ten trimmed characters", () => {
-  assert.equal(validateSubmissionText("সঠিক নাম", " ৯ অক্ষর ").messageValid, false);
+  assert.equal(validateSubmissionText(" ৯ অক্ষর ", " ৯ অক্ষর ").messageValid, false);
   assert.equal(validateSubmissionText("সঠিক নাম", "         ").messageLength, 0);
 });
 
@@ -33,4 +33,10 @@ test("accepts detail length boundaries after trimming", () => {
   assert.equal(validateSubmissionText("সঠিক নাম", "1234567890").messageValid, true);
   assert.equal(validateSubmissionText("সঠিক নাম", "x".repeat(3000)).messageValid, true);
   assert.equal(validateSubmissionText("সঠিক নাম", "x".repeat(3001)).messageValid, false);
+});
+
+test("counts supplementary Unicode characters as one database character", () => {
+  assert.equal(validateSubmissionText("😀😀", "😀".repeat(10)).itemNameLength, 2);
+  assert.equal(validateSubmissionText("😀😀", "😀".repeat(10)).messageLength, 10);
+  assert.equal(validateSubmissionText("😀😀", "😀".repeat(10)).messageValid, true);
 });
