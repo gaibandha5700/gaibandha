@@ -7,6 +7,11 @@ test("home is active only on the root route", () => {
   assert.equal(isNavigationItemActive("/district", "/"), false);
 });
 
+test("null pathname falls back to the homepage only", () => {
+  assert.equal(isNavigationItemActive(null, "/"), true);
+  assert.equal(isNavigationItemActive(null, "/district"), false);
+});
+
 test("exact section routes are active", () => {
   assert.equal(isNavigationItemActive("/map", "/map"), true);
   assert.equal(isNavigationItemActive("/statistics", "/statistics"), true);
