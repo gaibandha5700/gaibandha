@@ -345,4 +345,12 @@ Bengali-only, mobile-first public information platform. This document tracks the
 - The shared anchor is inserted immediately after the header so route pages can reuse the behavior without per-page markup changes.
 - Focus styling uses the existing high-contrast focus-ring rule; the skip link remains visually hidden until keyboard focus.
 - No database/schema changes, data writes, or dependencies.
-- CI and Preview validation pending; verify focus/scroll behavior on desktop and narrow viewports.
+- GitHub Actions run #38 passed and Vercel Preview reached READY; merge commit `11067ba` is on main. SSO-protected Preview still prevents independent real-browser, mobile and screen-reader checks.
+
+
+## Run 20 — Sitemap content freshness (2026-11-22)
+- Removed synthetic generation-time `lastModified` values from static routes that have no source timestamp; crawlers are no longer told those pages changed every sitemap regeneration.
+- Home `lastModified` now reflects the latest published/verified public-data update timestamp from the existing cached aggregation.
+- Upazila, municipality, directory index and category sitemap timestamps derive from the latest corresponding published/verified record update; detail URLs use their own record timestamps. Missing or invalid timestamps are omitted instead of replaced with the current time.
+- Added a dependency-free helper and regression tests for latest-date selection, invalid/empty values and input immutability.
+- No database/schema/data changes, dependencies or production writes. CI and Vercel Preview verification pending.
