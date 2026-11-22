@@ -354,3 +354,11 @@ Bengali-only, mobile-first public information platform. This document tracks the
 - Added App Router segment error and root-layout error boundaries, reusing the fallback and retaining Bengali document language.
 - Added contract regression tests for accessibility semantics, recovery actions, reuse and root document markup.
 - No database/schema/data changes, dependencies or production writes. CI and Preview validation pending.
+
+
+## Run 22 — Actionable search empty state (2026-11-22)
+
+- Replaced the plain zero-result message on `/search` with a labelled, mobile-friendly guidance panel.
+- Added spelling/short-name and Bengali/English search tips, shortcuts to upazila, municipality and directory indexes, and a new-information submission CTA. The CTA reminds contributors that submissions are checked before publication.
+- Added static contract regression tests for the labelled state and recovery links.
+- No database/schema/data changes, dependencies or production writes. GitHub CI and Vercel Preview validation pending.
