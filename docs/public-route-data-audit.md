@@ -295,3 +295,9 @@ The initial full search-page build for commit `dbddc25` failed the lint gate bec
 - Closed PR #13 was reviewed against main and PR #14. The ward search feature, Bengali-digit normalization and parent-aware ward result UI are already implemented on main; the old PR branch is not copied wholesale.
 - Selectively incorporated its deterministic ward pagination tie-breaker into PR #14: ward_number.asc,id.asc. This stabilizes PostgREST page boundaries when the same ward_number occurs under different parents.
 - PR #1/#2/#9 are closed unmerged and their relevant header, directory/filter, district/GIS content is either superseded by merged main work or partially included in PR #14; their divergent heads remain preserved. No branch deletion was performed.
+
+
+## Run 11 — shareable statistics chart links
+- Added `metric` query parameter support in the statistics chart, allowing population (clean default), households, male and female comparisons to be shared and restored on load.
+- Metric changes synchronize the URL without a reload and preserve other query parameters and hash. Added clipboard copy and accessible status/selectable fallback.
+- Code commit: c34217e; preview verification pending. No production merge/deployment.
