@@ -3,9 +3,9 @@ function normalizePath(pathname) {
 }
 
 export function isNavigationItemActive(pathname, href) {
-  if (!pathname || !href) return false;
+  if (!href || pathname === "") return false;
 
-  const currentPath = normalizePath(pathname);
+  const currentPath = normalizePath(pathname ?? "/");
   const targetPath = normalizePath(href);
 
   if (targetPath === "/") return currentPath === "/";
