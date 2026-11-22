@@ -324,3 +324,17 @@ Bengali-only, mobile-first public information platform. This document tracks the
 - Footer date/time is rendered in Bengali for the Bangladesh timezone. If the timestamp cannot be retrieved, the footer falls back to a non-claiming unavailable message.
 - No schema, migration, or production data changes. Preview/CI validation pending.
 - Branch: `refactor/split-site-chrome-2026-11-22`.
+
+## Run 18 — Active primary navigation state (2026-11-22)
+- Extracted the primary navigation items and submission link into a shared configuration.
+- Introduced a route-matching helper that normalizes trailing slashes and matches section routes by path segment.
+- Split active-state rendering into a client component while keeping the site header and logo as server components.
+- Added `aria-current="page"` to active links in desktop and mobile navigation and restrained visual highlighting using existing styles.
+- Added regression tests for exact routes, nested routes, root matching, segment boundaries and trailing-slash normalization.
+- No database/schema/data changes or new dependencies.
+- Preview and remote CI verification pending.
+
+### Next priorities
+1. Verify active-route state on representative desktop/mobile pages, including nested directory and administrative routes.
+2. Continue accessible navigation, keyboard and small-screen QA.
+3. Review footer freshness behavior and production build after this integration.
