@@ -12,6 +12,7 @@ import {
   getWardsByMunicipality,
 } from "@/lib/directory";
 import { SiteHeader, SiteFooter } from "@/components/site-chrome";
+import { Breadcrumbs } from "@/components/breadcrumbs";
 import { parseDirectoryAreaFilter, validateDirectoryAreaSelection, validateDirectoryWardSelection } from "@/lib/directory-area-filter.mjs";
 
 export const revalidate = 60;
@@ -100,9 +101,7 @@ export default async function DirectoryCategoryPage({ params, searchParams }: Pa
     <main className="min-h-screen bg-slate-50 text-slate-900">
       <SiteHeader />
       <section className="mx-auto max-w-5xl px-4 py-12">
-        <nav aria-label="ধাপ নির্দেশনা" className="mb-5 text-sm text-slate-500">
-          <Link href="/">হোম</Link> / <Link href="/directory" className="mx-2">তথ্যভান্ডার</Link> / {category.label}
-        </nav>
+        <Breadcrumbs items={[{ href: "/directory", label: "তথ্যভান্ডার" }, { href: `/directory/${slug}`, label: category.label }]} />
         <p className="text-sm font-bold text-emerald-700">গাইবান্ধা জেলা · স্থানীয় তথ্য</p>
         <h1 className="mt-2 text-3xl font-extrabold sm:text-4xl">{category.label}</h1>
         <p className="mt-3 leading-7 text-slate-600">{category.description} — প্রকাশিত ও যাচাইকৃত প্রতিষ্ঠানের তালিকা।</p>
