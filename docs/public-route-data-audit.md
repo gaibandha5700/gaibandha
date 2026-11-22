@@ -339,3 +339,8 @@ The initial full search-page build for commit `dbddc25` failed the lint gate bec
 - Confirmed the directory filter options are loaded from the selected published/verified upazila context. A UUID-valid union/municipality query can still refer to an area outside that context.
 - Code change: validate the area against the loaded options and validate the ward against the selected area’s published/verified ward list. Invalid context is ignored with an accessible Bengali status; remaining valid filters continue.
 - Tests added for valid/mismatched area and ward contexts. Preview and CI pending; no production merge, database write, migration, or data changes.
+
+
+### Run 14 CI correction
+- GitHub Actions run #19 failed TypeScript validation: the existing .d.mts declaration did not expose the two new helper exports. The runtime helper and nine focused tests passed in a local Node test harness, but the TypeScript declaration was incomplete.
+- Updated src/lib/directory-area-filter.d.mts to declare both exports and their return types. The follow-up CI and Vercel Preview are pending; completion remains unverified until those checks finish.
