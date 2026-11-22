@@ -3,6 +3,7 @@ import Link from "next/link";
 import { getSiteUrl } from "@/lib/site-url";
 import { getUpazilas } from "@/lib/directory";
 import { SiteHeader, SiteFooter } from "@/components/site-chrome";
+import { Breadcrumbs } from "@/components/breadcrumbs";
 
 export const revalidate = 3600;
 
@@ -26,9 +27,7 @@ export default async function UpazilaIndexPage() {
     <main className="min-h-screen bg-slate-50 text-slate-900">
       <SiteHeader />
       <section className="mx-auto max-w-5xl px-4 py-12">
-        <nav aria-label="Breadcrumb" className="mb-5 text-sm text-slate-500">
-          <Link href="/" className="hover:text-emerald-700">হোম</Link> / উপজেলা
-        </nav>
+        <Breadcrumbs items={[{ href: "/upazila", label: "উপজেলা" }]} />
         <p className="text-sm font-bold tracking-wide text-emerald-700">জেলা পরিচিতি</p>
         <h1 className="mt-2 text-3xl font-extrabold sm:text-4xl">গাইবান্ধা জেলার ৭টি উপজেলা</h1>
         <p className="mt-4 max-w-2xl leading-8 text-slate-600">
