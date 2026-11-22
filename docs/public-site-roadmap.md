@@ -369,3 +369,10 @@ Bengali-only, mobile-first public information platform. This document tracks the
 - Static routes without a reliable source timestamp omit lastModified; malformed timestamps are also omitted.
 - Added shared date validation and regression tests for latest-date selection, invalid/empty dates and input immutability.
 - No database/schema/data changes or dependencies. Preview verification pending.
+
+
+## Run 24 — Keyboard guidance for the statistics chart (2026-11-23)
+- Linked the focusable horizontal-scroll chart region to concise Bengali keyboard instructions via `aria-describedby`.
+- Kept the native disclosure and semantic table as the data alternative.
+- Reworked regression assertions to check JSX attributes independently, avoiding unescaped curly-brace regex syntax that caused the CI test failure.
+- No database/schema/data changes or dependencies. Keyboard, mobile and screen-reader testing remains pending.
