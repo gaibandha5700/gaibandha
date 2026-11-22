@@ -6,7 +6,7 @@ import { primaryNavigation, submitNavigation } from "@/config/site-navigation";
 import { isNavigationItemActive } from "@/lib/navigation-active.mjs";
 
 export function PrimaryNavigation() {
-  const pathname = usePathname();
+  const pathname = usePathname() ?? "/";
 
   return (
     <>
