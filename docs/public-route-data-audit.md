@@ -301,3 +301,9 @@ The initial full search-page build for commit `dbddc25` failed the lint gate bec
 - Added `metric` query parameter support in the statistics chart, allowing population (clean default), households, male and female comparisons to be shared and restored on load.
 - Metric changes synchronize the URL without a reload and preserve other query parameters and hash. Added clipboard copy and accessible status/selectable fallback.
 - Code commit: c34217e; preview verification pending. No production merge/deployment.
+
+## Run 12 — statistics export and data-source spot-check
+
+- Added seven automated unit tests for the share-link and CSV helper, including CSV formula injection and provenance/encoding checks. Tests pass in the isolated Node runtime.
+- Official DGHS Facility Registry spot-checks (IDs 1237, 1279, 1255) matched facility names and administrative locations for Kanchipara (Fulchhari), Kanchibari (Sundarganj), and Kamdia (Gobindaganj). Registry page updates were 2026-07-28, 2026-05-21 and 2026-08-11 respectively. The sampled matches do not establish full 43-record validation; database source-check dates were not changed.
+- Preview browser testing remains limited by SSO. No database write or production promotion.
