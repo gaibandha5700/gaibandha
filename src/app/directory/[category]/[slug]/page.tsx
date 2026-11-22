@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import { getSiteUrl } from "@/lib/site-url";
 import { DIRECTORY_CATEGORIES, getDirectoryEntries, getDirectoryEntry, getEducationInstitution, getMunicipalityById, getUpazilaById, getUnionById, isDirectoryCategory } from "@/lib/directory";
 import { SiteHeader, SiteFooter } from "@/components/site-chrome";
+import { Breadcrumbs } from "@/components/breadcrumbs";
 
 export const revalidate = 60;
 export const dynamicParams = true;
@@ -69,12 +70,7 @@ export default async function DirectoryEntryPage({ params }: PageProps) {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd).replace(/</g, "\\u003c") }} />
       <SiteHeader />
       <article className="mx-auto max-w-4xl px-4 py-12">
-        <nav aria-label="Breadcrumb" className="mb-6 text-sm text-slate-500">
-          <Link href="/" className="hover:text-emerald-700">হোম</Link> /
-          <Link href="/directory" className="mx-2 hover:text-emerald-700">ডিরেক্টরি</Link> /
-          <Link href={`/directory/${slug}`} className="mx-2 hover:text-emerald-700">{category.label}</Link> /
-          {entry.name_bn}
-        </nav>
+        <Breadcrumbs items={[{ href: "/directory", label: "তথ্যভান্ডার" }, { href: `/directory/${slug}`, label: category.label }, { href: `/directory/${slug}/${entry.slug}`, label: entry.name_bn }]} />
         <p className="text-sm font-bold text-emerald-700">{category.label} · গাইবান্ধা জেলা</p>
         <h1 className="mt-2 text-3xl font-extrabold sm:text-4xl">{entry.name_bn}</h1>
                 {entry.summary && <p className="mt-5 text-lg leading-8 text-slate-700">{entry.summary}</p>}
