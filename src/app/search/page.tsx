@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { DIRECTORY_CATEGORIES, getAllDirectoryEntries, getAllPublicWards, getMunicipalitiesByUpazila, getUpazilas, getUnionsByUpazila } from "@/lib/directory";
+import { DIRECTORY_CATEGORIES, getAllDirectoryEntries, getAllPublicMunicipalities, getAllPublicUnions, getAllPublicWards, getUpazilas } from "@/lib/directory";
 import { SiteHeader, SiteFooter } from "@/components/site-chrome";
 import { Breadcrumbs } from "@/components/breadcrumbs";
 
@@ -20,20 +20,26 @@ const containsSearch = (value: string | null | undefined, query: string) => norm
 export default async function SearchPage({ searchParams }: Props) {
   const { q = "" } = await searchParams;
   const query = normalizeSearchText(q);
-  const [entries, upazilas, wardRows] = await Promise.all([getAllDirectoryEntries(), getUpazilas(), getAllPublicWards()]);
-  const [unionGroups, municipalityGroups] = await Promise.all([
-    Promise.all(upazilas.map((u) => getUnionsByUpazila(u.id))),
-    Promise.all(upazilas.map((u) => getMunicipalitiesByUpazila(u.id))),
+  const [entries, upazilas, wardRows, unionRows, municipalityRows] = await Promise.all([
+    getAllDirectoryEntries(),
+    getUpazilas(),
+    getAllPublicWards(),
+    getAllPublicUnions(),
+    getAllPublicMunicipalities(),
   ]);
-  const unions = unionGroups.flat().map((union) => ({
+  const upazilaById = new Map(upazilas.map((item) => [item.id, item] as const));
+  const upazilaOrder = new Map<string, number>(upazilas.map((item, index) => [item.id, index] as const));
+  const compareByUpazila = (a: { upazila_id: string; name_bn: string }, b: { upazila_id: string; name_bn: string }) =>
+    (upazilaOrder.get(a.upazila_id) ?? 0) - (upazilaOrder.get(b.upazila_id) ?? 0) || a.name_bn.localeCompare(b.name_bn, "bn-BD");
+  const unions = unionRows.map((union) => ({
     ...union,
-    upazilaName: upazilas.find((u) => u.id === union.upazila_id)?.name_bn ?? "",
-    upazilaSlug: upazilas.find((u) => u.id === union.upazila_id)?.slug ?? "",
-  }));
-  const municipalities = municipalityGroups.flat().map((municipality) => ({
+    upazilaName: upazilaById.get(union.upazila_id)?.name_bn ?? "",
+    upazilaSlug: upazilaById.get(union.upazila_id)?.slug ?? "",
+  })).sort(compareByUpazila);
+  const municipalities = municipalityRows.map((municipality) => ({
     ...municipality,
-    upazilaName: upazilas.find((u) => u.id === municipality.upazila_id)?.name_bn ?? "",
-  }));
+    upazilaName: upazilaById.get(municipality.upazila_id)?.name_bn ?? "",
+  })).sort(compareByUpazila);
   const matchingMunicipalities = query ? municipalities.filter((item) => [item.name_bn, item.name_en, item.slug].some((value) => containsSearch(value, query))) : [];
   const matches = query ? entries.filter((entry) =>
     [entry.name_bn, entry.name_en, entry.summary, entry.description, entry.address, entry.slug]
