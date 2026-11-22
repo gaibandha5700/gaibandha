@@ -7,3 +7,17 @@ export function parseDirectoryAreaFilter(value) {
   const id = value.slice(prefix === "union" ? 6 : 13);
   return uuidPattern.test(id) ? { type: prefix, id } : null;
 }
+
+export function validateDirectoryAreaSelection(area, parsedArea, availableAreaValues) {
+  if (!area) return { valid: true, value: "", parsed: null };
+  if (!parsedArea || parsedArea.type === "all" || !availableAreaValues.includes(area)) {
+    return { valid: false, value: "", parsed: null };
+  }
+  return { valid: true, value: area, parsed: parsedArea };
+}
+
+export function validateDirectoryWardSelection(wardId, selectedArea, selectedWardIds) {
+  if (!wardId) return { valid: true, value: "" };
+  if (!selectedArea || !selectedWardIds.includes(wardId)) return { valid: false, value: "" };
+  return { valid: true, value: wardId };
+}
