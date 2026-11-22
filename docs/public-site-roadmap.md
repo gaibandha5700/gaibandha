@@ -381,3 +381,10 @@ Bengali-only, mobile-first public information platform. This document tracks the
 - Added regression coverage for the map layer/zoom control labels, SVG group instructions, keyboard-operable boundary paths, zoomed arrow-key panning, selected-area live region and alternative area list.
 - Tests verify source-level accessibility contracts only; browser, screen-reader and real-device interaction testing remain separate validation.
 - No map behavior, database, dependencies or production data changed.
+
+
+## Run 26 — Submission text validation and accessible feedback (2026-11-23)
+- Aligned client-side item-name and message validation with the API/database trimmed-length checks (2–180 and 10–3,000 characters) and normalize the submitted values before POST.
+- Added visible trimmed-character counts, linked field error descriptions, assertive validation feedback, and `aria-pressed` states for the submission-type buttons.
+- Added dependency-free boundary tests for whitespace normalization and minimum/maximum lengths. No API, RLS, schema, data or publication changes.
+- Preview/CI validation pending.
