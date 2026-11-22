@@ -247,3 +247,18 @@ Bengali-only, mobile-first public information platform. This document tracks the
 - CSV formula protection now applies to string values only (numeric values remain numbers) and guards formula-leading strings after whitespace; embedded quotes, commas and line breaks remain quoted.
 - Acceptance checks: `npm run test` runs the seven tests; Next build/type/lint and preview are still required for the integrated branch.
 - No database writes, schema changes, new dependency or production promotion. Browser SSO/mobile/keyboard tests remain outstanding.
+
+
+## Run 12 — automated quality gate (2026-11-22)
+
+- Added `.github/workflows/quality-checks.yml` on the active integration branch. Pull requests targeting `main`, pushes to `main` or this integration branch, and manual runs execute dependency installation, ESLint, TypeScript checks and the Node regression tests.
+- This adds CI coverage for the existing statistics share/CSV helper tests without exposing Supabase secrets or touching production data.
+- CI uses `npm install` because the repository still has no committed lockfile. Reproducible `npm ci` remains a separate backlog item and this workflow does not claim to verify a clean lockfile install.
+- The production build remains delegated to Vercel Preview for each branch commit; the CI workflow deliberately avoids build-time Supabase access.
+
+### Next priorities
+1. Check the actual Actions run result for this workflow and fix failures.
+2. Browser-level test chart metric switching, share-link copy/fallback and CSV download; preview SSO/browser inspection is still a blocker.
+3. Keyboard, mobile viewport, screen-reader and reduced-motion review.
+4. Add a lockfile only after a real dependency-resolved generation and clean-install test.
+5. Cross-check the remaining published/verified health directory records against DGHS, without bulk data changes.
