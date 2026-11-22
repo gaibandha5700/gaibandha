@@ -310,11 +310,11 @@ The initial full search-page build for commit `dbddc25` failed the lint gate bec
 
 
 
-## Run 12 — quality gate and current read-only audit (2026-11-22)
+## Run 13 — quality gate and current read-only audit (2026-11-22)
 
-- Added a GitHub Actions quality workflow on the active integration branch. It installs dependencies, runs ESLint, TypeScript checks and the statistics export/share helper regression tests on pull requests to main and pushes to main/integration.
+- Added a GitHub Actions quality workflow on the active integration branch. The run for commit `2cbee6c` completed successfully: dependency installation, ESLint, TypeScript checks and the statistics export/share helper regression tests passed.
 - `package-lock.json` remains absent; CI therefore uses `npm install`, and a reproducible `npm ci` gate is not claimed.
 - A fresh read-only SQL check confirms RLS enabled on all 11 public tables and 7/7 upazilas, 81/81 unions, 4/4 municipalities, 765/765 wards, 67/67 directory entries, 129/129 census rows and 129/129 boundary rows are published and verified. This count-level check does not independently validate each factual field or boundary.
 - Supabase security and health advisor lints are empty. The performance advisor lists 8 INFO unused-index notices; no index removal was attempted.
-- Production and Preview Vercel error/warning logs for the latest 30-minute window were empty at the audit time. Preview SSO still prevents browser-level interaction checks from this environment.
-- No Supabase write, migration, production merge or deployment occurred.
+- Production and Preview Vercel error/warning logs for the latest 30-minute window were empty at the audit time. The latest Preview is still queued; SSO/browser-level interaction checks remain unavailable from this environment.
+- No Supabase write or migration occurred. Production merge/deployment remains gated.
