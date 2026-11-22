@@ -362,3 +362,10 @@ Bengali-only, mobile-first public information platform. This document tracks the
 - Added spelling/short-name and Bengali/English search tips, shortcuts to upazila, municipality and directory indexes, and a new-information submission CTA. The CTA reminds contributors that submissions are checked before publication.
 - Added static contract regression tests for the labelled state and recovery links.
 - No database/schema/data changes, dependencies or production writes. GitHub CI and Vercel Preview validation pending.
+
+## Run 23 — Sitemap content freshness (2026-11-22)
+
+- Replaced synthetic sitemap-generation timestamps with source-backed update dates for the homepage, upazila, union, municipality and verified directory index/detail URLs.
+- Static routes without a reliable source timestamp omit lastModified; malformed timestamps are also omitted.
+- Added shared date validation and regression tests for latest-date selection, invalid/empty dates and input immutability.
+- No database/schema/data changes or dependencies. Preview verification pending.
