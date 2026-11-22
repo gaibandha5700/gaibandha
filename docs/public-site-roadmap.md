@@ -295,3 +295,12 @@ Bengali-only, mobile-first public information platform. This document tracks the
 ### Run 14 CI correction
 - GitHub Actions run #19 failed TypeScript validation: the existing .d.mts declaration did not expose the two new helper exports. The runtime helper and nine focused tests passed in a local Node test harness, but the TypeScript declaration was incomplete.
 - Updated src/lib/directory-area-filter.d.mts to declare both exports and their return types. The follow-up CI and Vercel Preview are pending; completion remains unverified until those checks finish.
+
+
+## Run 14 — Verification complete (2026-11-22)
+- Directory area and ward context guard implemented: a UUID-valid area must also be present in the options for the selected upazila; a ward must belong to the selected area's verified/published ward list. Stale/mismatched selections are ignored with an accessible Bengali status and neutral select values.
+- Local Node regression harness: **16/16 tests passed** (9 directory-area/context tests and 7 statistics export/share tests).
+- GitHub Actions #23: **SUCCESS** on commit `98ce7a77db5f6a3f6cfd50d887df9c92c0cf514f` (install, lint, TypeScript and regression tests). The earlier #19 type declaration failure was corrected.
+- Vercel Preview commit `98ce7a7`: **READY**; Next.js build completed and generated **184/184** pages. Browser route inspection remains blocked by Preview SSO, so keyboard/mobile/screen-reader and direct filter-interaction tests remain outstanding.
+- PR #14 remains Draft/Open/mergeable; integration branch is 52 commits ahead of `main`, 0 behind. The other branches remain preserved; no branch deletion or production promotion.
+- Production is still on main commit `2b0382de`. No database writes, schema changes or migrations. Current audit: 11/11 public tables RLS-enabled; security/health advisors 0 lints; performance 8 INFO unused-index findings.
