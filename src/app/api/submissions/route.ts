@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { validateSubmissionTextForApi } from "@/lib/submission-api-validation.mjs";
 
 const categories = new Set(["education", "health", "police", "government", "business", "tourism", "transport", "community"]);
 const uuidPattern = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
@@ -19,16 +20,17 @@ export async function POST(request: Request) {
   if (clean(body.website, 200)) return NextResponse.json({ ok: true });
 
   const submissionType = body.submission_type === "correction" ? "correction" : body.submission_type === "new_entry" ? "new_entry" : "";
-  const itemName = clean(body.item_name, 180);
-  const message = clean(body.message, 3000);
+  const textValidation = validateSubmissionTextForApi(body.item_name, body.message);
+  const itemName = textValidation.normalizedItemName;
+  const message = textValidation.normalizedMessage;
   const submitterName = clean(body.submitter_name, 100);
   const contact = clean(body.contact, 120);
   const sourceUrl = clean(body.source_url, 500);
   const category = clean(body.category, 40);
   const entryId = clean(body.directory_entry_id, 36);
 
-  if (!submissionType || itemName.length < 2 || message.length < 10 || body.consent !== true) {
-    return NextResponse.json({ error: "প্রতিষ্ঠানের নাম, কমপক্ষে ১০ অক্ষরের বিবরণ এবং সম্মতি প্রয়োজন।" }, { status: 400 });
+  if (!submissionType || !textValidation.itemNameValid || !textValidation.messageValid || body.consent !== true) {
+    return NextResponse.json({ error: "নাম ২–১৮০ অক্ষর, বিবরণ ১০–৩,০০০ অক্ষর এবং সম্মতি প্রয়োজন।" }, { status: 400 });
   }
   if (submissionType === "new_entry" && !category) {
     return NextResponse.json({ error: "নতুন তথ্যের জন্য বিভাগ নির্বাচন করুন।" }, { status: 400 });
