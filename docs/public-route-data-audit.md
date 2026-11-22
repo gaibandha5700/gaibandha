@@ -275,3 +275,16 @@ The initial full search-page build for commit `dbddc25` failed the lint gate bec
 - [ ] Keyboard Tab can focus the chart scroll region and arrow/page scrolling can reach the chart's right edge.
 - [ ] Chart labels, accessible SVG title/description and data-table alternative remain available.
 - [ ] No regressions in metric switches or CSV download.
+
+
+## Current snapshot refresh — 2026-11-22
+
+- Current production main: 2b0382de0e920e5fe4cabe84246e050814dd3242 (logo-size commit). Previous snapshots above are historical; they do not describe current route status.
+- Production HTTP checks: /, /statistics, /map, /robots.txt, and /sitemap.xml returned 200. Production HTML is accessible through Vercel deployment-aware fetch despite preview protection.
+- Confirmed SEO defect: /statistics, /map, and the directory-category preview were inheriting the global homepage Open Graph title/description and root og:url; route-specific canonical/title did not correct social metadata. PR #14 now contains page-specific OG/Twitter metadata for statistics, map, district and category routes; it awaits Preview verification.
+- Read-only Supabase snapshot: district 1, upazila 7, union 81, municipality 4, wards 765, directory entries 67, education details 22, census statistics 129, administrative boundaries 129, administrative locations 0, submissions 0. These are table totals; public filters remain publication/verification dependent.
+- Published/verified source coverage: education 22/22, health 43/43, government 2/2 with source URL and source-check date; Census 2022 129/129 with population, households, source URL and checked date.
+- RLS is enabled on all 11 public tables. Security and health advisor lints: 0. Performance advisor: 8 INFO unused-index notices; no index removal was performed. Public submission policy is INSERT-only with pending status; no public SELECT policy was found in the policy snapshot.
+- Vercel production error aggregation: 7 historical UUID parsing errors on /directory/[category] (first 2026-11-21 18:38:35Z, last 18:39:02Z); last 30-minute production runtime log window was empty. The slice(13) correction remains in PR #14, not production.
+- Branch consolidation: 16 refs total. Only PR #14 is open; it is Draft, Vercel status success, and 25 commits ahead/0 behind main at the snapshot. Other branch heads are divergent/stale and preserved; no branch deletion or production promotion was performed.
+- Next: verify new social metadata in the READY Preview, continue mobile/keyboard/screen-reader testing, and cross-check the 43 health entries against the official DGHS Facility Registry without bulk-importing unverified data.

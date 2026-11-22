@@ -7,8 +7,20 @@ export const revalidate = 3600;
 export const metadata = {
   title: "জনসংখ্যা ও পরিসংখ্যান",
   description: "গাইবান্ধা জেলার প্রকাশিত প্রশাসনিক ও জনসংখ্যার পরিসংখ্যান।",
-
   alternates: { canonical: "/statistics" },
+  openGraph: {
+    title: "জনসংখ্যা ও পরিসংখ্যান — আমাদের গাইবান্ধা",
+    description: "গাইবান্ধা জেলার প্রকাশিত প্রশাসনিক ও জনসংখ্যার পরিসংখ্যান।",
+    url: "/statistics",
+    siteName: "আমাদের গাইবান্ধা",
+    locale: "bn_BD",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "জনসংখ্যা ও পরিসংখ্যান — আমাদের গাইবান্ধা",
+    description: "গাইবান্ধা জেলার প্রকাশিত প্রশাসনিক ও জনসংখ্যার পরিসংখ্যান।",
+  },
 };
 const fmt = (n: number | null | undefined) => n == null ? "—" : n.toLocaleString("bn-BD");
 const dateFmt = (date: string | null | undefined) => date ? new Date(date).toLocaleDateString("bn-BD") : "তথ্য পাওয়া যায়নি";

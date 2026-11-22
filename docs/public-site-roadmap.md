@@ -212,3 +212,14 @@ Bengali-only, mobile-first public information platform. This document tracks the
 2. **P1 — Production directory UUID fix:** keep the verified `slice(13)` correction in PR #14; production main still has the historic defect. Do not promote without authorization.
 3. **P2 — DGHS source cross-check:** compare the 43 health-directory entries with the official facility registry; record mismatches and source provenance only, no bulk import.
 4. **P3 — Reproducible install:** package-lock remains absent. A local Git clone was blocked by DNS resolution; clean lockfile generation and npm-ci verification remain blocked until network access is available.
+
+
+## Run 8 — 2026-11-22: page-specific social metadata
+
+- Confirmed production HTML for /statistics, /map, and the directory-category preview inherited the homepage Open Graph title/description and root URL despite route-specific titles and canonical links.
+- Implemented route-specific Open Graph and Twitter titles, descriptions and URLs for /statistics, /map, /district, and dynamic directory category pages in the integration branch. Filtered directory URLs still use the clean category URL for canonical/social URL and retain noindex.
+- Acceptance: Preview HTML must show each route's own social title/description and absolute URL resolved from metadataBase; canonical remains unchanged; filtered category views stay noindex.
+- Production route checks: homepage, statistics, map, robots.txt and sitemap.xml returned HTTP 200. Preview SSO was bypassed through the deployment-aware fetch path for HTML checks.
+- Live data audit: 67/67 published/verified directory entries have source URL and source-check date (22 education, 43 health, 2 government); 129/129 verified census rows have population, households, source URL and checked date; 11/11 public tables have RLS enabled. Security/health advisors are clear; performance advisor reports 8 informational unused-index findings.
+- Branch audit: 16 refs total (main plus 15 other refs); PR #14 is the only open PR and remains the sole active integration branch, 25 commits ahead/0 behind before this run. Older divergent refs were preserved, not deleted.
+- Remaining SEO scope: audit dynamic detail pages, search/submit metadata, directory index, upazila/municipality index, and other static pages for route-specific social metadata.

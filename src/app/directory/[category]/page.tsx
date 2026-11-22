@@ -30,10 +30,23 @@ export async function generateMetadata({ params, searchParams }: PageProps): Pro
   const category = DIRECTORY_CATEGORIES.find((item) => item.slug === slug)!;
   const hasFilters = Boolean(filters.q?.trim() || filters.upazila || filters.area || filters.ward);
   const hasPublishedEntries = (await getAllDirectoryEntries()).some((item) => item.category === slug);
+  const title = category.label + " — গাইবান্ধা";
+  const description = "গাইবান্ধা জেলার " + category.label + " সম্পর্কিত প্রকাশিত ও যাচাইকৃত স্থানীয় তথ্য, ঠিকানা ও যোগাযোগের বিবরণ দেখুন।";
+  const socialTitle = category.label + " — গাইবান্ধা | আমাদের গাইবান্ধা";
+  const canonical = "/directory/" + slug;
   return {
-    title: `${category.label} — গাইবান্ধা`,
-    description: `গাইবান্ধা জেলার ${category.label} সম্পর্কিত প্রকাশিত ও যাচাইকৃত স্থানীয় তথ্য, ঠিকানা ও যোগাযোগের বিবরণ দেখুন।`,
-    alternates: { canonical: `/directory/${slug}` },
+    title,
+    description,
+    alternates: { canonical },
+    openGraph: {
+      title: socialTitle,
+      description,
+      url: canonical,
+      siteName: "আমাদের গাইবান্ধা",
+      locale: "bn_BD",
+      type: "website",
+    },
+    twitter: { card: "summary_large_image", title: socialTitle, description },
     robots: { index: !hasFilters && hasPublishedEntries, follow: true },
   };
 }
