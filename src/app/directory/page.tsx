@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { getAllDirectoryEntries, DIRECTORY_CATEGORIES } from "@/lib/directory";
 import { SiteHeader, SiteFooter } from "@/components/site-chrome";
+import { Breadcrumbs } from "@/components/breadcrumbs";
 
 export const revalidate = 3600;
 
@@ -19,7 +20,7 @@ export default async function DirectoryPage() {
     <main className="min-h-screen bg-slate-50 text-slate-900">
       <SiteHeader />
       <section className="mx-auto max-w-5xl px-4 py-12">
-        <nav aria-label="ধাপ নির্দেশনা" className="mb-5 text-sm text-slate-500"><Link href="/">হোম</Link> / তথ্য ডিরেক্টরি</nav>
+        <Breadcrumbs items={[{ href: "/directory", label: "তথ্যভান্ডার" }]} />
         <p className="text-sm font-bold tracking-wide text-emerald-700">স্থানীয় তথ্যভান্ডার</p>
         <h1 className="mt-2 text-3xl font-extrabold sm:text-4xl">গাইবান্ধার প্রতিষ্ঠান ও সেবা</h1>
         <p className="mt-4 max-w-2xl leading-8 text-slate-600">বিভাগ নির্বাচন করে প্রকাশিত ও যাচাইকৃত প্রতিষ্ঠানের তথ্য, ঠিকানা ও যোগাযোগের বিবরণ দেখুন।</p>

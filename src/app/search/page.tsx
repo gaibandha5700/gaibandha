@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { DIRECTORY_CATEGORIES, getAllDirectoryEntries, getAllPublicWards, getMunicipalitiesByUpazila, getUpazilas, getUnionsByUpazila } from "@/lib/directory";
 import { SiteHeader, SiteFooter } from "@/components/site-chrome";
+import { Breadcrumbs } from "@/components/breadcrumbs";
 
 export const revalidate = 60;
 export const metadata: Metadata = {
@@ -62,7 +63,7 @@ export default async function SearchPage({ searchParams }: Props) {
     <main className="min-h-screen bg-slate-50 text-slate-900">
       <SiteHeader />
       <section className="mx-auto max-w-5xl px-4 py-12">
-        <nav aria-label="Breadcrumb" className="mb-5 text-sm text-slate-500"><Link href="/">হোম</Link> / তথ্য খুঁজুন</nav>
+        <Breadcrumbs items={[{ href: "/search", label: "তথ্য খুঁজুন" }]} />
         <p className="text-sm font-bold text-emerald-700">গাইবান্ধা জেলার তথ্যভান্ডার</p><h1 className="mt-2 text-3xl font-extrabold">তথ্য খুঁজুন</h1>
         <form action="/search" className="mt-6 flex gap-2"><input name="q" type="search" defaultValue={q} placeholder="উপজেলা, ইউনিয়ন, ওয়ার্ড বা প্রতিষ্ঠানের নাম" aria-label="তথ্য খুঁজুন" className="min-w-0 flex-1 rounded-xl border border-slate-300 bg-white px-4 py-3 outline-none focus:border-emerald-600" /><button className="rounded-xl bg-emerald-700 px-5 py-3 font-bold text-white">খুঁজুন</button></form>
         {!query ? <p className="mt-8 text-slate-600">খোঁজার জন্য কোনো এলাকা, ওয়ার্ড, প্রতিষ্ঠান বা সেবার নাম লিখুন।</p> : <p className="mt-7 text-sm text-slate-600">“{q}” অনুসন্ধানে {resultCount.toLocaleString("bn-BD")}টি ফলাফল পাওয়া গেছে।</p>}

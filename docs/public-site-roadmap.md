@@ -302,5 +302,17 @@ Bengali-only, mobile-first public information platform. This document tracks the
 - Local Node regression harness: **16/16 tests passed** (9 directory-area/context tests and 7 statistics export/share tests).
 - GitHub Actions #23: **SUCCESS** on commit `98ce7a77db5f6a3f6cfd50d887df9c92c0cf514f` (install, lint, TypeScript and regression tests). The earlier #19 type declaration failure was corrected.
 - Vercel Preview commit `98ce7a7`: **READY**; Next.js build completed and generated **184/184** pages. Browser route inspection remains blocked by Preview SSO, so keyboard/mobile/screen-reader and direct filter-interaction tests remain outstanding.
-- PR #14 remains Draft/Open/mergeable; integration branch is 52 commits ahead of `main`, 0 behind. The other branches remain preserved; no branch deletion or production promotion.
+- PR #14 was subsequently merged to `main` after verification. Divergent historical branches remain preserved; no branch deletion or production promotion.
 - Production is still on main commit `2b0382de`. No database writes, schema changes or migrations. Current audit: 11/11 public tables RLS-enabled; security/health advisors 0 lints; performance 8 INFO unused-index findings.
+
+
+## Run 16 — Shared accessible breadcrumbs (2026-11-22)
+- Consolidated repeated breadcrumb markup into `src/components/breadcrumbs.tsx` with consistent Bengali navigation semantics, keyboard-visible focus styling, responsive wrapping, and a current-page marker.
+- Added Schema.org `BreadcrumbList` JSON-LD using the configured canonical site URL.
+- Reused the component across district, informational, search, directory, upazila, union, and municipality index/detail pages (17 routes).
+- No database/schema changes. Existing data and publication rules remain unchanged.
+- PR #15 (reproducible `npm ci` lockfile workflow) was verified: GitHub Actions quality run #27 SUCCESS and Vercel Preview READY; merged to main as commit `30f2dfcbc1fcadf255c3029350735baf4e4609be`.
+- PR #14 statistics and directory filter integration was merged to main as `e3be35b`; current production deployment for that commit is READY.
+- Supabase audit: 11 public tables with RLS enabled; security and health advisors report no findings. Eight unused-index notices are INFO only and were not acted on.
+- The new breadcrumb branch awaits CI and Vercel Preview validation. Browser/device, screen-reader and direct visual testing remain limited by preview access.
+- Historical branches with divergent/unmerged work are preserved; no destructive cleanup or schema/data changes were performed.

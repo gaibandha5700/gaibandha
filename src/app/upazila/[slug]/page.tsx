@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import { getSiteUrl } from "@/lib/site-url";
 import { getMunicipalitiesByUpazila, getUpazilaBySlug, getUpazilas, getUnionsByUpazila } from "@/lib/directory";
 import { SiteHeader, SiteFooter } from "@/components/site-chrome";
+import { Breadcrumbs } from "@/components/breadcrumbs";
 
 export const revalidate = 60;
 export const dynamicParams = true;
@@ -55,10 +56,7 @@ export default async function UpazilaDetailPage({ params }: PageProps) {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd).replace(/</g, "\\u003c") }} />
       <SiteHeader />
       <section className="mx-auto max-w-5xl px-4 py-12">
-        <nav aria-label="Breadcrumb" className="mb-5 text-sm text-slate-500">
-          <Link href="/" className="hover:text-emerald-700">হোম</Link> /
-          <Link href="/upazila" className="mx-2 hover:text-emerald-700">উপজেলা</Link> / {upazila.name_bn}
-        </nav>
+        <Breadcrumbs items={[{ href: "/upazila", label: "উপজেলা" }, { href: `/upazila/${upazila.slug}`, label: upazila.name_bn + " উপজেলা" }]} />
         <p className="text-sm font-bold tracking-wide text-emerald-700">গাইবান্ধা জেলা · রংপুর বিভাগ</p>
         <h1 className="mt-2 text-3xl font-extrabold sm:text-4xl">{upazila.name_bn} উপজেলা</h1>
         <p className="mt-4 max-w-2xl leading-8 text-slate-600">
