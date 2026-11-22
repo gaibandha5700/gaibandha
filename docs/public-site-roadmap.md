@@ -281,3 +281,12 @@ Bengali-only, mobile-first public information platform. This document tracks the
 - Repository inventory: 16 refs including main; PR #14 is the only open PR. PRs #1–13 are closed and unmerged; their branches are preserved rather than deleted.
 - Active integration branch compares 43 commits ahead and 0 behind main. Old branch comparisons show divergence; no destructive cleanup or production promotion was attempted.
 - Next: browser-level keyboard/mobile/screen-reader testing; lockfile transfer/reproducible CI install; full DGHS cross-check of 43 health entries.
+
+
+## Run 14 — directory filter context validation (2026-11-22)
+- Validate area query selections against the actual union/municipality options loaded for the selected upazila; syntactically valid UUIDs alone are not sufficient.
+- Ignore stale or mismatched area filters and stale ward filters instead of silently returning a misleading empty list. Render an accessible status explanation and reset the affected select to its neutral value.
+- Added four focused Node regression tests for cross-upazila area mismatches and ward context.
+- Acceptance: matching area + ward remain effective; area from another upazila and ward without its parent area are ignored; no database query is introduced by validation; public entries remain published/verified-only.
+- Preview, GitHub CI and build verification pending. No schema or production changes.
+- Next priorities: committed dependency lockfile/clean install, device + keyboard + screen-reader review, and full DGHS cross-check of 43 health records.
