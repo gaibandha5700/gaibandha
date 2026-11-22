@@ -13,7 +13,7 @@ test("search no-results guidance has a labelled section and clear heading", () =
 
 test("search no-results guidance offers area, directory and submission recovery links", () => {
   for (const path of ["/upazila", "/municipality", "/directory", "/submit"]) {
-    assert.match(searchPage, new RegExp(`href="\\\\${path}"`));
+    assert.ok(searchPage.includes(`href="${path}"`), `missing recovery link: ${path}`);
   }
   assert.match(searchPage, /বাংলা ও ইংরেজি নাম/);
   assert.match(searchPage, /প্রকাশের আগে তথ্য যাচাই করা হবে/);
