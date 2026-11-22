@@ -307,3 +307,14 @@ The initial full search-page build for commit `dbddc25` failed the lint gate bec
 - Added seven automated unit tests for the share-link and CSV helper, including CSV formula injection and provenance/encoding checks. Tests pass in the isolated Node runtime.
 - Official DGHS Facility Registry spot-checks (IDs 1237, 1279, 1255) matched facility names and administrative locations for Kanchipara (Fulchhari), Kanchibari (Sundarganj), and Kamdia (Gobindaganj). Registry page updates were 2026-07-28, 2026-05-21 and 2026-08-11 respectively. The sampled matches do not establish full 43-record validation; database source-check dates were not changed.
 - Preview browser testing remains limited by SSO. No database write or production promotion.
+
+
+
+## Run 12 — quality gate and current read-only audit (2026-11-22)
+
+- Added a GitHub Actions quality workflow on the active integration branch. It installs dependencies, runs ESLint, TypeScript checks and the statistics export/share helper regression tests on pull requests to main and pushes to main/integration.
+- `package-lock.json` remains absent; CI therefore uses `npm install`, and a reproducible `npm ci` gate is not claimed.
+- A fresh read-only SQL check confirms RLS enabled on all 11 public tables and 7/7 upazilas, 81/81 unions, 4/4 municipalities, 765/765 wards, 67/67 directory entries, 129/129 census rows and 129/129 boundary rows are published and verified. This count-level check does not independently validate each factual field or boundary.
+- Supabase security and health advisor lints are empty. The performance advisor lists 8 INFO unused-index notices; no index removal was attempted.
+- Production and Preview Vercel error/warning logs for the latest 30-minute window were empty at the audit time. Preview SSO still prevents browser-level interaction checks from this environment.
+- No Supabase write, migration, production merge or deployment occurred.
