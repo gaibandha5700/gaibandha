@@ -290,3 +290,8 @@ Bengali-only, mobile-first public information platform. This document tracks the
 - Acceptance: matching area + ward remain effective; area from another upazila and ward without its parent area are ignored; no database query is introduced by validation; public entries remain published/verified-only.
 - Preview, GitHub CI and build verification pending. No schema or production changes.
 - Next priorities: committed dependency lockfile/clean install, device + keyboard + screen-reader review, and full DGHS cross-check of 43 health records.
+
+
+### Run 14 CI correction
+- GitHub Actions run #19 failed TypeScript validation: the existing .d.mts declaration did not expose the two new helper exports. The runtime helper and nine focused tests passed in a local Node test harness, but the TypeScript declaration was incomplete.
+- Updated src/lib/directory-area-filter.d.mts to declare both exports and their return types. The follow-up CI and Vercel Preview are pending; completion remains unverified until those checks finish.
