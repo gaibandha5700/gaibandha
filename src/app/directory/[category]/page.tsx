@@ -12,7 +12,7 @@ import {
   getWardsByMunicipality,
 } from "@/lib/directory";
 import { SiteHeader, SiteFooter } from "@/components/site-chrome";
-import { parseDirectoryAreaFilter } from "@/lib/directory-area-filter.mjs";
+import { parseDirectoryAreaFilter, validateDirectoryAreaSelection, validateDirectoryWardSelection } from "@/lib/directory-area-filter.mjs";
 
 export const revalidate = 60;
 export const dynamicParams = true;
@@ -78,16 +78,18 @@ export default async function DirectoryCategoryPage({ params, searchParams }: Pa
       };
     }));
   const areas = areaGroups.flatMap((group) => [...group.unions, ...group.municipalities]);
-  const selectedWards = parsedArea?.type === "union"
-    ? await getWardsByUnion(parsedArea.id)
-    : parsedArea?.type === "municipality"
-      ? await getWardsByMunicipality(parsedArea.id)
+  const areaValidation = validateDirectoryAreaSelection(area, parsedArea, areas.map((item) => item.value));
+  const selectedArea = areaValidation.parsed;
+  const selectedWards = selectedArea?.type === "union"
+    ? await getWardsByUnion(selectedArea.id)
+    : selectedArea?.type === "municipality"
+      ? await getWardsByMunicipality(selectedArea.id)
       : [];
+  const wardValidation = validateDirectoryWardSelection(wardId, areaValidation.value, selectedWards.map((item) => item.id));
   let entries = allEntries.filter((item) => item.category === slug && (!upazilaId || item.upazila_id === upazilaId));
-  if (parsedArea?.type === "union") entries = entries.filter((item) => item.union_id === parsedArea.id);
-  if (parsedArea?.type === "municipality") entries = entries.filter((item) => item.municipality_id === parsedArea.id);
-  if (area && !parsedArea) entries = [];
-  if (wardId) entries = entries.filter((item) => item.ward_id === wardId);
+  if (selectedArea?.type === "union") entries = entries.filter((item) => item.union_id === selectedArea.id);
+  if (selectedArea?.type === "municipality") entries = entries.filter((item) => item.municipality_id === selectedArea.id);
+  if (wardValidation.value) entries = entries.filter((item) => item.ward_id === wardValidation.value);
   if (q) {
     const term = q.toLocaleLowerCase("bn-BD");
     entries = entries.filter((item) => [item.name_bn, item.name_en, item.summary, item.description, item.address]
@@ -104,11 +106,12 @@ export default async function DirectoryCategoryPage({ params, searchParams }: Pa
         <p className="text-sm font-bold text-emerald-700">গাইবান্ধা জেলা · স্থানীয় তথ্য</p>
         <h1 className="mt-2 text-3xl font-extrabold sm:text-4xl">{category.label}</h1>
         <p className="mt-3 leading-7 text-slate-600">{category.description} — প্রকাশিত ও যাচাইকৃত প্রতিষ্ঠানের তালিকা।</p>
+        {(!areaValidation.valid || !wardValidation.valid) && <p role="status" className="mt-4 rounded-xl border border-amber-200 bg-amber-50 p-3 text-sm leading-6 text-amber-900">{!areaValidation.valid ? "নির্বাচিত এলাকা বর্তমান উপজেলার তালিকার সঙ্গে মেলেনি। এলাকা ফিল্টার বাদ দেওয়া হয়েছে; সঠিক এলাকা নির্বাচন করে আবার চেষ্টা করুন।" : "নির্বাচিত ওয়ার্ড বর্তমান এলাকার তালিকার সঙ্গে মেলেনি। ওয়ার্ড ফিল্টার বাদ দেওয়া হয়েছে; সঠিক ওয়ার্ড নির্বাচন করে আবার চেষ্টা করুন।"}</p>}
         <form action={`/directory/${slug}`} method="get" className="mt-7 grid gap-3 rounded-2xl border border-slate-200 bg-white p-4 sm:grid-cols-5">
           <label className="sm:col-span-2"><span className="mb-1 block text-xs font-semibold text-slate-600">নাম দিয়ে খুঁজুন</span><input name="q" defaultValue={q} placeholder="প্রতিষ্ঠানের নাম বা ঠিকানা" className="w-full rounded-xl border border-slate-300 px-3 py-3 outline-none focus:border-emerald-600" /></label>
           <label><span className="mb-1 block text-xs font-semibold text-slate-600">উপজেলা</span><select name="upazila" defaultValue={upazilaId} className="w-full rounded-xl border border-slate-300 bg-white px-3 py-3"><option value="">সব উপজেলা</option>{upazilas.map((item) => <option key={item.id} value={item.id}>{item.name_bn}</option>)}</select></label>
-          <label><span className="mb-1 block text-xs font-semibold text-slate-600">ইউনিয়ন / পৌরসভা</span><select name="area" defaultValue={area} className="w-full rounded-xl border border-slate-300 bg-white px-3 py-3"><option value="">সব এলাকা</option>{areas.map((item) => <option key={item.value} value={item.value}>{item.label}</option>)}</select></label>
-          <label><span className="mb-1 block text-xs font-semibold text-slate-600">ওয়ার্ড</span><select name="ward" defaultValue={wardId} disabled={!area || selectedWards.length === 0} className="w-full rounded-xl border border-slate-300 bg-white px-3 py-3 disabled:bg-slate-50 disabled:text-slate-400"><option value="">সব ওয়ার্ড</option>{selectedWards.map((item) => <option key={item.id} value={item.id}>{item.ward_number.toLocaleString("bn-BD")} নম্বর ওয়ার্ড</option>)}</select></label>
+          <label><span className="mb-1 block text-xs font-semibold text-slate-600">ইউনিয়ন / পৌরসভা</span><select name="area" defaultValue={areaValidation.value} className="w-full rounded-xl border border-slate-300 bg-white px-3 py-3"><option value="">সব এলাকা</option>{areas.map((item) => <option key={item.value} value={item.value}>{item.label}</option>)}</select></label>
+          <label><span className="mb-1 block text-xs font-semibold text-slate-600">ওয়ার্ড</span><select name="ward" defaultValue={wardValidation.value} disabled={!areaValidation.value || selectedWards.length === 0} className="w-full rounded-xl border border-slate-300 bg-white px-3 py-3 disabled:bg-slate-50 disabled:text-slate-400"><option value="">সব ওয়ার্ড</option>{selectedWards.map((item) => <option key={item.id} value={item.id}>{item.ward_number.toLocaleString("bn-BD")} নম্বর ওয়ার্ড</option>)}</select></label>
           <div className="flex items-center gap-2 sm:col-span-5"><button className="rounded-xl bg-emerald-700 px-5 py-3 font-bold text-white">ফিল্টার প্রয়োগ</button><Link href={`/directory/${slug}`} className="rounded-xl border border-slate-300 px-5 py-3 text-sm font-semibold text-slate-700">ফিল্টার মুছুন</Link><span className="ml-auto text-sm text-slate-500">{entries.length.toLocaleString("bn-BD")}টি ফলাফল</span></div>
         </form>
         <div className="mt-6 flex justify-end"><Link href="/submit" className="rounded-xl border border-emerald-200 bg-emerald-50 px-4 py-2.5 text-sm font-semibold text-emerald-800">নতুন প্রতিষ্ঠানের তথ্য জমা দিন</Link></div>
