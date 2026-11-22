@@ -288,3 +288,10 @@ The initial full search-page build for commit `dbddc25` failed the lint gate bec
 - Vercel production error aggregation: 7 historical UUID parsing errors on /directory/[category] (first 2026-11-21 18:38:35Z, last 18:39:02Z); last 30-minute production runtime log window was empty. The slice(13) correction remains in PR #14, not production.
 - Branch consolidation: 16 refs total. Only PR #14 is open; it is Draft, Vercel status success, and 25 commits ahead/0 behind main at the snapshot. Other branch heads are divergent/stale and preserved; no branch deletion or production promotion was performed.
 - Next: verify new social metadata in the READY Preview, continue mobile/keyboard/screen-reader testing, and cross-check the 43 health entries against the official DGHS Facility Registry without bulk-importing unverified data.
+
+
+## Branch consolidation addendum — 2026-11-22
+
+- Closed PR #13 was reviewed against main and PR #14. The ward search feature, Bengali-digit normalization and parent-aware ward result UI are already implemented on main; the old PR branch is not copied wholesale.
+- Selectively incorporated its deterministic ward pagination tie-breaker into PR #14: ward_number.asc,id.asc. This stabilizes PostgREST page boundaries when the same ward_number occurs under different parents.
+- PR #1/#2/#9 are closed unmerged and their relevant header, directory/filter, district/GIS content is either superseded by merged main work or partially included in PR #14; their divergent heads remain preserved. No branch deletion was performed.

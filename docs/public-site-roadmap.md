@@ -223,3 +223,10 @@ Bengali-only, mobile-first public information platform. This document tracks the
 - Live data audit: 67/67 published/verified directory entries have source URL and source-check date (22 education, 43 health, 2 government); 129/129 verified census rows have population, households, source URL and checked date; 11/11 public tables have RLS enabled. Security/health advisors are clear; performance advisor reports 8 informational unused-index findings.
 - Branch audit: 16 refs total (main plus 15 other refs); PR #14 is the only open PR and remains the sole active integration branch, 25 commits ahead/0 behind before this run. Older divergent refs were preserved, not deleted.
 - Remaining SEO scope: audit dynamic detail pages, search/submit metadata, directory index, upazila/municipality index, and other static pages for route-specific social metadata.
+
+
+## Run 8 consolidation — stable public ward pagination
+
+- Reviewed closed PR #13 against main and the active integration branch. Its ward-search coverage and Bengali/Arabic digit handling are already present in the current main implementation; its older search page is not copied because main also contains the district result and richer existing UI.
+- Selectively adopted the remaining useful query change: deterministic ordering for paginated public wards by ward_number, then id (ward_number.asc,id.asc). This prevents equal ward numbers across different administrative parents from changing page boundaries or producing unstable pagination.
+- PR #13 remains closed and its branch is preserved; this change is recorded on the single active integration branch.
