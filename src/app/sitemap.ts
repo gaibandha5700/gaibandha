@@ -14,16 +14,19 @@ export const revalidate = 3600;
 const PAGE_SIZE = 500;
 
 function dateFromTimestamp(value: string | null) {
-  return value ? new Date(value) : undefined;
+  if (!value) return undefined;
+  const timestamp = Date.parse(value);
+  return Number.isFinite(timestamp) ? new Date(timestamp) : undefined;
 }
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const siteUrl = getSiteUrl();
   const publicDataUpdatedAt = await getLatestPublicDataUpdatedAt();
+  const homepageLastModified = dateFromTimestamp(publicDataUpdatedAt);
   const entries: MetadataRoute.Sitemap = [
     {
       url: siteUrl.toString(),
-      ...(dateFromTimestamp(publicDataUpdatedAt) ? { lastModified: dateFromTimestamp(publicDataUpdatedAt) } : {}),
+      ...(homepageLastModified ? { lastModified: homepageLastModified } : {}),
       changeFrequency: "weekly",
       priority: 1,
     },
@@ -37,20 +40,20 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   ];
 
   const upazilas = await getUpazilas();
-  const upazilaIndexUpdatedAt = latestUpdatedAt(upazilas);
+  const upazilaIndexDate = dateFromTimestamp(latestUpdatedAt(upazilas));
   entries.push({
     url: new URL("/upazila", siteUrl).toString(),
-    ...(dateFromTimestamp(upazilaIndexUpdatedAt) ? { lastModified: dateFromTimestamp(upazilaIndexUpdatedAt) } : {}),
+    ...(upazilaIndexDate ? { lastModified: upazilaIndexDate } : {}),
     changeFrequency: "weekly",
     priority: 0.9,
   });
 
   const municipalityUpdates: Array<{ updated_at?: string | null }> = [];
   for (const upazila of upazilas) {
-    const upazilaUpdatedAt = latestUpdatedAt([upazila]);
+    const upazilaDate = dateFromTimestamp(latestUpdatedAt([upazila]));
     entries.push({
       url: new URL(`/upazila/${upazila.slug}`, siteUrl).toString(),
-      ...(dateFromTimestamp(upazilaUpdatedAt) ? { lastModified: dateFromTimestamp(upazilaUpdatedAt) } : {}),
+      ...(upazilaDate ? { lastModified: upazilaDate } : {}),
       changeFrequency: "monthly",
       priority: 0.8,
     });
@@ -62,30 +65,30 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     municipalityUpdates.push(...municipalities.map(({ updated_at }) => ({ updated_at })));
 
     for (const union of unions) {
-      const unionUpdatedAt = latestUpdatedAt([union]);
+      const unionDate = dateFromTimestamp(latestUpdatedAt([union]));
       entries.push({
         url: new URL(`/upazila/${upazila.slug}/${union.slug}`, siteUrl).toString(),
-        ...(dateFromTimestamp(unionUpdatedAt) ? { lastModified: dateFromTimestamp(unionUpdatedAt) } : {}),
+        ...(unionDate ? { lastModified: unionDate } : {}),
         changeFrequency: "monthly",
         priority: 0.7,
       });
     }
 
     for (const municipality of municipalities) {
-      const municipalityUpdatedAt = latestUpdatedAt([municipality]);
+      const municipalityDate = dateFromTimestamp(latestUpdatedAt([municipality]));
       entries.push({
         url: new URL(`/municipality/${municipality.slug}`, siteUrl).toString(),
-        ...(dateFromTimestamp(municipalityUpdatedAt) ? { lastModified: dateFromTimestamp(municipalityUpdatedAt) } : {}),
+        ...(municipalityDate ? { lastModified: municipalityDate } : {}),
         changeFrequency: "monthly",
         priority: 0.7,
       });
     }
   }
 
-  const municipalityIndexUpdatedAt = latestUpdatedAt(municipalityUpdates);
+  const municipalityIndexDate = dateFromTimestamp(latestUpdatedAt(municipalityUpdates));
   entries.push({
     url: new URL("/municipality", siteUrl).toString(),
-    ...(dateFromTimestamp(municipalityIndexUpdatedAt) ? { lastModified: dateFromTimestamp(municipalityIndexUpdatedAt) } : {}),
+    ...(municipalityIndexDate ? { lastModified: municipalityIndexDate } : {}),
     changeFrequency: "weekly",
     priority: 0.8,
   });
@@ -110,10 +113,10 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       directoryUpdates.push(...page.map(({ updated_at }) => ({ updated_at })));
 
       for (const item of page) {
-        const itemUpdatedAt = latestUpdatedAt([item]);
+        const itemDate = dateFromTimestamp(latestUpdatedAt([item]));
         entries.push({
           url: new URL(`/directory/${category.slug}/${item.slug}`, siteUrl).toString(),
-          ...(dateFromTimestamp(itemUpdatedAt) ? { lastModified: dateFromTimestamp(itemUpdatedAt) } : {}),
+          ...(itemDate ? { lastModified: itemDate } : {}),
           changeFrequency: "monthly",
           priority: 0.6,
         });
@@ -124,20 +127,20 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     }
 
     if (categoryHasEntries) {
-      const categoryUpdatedAt = latestUpdatedAt(categoryUpdates);
+      const categoryDate = dateFromTimestamp(latestUpdatedAt(categoryUpdates));
       entries.push({
         url: new URL(`/directory/${category.slug}`, siteUrl).toString(),
-        ...(dateFromTimestamp(categoryUpdatedAt) ? { lastModified: dateFromTimestamp(categoryUpdatedAt) } : {}),
+        ...(categoryDate ? { lastModified: categoryDate } : {}),
         changeFrequency: "weekly",
         priority: 0.7,
       });
     }
   }
 
-  const directoryIndexUpdatedAt = latestUpdatedAt(directoryUpdates);
+  const directoryIndexDate = dateFromTimestamp(latestUpdatedAt(directoryUpdates));
   entries.push({
     url: new URL("/directory", siteUrl).toString(),
-    ...(dateFromTimestamp(directoryIndexUpdatedAt) ? { lastModified: dateFromTimestamp(directoryIndexUpdatedAt) } : {}),
+    ...(directoryIndexDate ? { lastModified: directoryIndexDate } : {}),
     changeFrequency: "weekly",
     priority: 0.9,
   });
