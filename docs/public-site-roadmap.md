@@ -262,3 +262,9 @@ Bengali-only, mobile-first public information platform. This document tracks the
 3. Keyboard, mobile viewport, screen-reader and reduced-motion review.
 4. Add a lockfile only after a real dependency-resolved generation and clean-install test.
 5. Cross-check the remaining published/verified health directory records against DGHS, without bulk data changes.
+
+
+### Directory filter input guard — 2026-11-22
+- Added a shared parser for union/municipality area query values that requires the exact prefix and canonical UUID before any ward/database lookup. Invalid filters return an empty result instead of issuing a malformed UUID query.
+- Regression tests cover both prefix lengths, empty selection, unknown prefixes and malformed UUIDs. Local lint, type-check, 12 tests and build (184/184) passed; remote CI/Preview verification pending.
+- Lockfile generation and clean install/build were verified locally, but the sandbox cannot push to GitHub without credentials; the lockfile transfer remains deferred and CI still uses `npm install`.

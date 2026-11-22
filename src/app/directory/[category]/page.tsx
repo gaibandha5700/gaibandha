@@ -12,6 +12,7 @@ import {
   getWardsByMunicipality,
 } from "@/lib/directory";
 import { SiteHeader, SiteFooter } from "@/components/site-chrome";
+import { parseDirectoryAreaFilter } from "@/lib/directory-area-filter.mjs";
 
 export const revalidate = 60;
 export const dynamicParams = true;
@@ -59,6 +60,7 @@ export default async function DirectoryCategoryPage({ params, searchParams }: Pa
   const upazilaId = filters.upazila ?? "";
   const area = filters.area ?? "";
   const wardId = filters.ward ?? "";
+  const parsedArea = parseDirectoryAreaFilter(area);
   const [upazilas, allEntries] = await Promise.all([
     getUpazilas(),
     getAllDirectoryEntries(),
@@ -76,14 +78,15 @@ export default async function DirectoryCategoryPage({ params, searchParams }: Pa
       };
     }));
   const areas = areaGroups.flatMap((group) => [...group.unions, ...group.municipalities]);
-  const selectedWards = area.startsWith("union:")
-    ? await getWardsByUnion(area.slice(6))
-    : area.startsWith("municipality:")
-      ? await getWardsByMunicipality(area.slice(13))
+  const selectedWards = parsedArea?.type === "union"
+    ? await getWardsByUnion(parsedArea.id)
+    : parsedArea?.type === "municipality"
+      ? await getWardsByMunicipality(parsedArea.id)
       : [];
   let entries = allEntries.filter((item) => item.category === slug && (!upazilaId || item.upazila_id === upazilaId));
-  if (area.startsWith("union:")) entries = entries.filter((item) => item.union_id === area.slice(6));
-  if (area.startsWith("municipality:")) entries = entries.filter((item) => item.municipality_id === area.slice(13));
+  if (parsedArea?.type === "union") entries = entries.filter((item) => item.union_id === parsedArea.id);
+  if (parsedArea?.type === "municipality") entries = entries.filter((item) => item.municipality_id === parsedArea.id);
+  if (area && !parsedArea) entries = [];
   if (wardId) entries = entries.filter((item) => item.ward_id === wardId);
   if (q) {
     const term = q.toLocaleLowerCase("bn-BD");

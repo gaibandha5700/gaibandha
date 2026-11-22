@@ -318,3 +318,9 @@ The initial full search-page build for commit `dbddc25` failed the lint gate bec
 - Supabase security and health advisor lints are empty. The performance advisor lists 8 INFO unused-index notices; no index removal was attempted.
 - Production and Preview Vercel error/warning logs for the latest 30-minute window were empty at the audit time. The latest Preview is still queued; SSO/browser-level interaction checks remain unavailable from this environment.
 - No Supabase write or migration occurred. Production merge/deployment remains gated.
+
+
+## Directory filter input validation — 2026-11-22
+- Area query parameters are now parsed and UUID-validated before ward fetches and filtering. This prevents malformed or truncated union/municipality UUID values from reaching PostgREST.
+- Automated tests cover the municipality 13-character prefix, union prefix, invalid prefixes and malformed IDs. Local lint, type-check, 12 tests and a 184-page build passed; remote CI/Preview verification pending.
+- Lockfile generation and clean `npm ci`/build were locally verified in a Node 22 sandbox, but the sandbox could not push to GitHub; lockfile remains absent from the integration branch.
