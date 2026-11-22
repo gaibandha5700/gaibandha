@@ -239,3 +239,11 @@ Bengali-only, mobile-first public information platform. This document tracks the
 - Acceptance: direct links for households/male/female restore the selected metric, switching metrics updates the URL without reload, unrelated query parameters and hash remain intact, and clipboard failure exposes a selectable link.
 - Preview/build and browser interaction verification are pending for this commit; mark complete only after READY preview and tests.
 - Next: verify query initialization/synchronization and clipboard fallback in a browser; continue mobile/keyboard/screen-reader audit.
+
+## Run 12 — 2026-11-22: share-link and CSV export regression coverage
+
+- Extracted statistics URL and CSV serialization into a small dependency-free helper so the existing share/export behavior can be tested directly.
+- Added a built-in Node test suite for metric URL synchronization, clean default links, absolute share links, CSV BOM/provenance, quoting and formula-injection protection after whitespace/control characters.
+- CSV formula protection now applies to string values only (numeric values remain numbers) and guards formula-leading strings after whitespace; embedded quotes, commas and line breaks remain quoted.
+- Acceptance checks: `npm run test` runs the seven tests; Next build/type/lint and preview are still required for the integrated branch.
+- No database writes, schema changes, new dependency or production promotion. Browser SSO/mobile/keyboard tests remain outstanding.
