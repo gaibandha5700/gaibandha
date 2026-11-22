@@ -376,3 +376,8 @@ Bengali-only, mobile-first public information platform. This document tracks the
 - Kept the native disclosure and semantic table as the data alternative.
 - Reworked regression assertions to check JSX attributes independently, avoiding unescaped curly-brace regex syntax that caused the CI test failure.
 - No database/schema/data changes or dependencies. Keyboard, mobile and screen-reader testing remains pending.
+
+## Run 25 — Administrative map accessibility contract tests (2026-11-23)
+- Added regression coverage for the map layer/zoom control labels, SVG group instructions, keyboard-operable boundary paths, zoomed arrow-key panning, selected-area live region and alternative area list.
+- Tests verify source-level accessibility contracts only; browser, screen-reader and real-device interaction testing remain separate validation.
+- No map behavior, database, dependencies or production data changed.
