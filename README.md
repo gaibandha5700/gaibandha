@@ -11,11 +11,17 @@
 
 ## Local development
 ```bash
-npm install
+npm ci
 npm run dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000).
+
+## Dependency management and CI
+- Commit `package-lock.json` with dependency changes.
+- Use `npm install` when adding or updating dependencies locally, then review and commit the lockfile.
+- Use `npm ci` for clean, reproducible installs (CI and fresh local setup).
+- GitHub Actions runs lint, TypeScript checks and regression tests on pull requests and main pushes. Vercel validates the production build.
 
 ## Environment variables
 Set the canonical production origin in Vercel Project Settings → Environment Variables:
