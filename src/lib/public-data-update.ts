@@ -12,6 +12,7 @@ const publicResources = [
   "directory_entries?select=updated_at&is_published=eq.true&is_verified=eq.true&order=updated_at.desc&limit=1",
   "census_statistics?select=updated_at&is_published=eq.true&is_verified=eq.true&order=updated_at.desc&limit=1",
   "administrative_boundaries?select=updated_at&is_published=eq.true&is_verified=eq.true&order=updated_at.desc&limit=1",
+  "administrative_locations?select=updated_at&is_published=eq.true&is_verified=eq.true&order=updated_at.desc&limit=1",
   "education_institutions?select=updated_at,directory_entries!inner(is_published,is_verified)&directory_entries.is_published=eq.true&directory_entries.is_verified=eq.true&order=updated_at.desc&limit=1",
 ];
 
