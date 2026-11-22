@@ -74,7 +74,28 @@ export default async function SearchPage({ searchParams }: Props) {
         {unionWardMatches.length > 0 && <section className="mt-8"><h2 className="text-xl font-bold">ইউনিয়ন ওয়ার্ড</h2><div className="mt-3 divide-y border-y">{unionWardMatches.map(({ward,parent}) => <Link key={ward.id} href={`/upazila/${parent.upazilaSlug}/${parent.slug}/ward/${ward.ward_number}`} className="flex flex-col gap-1 py-3 sm:flex-row sm:justify-between"><strong>{ward.name_bn || `${ward.ward_number.toLocaleString("bn-BD")} নম্বর ওয়ার্ড`}</strong><span className="text-sm text-slate-500">{parent.name_bn} ইউনিয়ন · {parent.upazilaName} উপজেলা</span></Link>)}</div></section>}
         {municipalityWardMatches.length > 0 && <section className="mt-8"><h2 className="text-xl font-bold">পৌর ওয়ার্ড</h2><div className="mt-3 divide-y border-y">{municipalityWardMatches.map(({ward,parent}) => <Link key={ward.id} href={`/municipality/${parent.slug}/ward/${ward.ward_number}`} className="flex flex-col gap-1 py-3 sm:flex-row sm:justify-between"><strong>{ward.name_bn || `${ward.ward_number.toLocaleString("bn-BD")} নম্বর ওয়ার্ড`}</strong><span className="text-sm text-slate-500">{parent.name_bn} পৌরসভা · {parent.upazilaName} উপজেলা</span></Link>)}</div></section>}
         {matches.length > 0 && <section className="mt-8"><h2 className="text-xl font-bold">প্রতিষ্ঠান ও সেবা</h2><div className="mt-3 grid gap-3 sm:grid-cols-2">{matches.map((item) => <Link key={item.id} href={`/directory/${item.category}/${item.slug}`} className="rounded-xl border bg-white p-4"><span className="text-xs font-semibold text-emerald-700">{DIRECTORY_CATEGORIES.find((c) => c.slug === item.category)?.label}</span><strong className="mt-1 block">{item.name_bn}</strong>{item.address && <span className="mt-1 block text-sm text-slate-500">{item.address}</span>}</Link>)}</div></section>}
-        {query && resultCount === 0 && <p className="mt-8 rounded-xl border border-dashed bg-white p-6 text-slate-600">এই নামে কোনো প্রকাশিত ও যাচাইকৃত তথ্য পাওয়া যায়নি। বানান পরিবর্তন করে আবার চেষ্টা করুন।</p>}
+        {query && resultCount === 0 && (
+          <section aria-labelledby="search-empty-title" className="mt-8 rounded-2xl border border-dashed border-slate-300 bg-white p-6 sm:p-8">
+            <h2 id="search-empty-title" className="text-xl font-bold">কোনো ফলাফল পাওয়া যায়নি</h2>
+            <p className="mt-3 leading-7 text-slate-600">
+              “{q}” নামে কোনো প্রকাশিত ও যাচাইকৃত তথ্য পাওয়া যায়নি। বানান, সংক্ষিপ্ত নাম অথবা বাংলা ও ইংরেজি নাম দিয়ে আবার চেষ্টা করুন।
+            </p>
+            <ul className="mt-4 list-disc space-y-2 pl-5 text-sm leading-6 text-slate-600">
+              <li>নামটি ছোট করে বা অন্য বানানে লিখুন।</li>
+              <li>এলাকা, প্রতিষ্ঠান বা সেবার ধরন আলাদা করে খুঁজুন।</li>
+              <li>ওয়ার্ড নম্বর খুঁজলে শুধু নম্বরটি লিখে চেষ্টা করুন।</li>
+            </ul>
+            <div className="mt-6 grid gap-3 sm:grid-cols-3">
+              <Link href="/upazila" className="rounded-xl border border-slate-200 p-4 font-semibold text-emerald-800 transition hover:border-emerald-300 hover:bg-emerald-50">উপজেলা দেখুন</Link>
+              <Link href="/municipality" className="rounded-xl border border-slate-200 p-4 font-semibold text-emerald-800 transition hover:border-emerald-300 hover:bg-emerald-50">পৌরসভা দেখুন</Link>
+              <Link href="/directory" className="rounded-xl border border-slate-200 p-4 font-semibold text-emerald-800 transition hover:border-emerald-300 hover:bg-emerald-50">প্রতিষ্ঠান ও সেবা দেখুন</Link>
+            </div>
+            <div className="mt-6 rounded-xl bg-emerald-50 p-4 sm:flex sm:items-center sm:justify-between sm:gap-4">
+              <p className="text-sm leading-6 text-emerald-900">তথ্যটি তালিকায় না থাকলে নতুন তথ্য জমা দিতে পারেন। প্রকাশের আগে তথ্য যাচাই করা হবে।</p>
+              <Link href="/submit" className="mt-3 inline-flex min-h-11 items-center justify-center rounded-lg bg-emerald-700 px-4 py-3 text-sm font-bold text-white transition hover:bg-emerald-800 sm:mt-0">নতুন তথ্য জমা দিন</Link>
+            </div>
+          </section>
+        )}
       </section>
       <SiteFooter />
     </main>
