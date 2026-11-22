@@ -324,3 +324,12 @@ The initial full search-page build for commit `dbddc25` failed the lint gate bec
 - Area query parameters are now parsed and UUID-validated before ward fetches and filtering. This prevents malformed or truncated union/municipality UUID values from reaching PostgREST.
 - Automated tests cover the municipality 13-character prefix, union prefix, invalid prefixes and malformed IDs. Local lint, type-check, 12 tests and a 184-page build passed; remote CI/Preview verification pending.
 - Lockfile generation and clean `npm ci`/build were locally verified in a Node 22 sandbox, but the sandbox could not push to GitHub; lockfile remains absent from the integration branch.
+
+
+## Directory area-filter verification — 2026-11-22
+- Added exact-prefix and canonical UUID validation before ward lookups/filtering; invalid area values now yield an empty result without a malformed UUID query.
+- Remote CI run #9 passed. Vercel Preview commit `510210e` is READY; Next.js static generation completed 184/184.
+- Preview route probes returned HTTP 200 for Statistics and both valid/malformed municipality filter URLs. Filtered routes retained noindex and the clean category canonical; no UUID error was present in response HTML.
+- Local Node 22/npm 10.9.11 lint, TypeScript, 12 tests, build (184/184) and `npm audit` (0 vulnerabilities) passed.
+- Production main remains at `2b0382de`; no production merge/deployment or database write occurred. Historical 24-hour runtime aggregation still includes 7 UUID errors from the prior deployment (2026-11-21); the latest 30-minute production log window is empty.
+- Lockfile is still absent from the branch: local generation/clean install succeeded, but the sandbox lacked GitHub push credentials. CI still uses `npm install`.

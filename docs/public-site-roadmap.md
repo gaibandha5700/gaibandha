@@ -268,3 +268,16 @@ Bengali-only, mobile-first public information platform. This document tracks the
 - Added a shared parser for union/municipality area query values that requires the exact prefix and canonical UUID before any ward/database lookup. Invalid filters return an empty result instead of issuing a malformed UUID query.
 - Regression tests cover both prefix lengths, empty selection, unknown prefixes and malformed UUIDs. Local lint, type-check, 12 tests and build (184/184) passed; remote CI/Preview verification pending.
 - Lockfile generation and clean install/build were verified locally, but the sandbox cannot push to GitHub without credentials; the lockfile transfer remains deferred and CI still uses `npm install`.
+
+
+### Directory area-filter guard — verified 2026-11-22
+- Remote CI run #9 succeeded for commit `510210e`; lint, TypeScript and regression checks passed.
+- Vercel Preview is READY for `510210e`; the build generated 184/184 static pages.
+- Preview HTTP smoke checks returned 200 for `/statistics`, a valid municipality-filtered health directory route, and a malformed municipality-filter route. Both filtered routes remain noindex with the clean category canonical; no UUID/PostgREST error appears in the HTML.
+- Local Node 22/npm 10.9.11 verification also passed lint, type-check, 12 regression tests, build (184/184) and `npm audit` (0 vulnerabilities).
+- The lockfile remains uncommitted: generated and clean-install tested locally, but sandbox Git push was unavailable without GitHub credentials. CI still uses `npm install`; reproducibility is a remaining backlog item.
+
+### Branch review — 2026-11-22
+- Repository inventory: 16 refs including main; PR #14 is the only open PR. PRs #1–13 are closed and unmerged; their branches are preserved rather than deleted.
+- Active integration branch compares 43 commits ahead and 0 behind main. Old branch comparisons show divergence; no destructive cleanup or production promotion was attempted.
+- Next: browser-level keyboard/mobile/screen-reader testing; lockfile transfer/reproducible CI install; full DGHS cross-check of 43 health entries.
