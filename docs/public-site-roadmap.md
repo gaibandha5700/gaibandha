@@ -230,3 +230,12 @@ Bengali-only, mobile-first public information platform. This document tracks the
 - Reviewed closed PR #13 against main and the active integration branch. Its ward-search coverage and Bengali/Arabic digit handling are already present in the current main implementation; its older search page is not copied because main also contains the district result and richer existing UI.
 - Selectively adopted the remaining useful query change: deterministic ordering for paginated public wards by ward_number, then id (ward_number.asc,id.asc). This prevents equal ward numbers across different administrative parents from changing page boundaries or producing unstable pagination.
 - PR #13 remains closed and its branch is preserved; this change is recorded on the single active integration branch.
+
+
+## Run 11 — shareable chart selection (2026-11-22)
+- Added URL-backed metric selection to the interactive upazila comparison chart. The selected metric is represented by a `metric` query parameter (population remains the clean default); opening a shared link restores the chosen comparison and preserves other URL parameters/hash.
+- Added a copy-share-link action with an accessible status message and selectable fallback URL if clipboard access is unavailable.
+- Scope is client-side only: no schema, data, new dependency or production write.
+- Acceptance: direct links for households/male/female restore the selected metric, switching metrics updates the URL without reload, unrelated query parameters and hash remain intact, and clipboard failure exposes a selectable link.
+- Preview/build and browser interaction verification are pending for this commit; mark complete only after READY preview and tests.
+- Next: verify query initialization/synchronization and clipboard fallback in a browser; continue mobile/keyboard/screen-reader audit.
