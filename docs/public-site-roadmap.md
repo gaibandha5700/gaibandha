@@ -326,15 +326,14 @@ Bengali-only, mobile-first public information platform. This document tracks the
 - Branch: `refactor/split-site-chrome-2026-11-22`.
 
 ## Run 18 — Active primary navigation state (2026-11-22)
-- Extracted the primary navigation items and submission link into a shared configuration.
-- Introduced a route-matching helper that normalizes trailing slashes and matches section routes by path segment.
-- Split active-state rendering into a client component while keeping the site header and logo as server components.
-- Added `aria-current="page"` to active links in desktop and mobile navigation and restrained visual highlighting using existing styles.
-- Added regression tests for exact routes, nested routes, root matching, segment boundaries and trailing-slash normalization.
-- No database/schema/data changes or new dependencies.
-- Preview and remote CI verification pending.
+- Extracted primary navigation links into a shared configuration.
+- Added segment-safe route matching and trailing-slash normalization.
+- Added accessible active states to desktop and mobile navigation.
+- GitHub Actions run #35 passed; code-bearing commit `dad23a6` Preview was READY and representative routes returned HTTP 200. The final head commit only changed roadmap documentation.
+- The home route's server-rendered navigation did not expose `aria-current`; this was identified during Preview HTML inspection and is the focus of Run 19.
 
-### Next priorities
-1. Verify active-route state on representative desktop/mobile pages, including nested directory and administrative routes.
-2. Continue accessible navigation, keyboard and small-screen QA.
-3. Review footer freshness behavior and production build after this integration.
+## Run 19 — Null pathname fallback for homepage navigation
+- [ ] Preserve the null pathname value from `usePathname()` and handle it explicitly in the route matcher as the homepage fallback.
+- [ ] Add regression coverage for null path (home only), empty path, nested routes and path boundaries.
+- [ ] Verify CI, Vercel Preview and production after merge.
+- No database/schema/data changes.
