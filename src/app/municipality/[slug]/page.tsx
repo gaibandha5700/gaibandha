@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { SiteHeader, SiteFooter } from "@/components/site-chrome";
+import { Breadcrumbs } from "@/components/breadcrumbs";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getMunicipalityBySlug, getWardsByMunicipality } from "@/lib/directory";
@@ -23,7 +24,7 @@ export default async function MunicipalityPage({ params }: Props) {
     <main className="min-h-screen bg-slate-50 text-slate-900">
       <SiteHeader />
       <article className="mx-auto max-w-5xl px-4 py-12">
-        <nav className="mb-5 text-sm text-slate-500"><Link href="/">হোম</Link> / পৌরসভা</nav>
+        <Breadcrumbs items={[{ href: "/municipality", label: "পৌরসভা" }, { href: `/municipality/${municipality.slug}`, label: municipality.name_bn + " পৌরসভা" }]} />
         <p className="text-sm font-bold text-emerald-700">গাইবান্ধা জেলার স্থানীয় প্রশাসন</p>
         <h1 className="mt-2 text-3xl font-extrabold">{municipality.name_bn} পৌরসভা</h1>
         <p className="mt-3 max-w-2xl leading-8 text-slate-600">এই পাতায় পৌরসভার প্রকাশিত ও যাচাইকৃত ওয়ার্ড এবং জনশুমারি ২০২২-এর উপলভ্য তথ্য দেখানো হয়েছে।</p>
