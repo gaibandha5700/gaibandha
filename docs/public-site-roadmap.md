@@ -316,3 +316,11 @@ Bengali-only, mobile-first public information platform. This document tracks the
 - Supabase audit: 11 public tables with RLS enabled; security and health advisors report no findings. Eight unused-index notices are INFO only and were not acted on.
 - The new breadcrumb branch awaits CI and Vercel Preview validation. Browser/device, screen-reader and direct visual testing remain limited by preview access.
 - Historical branches with divergent/unmerged work are preserved; no destructive cleanup or schema/data changes were performed.
+
+
+## Run 17 — Independent site chrome and public-data freshness (2026-11-22)
+- Split shared brand logo, header, and footer into independently maintained modules; kept `site-chrome.tsx` as a compatibility barrel so existing route imports remain stable.
+- Replaced the footer's generic tagline on the copyright row with the timestamp of the latest update across published/verified public records. The timestamp aggregation reads only update timestamps, uses existing Supabase REST/RLS, and caches for one hour.
+- Footer date/time is rendered in Bengali for the Bangladesh timezone. If the timestamp cannot be retrieved, the footer falls back to a non-claiming unavailable message.
+- No schema, migration, or production data changes. Preview/CI validation pending.
+- Branch: `refactor/split-site-chrome-2026-11-22`.
