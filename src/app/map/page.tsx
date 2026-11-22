@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { SiteHeader, SiteFooter } from "@/components/site-chrome";
+import { Breadcrumbs } from "@/components/breadcrumbs";
 import AdministrativeMap from "@/components/administrative-map";
 import { getPublicBoundaryGeoJSON } from "@/lib/map-data";
 
@@ -29,7 +30,7 @@ export default async function MapPage() {
   const data = rawData ? { ...rawData, features: rawData.features.filter((feature) => mapLevels.has(feature.properties.level)) } : null;
   return <main className="min-h-screen bg-[#fbfaf6] text-[#19372a]"><SiteHeader/>
     <section className="mx-auto max-w-6xl px-5 py-10 md:py-14">
-      <nav className="mb-5 text-sm text-slate-500"><Link href="/">হোম</Link> / মানচিত্র</nav>
+      <Breadcrumbs items={[{ href: "/map", label: "মানচিত্র" }]} />
       <p className="font-semibold text-[#287154]">GIS · প্রশাসনিক সীমানা</p>
       <h1 className="mt-2 font-bold text-3xl md:text-5xl">গাইবান্ধার মানচিত্র</h1>
       <p className="mt-4 max-w-3xl leading-8 text-slate-600">প্রকাশিত ও যাচাইকৃত জেলা, উপজেলা, ইউনিয়ন ও পৌরসভার সীমানা অন্বেষণ করুন। নির্বাচন করে সংশ্লিষ্ট তথ্যপৃষ্ঠায় যেতে পারবেন।</p>
