@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { SiteHeader, SiteFooter } from "@/components/site-chrome";
+import { Breadcrumbs } from "@/components/breadcrumbs";
 import StatisticsComparison from "@/components/statistics-comparison";
 import { getUpazilas, getUnionsByUpazila, getMunicipalitiesByUpazila, getWardsByMunicipality } from "@/lib/directory";
 
@@ -43,7 +44,7 @@ export default async function StatisticsPage() {
 
   return <main className="min-h-screen bg-[#fbfaf6] text-[#19372a]"><SiteHeader/>
     <section className="mx-auto max-w-6xl px-5 py-12">
-      <nav className="mb-5 text-sm text-slate-500"><Link href="/">হোম</Link> / পরিসংখ্যান</nav>
+      <Breadcrumbs items={[{ href: "/statistics", label: "পরিসংখ্যান" }]} />
       <p className="font-bold text-emerald-700">জনশুমারি ও গৃহগণনা ২০২২</p>
       <h1 className="mt-2 text-3xl font-bold md:text-5xl">গাইবান্ধার পরিসংখ্যান</h1>
       <p className="mt-4 max-w-3xl leading-8 text-slate-600">প্রকাশিত ও যাচাইকৃত প্রশাসনিক স্তরের তথ্য। অনুপস্থিত মানকে শূন্য ধরা হয়নি; টেবিলে “—” মানে তথ্য পাওয়া যায়নি।</p>
