@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
+import { buildMetricHref, buildShareUrl, buildStatisticsCsv } from "@/lib/statistics-export.mjs";
 
 type Metric = "population" | "households" | "male" | "female";
 type Row = {
@@ -44,17 +45,12 @@ export default function StatisticsComparison({ data, sourceName, sourceUrl, sour
 
   useEffect(() => {
     if (!initialized) return;
-    const url = new URL(window.location.href);
-    if (metric === "population") url.searchParams.delete("metric");
-    else url.searchParams.set("metric", metric);
-    window.history.replaceState(window.history.state, "", url.pathname + url.search + url.hash);
+    const href = buildMetricHref(window.location.href, metric);
+    window.history.replaceState(window.history.state, "", href);
   }, [initialized, metric]);
 
   const shareMetric = async () => {
-    const url = new URL(window.location.href);
-    if (metric === "population") url.searchParams.delete("metric");
-    else url.searchParams.set("metric", metric);
-    const shareUrl = url.toString();
+    const shareUrl = buildShareUrl(window.location.href, metric);
     setShareLink(shareUrl);
     setShareStatus("");
     try {
@@ -67,25 +63,8 @@ export default function StatisticsComparison({ data, sourceName, sourceUrl, sour
   };
 
   const downloadCsv = () => {
-    const escapeCell = (value: string | number) => {
-      let text = String(value);
-      if (/^[=+\-@\t\r]/.test(text)) text = "'" + text;
-      return '"' + text.replace(/"/g, '""') + '"';
-    };
-    const csvRows = [
-      ["উপজেলা", "সূচক", "মান", "তথ্যবর্ষ", "উৎস", "উৎস URL", "উৎস যাচাই তারিখ"],
-      ...rows.map((row) => [
-        row.name,
-        label,
-        row[metric] ?? "",
-        2022,
-        sourceName ?? "জনশুমারি ২০২২",
-        sourceUrl ?? "",
-        sourceCheckedAt ?? "",
-      ]),
-    ];
-    const csv = csvRows.map((row) => row.map(escapeCell).join(",")).join("\r\n");
-    const blob = new Blob(["\uFEFF", csv], { type: "text/csv;charset=utf-8" });
+    const csv = buildStatisticsCsv(rows, metric, label, sourceName, sourceUrl, sourceCheckedAt);
+    const blob = new Blob([csv], { type: "text/csv;charset=utf-8" });
     const url = URL.createObjectURL(blob);
     const link = document.createElement("a");
     link.href = url;
