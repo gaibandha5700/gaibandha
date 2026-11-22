@@ -1,12 +1,14 @@
 export function validateSubmissionText(itemName, message) {
   const normalizedItemName = itemName.trim();
   const normalizedMessage = message.trim();
+  const itemNameLength = Array.from(normalizedItemName).length;
+  const messageLength = Array.from(normalizedMessage).length;
   return {
     normalizedItemName,
     normalizedMessage,
-    itemNameLength: normalizedItemName.length,
-    messageLength: normalizedMessage.length,
-    itemNameValid: normalizedItemName.length >= 2 && normalizedItemName.length <= 180,
-    messageValid: normalizedMessage.length >= 10 && normalizedMessage.length <= 3000,
+    itemNameLength,
+    messageLength,
+    itemNameValid: itemNameLength >= 2 && itemNameLength <= 180,
+    messageValid: messageLength >= 10 && messageLength <= 3000,
   };
 }
