@@ -421,3 +421,18 @@ main.min-h-screen.bg-slate-50 .border-emerald-100{border-color:#d6e2d5!important
     scroll-behavior:auto!important;
   }
 }
+
+/* Clearly identify the current section in both navigation layouts. */
+.site-nav > a[aria-current="page"]:not(.site-submit-link) {
+  color: var(--brand-green);
+  font-weight: 700;
+}
+.site-nav > a[aria-current="page"]:not(.site-submit-link)::after {
+  right: 0;
+  left: 0;
+}
+.site-mobile-panel a[aria-current="page"]:not(.site-mobile-submit) {
+  color: var(--brand-green);
+  background: #f0f8f3;
+  font-weight: 700;
+}
