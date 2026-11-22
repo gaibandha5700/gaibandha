@@ -7,8 +7,20 @@ export const revalidate = 3600;
 export const metadata = {
   title: "প্রশাসনিক মানচিত্র",
   description: "গাইবান্ধা জেলার জেলা, উপজেলা, ইউনিয়ন ও পৌরসভার প্রকাশিত ও যাচাইকৃত সীমানা মানচিত্রে দেখুন।",
-
   alternates: { canonical: "/map" },
+  openGraph: {
+    title: "গাইবান্ধার প্রশাসনিক মানচিত্র — আমাদের গাইবান্ধা",
+    description: "গাইবান্ধা জেলার জেলা, উপজেলা, ইউনিয়ন ও পৌরসভার প্রকাশিত ও যাচাইকৃত সীমানা মানচিত্রে দেখুন।",
+    url: "/map",
+    siteName: "আমাদের গাইবান্ধা",
+    locale: "bn_BD",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "গাইবান্ধার প্রশাসনিক মানচিত্র — আমাদের গাইবান্ধা",
+    description: "গাইবান্ধা জেলার জেলা, উপজেলা, ইউনিয়ন ও পৌরসভার প্রকাশিত ও যাচাইকৃত সীমানা মানচিত্রে দেখুন।",
+  },
 };
 
 export default async function MapPage() {

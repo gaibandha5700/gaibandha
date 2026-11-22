@@ -142,3 +142,214 @@ The 129 boundary records are 1 district, 7 upazila, 81 union, 4 municipality and
 ### PR #13 build review update
 
 The initial full search-page build for commit `dbddc25` failed the lint gate because the input element had two `aria-label` attributes (`react/jsx-no-duplicate-props`). This was confirmed from Vercel build logs and corrected in commit `7902e9d`. The ward pagination query was also changed to a stable `ward_number,id` ordering in commit `48680d6`. The latest Vercel Preview for `48680d6` is queued; no build-success claim is made until its final logs are available.
+
+
+## Current audit refresh — 2026-11-21
+
+- Repository and deployment rechecked: the production deployment is READY at main commit `83f8e59acbde9d5f4b2f10049a20249adbf0d6a2`; the older baseline above is historical, not current.
+- PR #7 route/map implementation and PR #10 municipality-label fix are now reflected in production main; the previous route-status statements above are historical and should not be used as the current production snapshot.
+- PR #13 ward-search preview is READY, but route/query browser smoke testing and integration review are still outstanding.
+- Live Supabase table audit: public tables are RLS-enabled; observed totals include district 1, upazila 7, union 81, municipality 4, wards 765, directory entries 67, education detail 22, census snapshots 129, boundaries 129, submissions 0, administrative locations 0. Row-count metadata is not a substitute for per-record publication verification; public filters remain required.
+- Read-only SQL confirmed all seven published/verified upazila rows have 2022 population, household, male and female values and BBS source name/URL plus checked dates. The interactive chart branch uses these fields only; no production database changes were made.
+- Production runtime error aggregation for the past 24 hours and production error/fatal logs for the latest 30-minute window returned no errors/log entries.
+- Vercel preview SSO protection prevents independent browser inspection from this run environment; chart behavior/build still requires preview verification.
+- No production merge or deployment was initiated.
+
+
+## Branch consolidation update — 2026-11-21
+
+- PR #9 closed as superseded by the merged main map implementation; the current map route/component are more complete.
+- PR #13 closed as superseded; main includes the search enhancements and additional district result.
+- PR #2 remains open as Draft, 25 commits behind and diverged. Its branch removes shared header/footer; the remaining directory ward-filter behavior requires selective review.
+- PR #14 (interactive statistics chart) is the active integration branch. Preview deployment for commit `8c5b50c` reached READY; /statistics and /search returned HTTP 200 through the protected preview fetch. /statistics HTML contains the chart SVG, metric controls, source link and table alternative. Real mobile, screen-reader and interaction testing is still pending.
+
+
+## Production route smoke — 2026-11-21
+
+- Production deployment is READY on main commit `83f8e59acbde9d5f4b2f10049a20249adbf0d6a2`.
+- Protected-fetch smoke checks returned HTTP 200 for `/`, `/statistics`, `/map`, `/search`, and `/sitemap.xml` on `https://amadergaibandha.vercel.app`.
+- Route-title checks confirmed the expected Bengali titles for homepage, statistics, map and search. This is an HTTP/render smoke check, not a mobile-device or screen-reader test.
+
+
+## Current audit — 2026-11-22 (Run 7)
+
+### Current production baseline
+- `main` remains at `83f8e59acbde9d5f4b2f10049a20249adbf0d6a2`; the latest production deployment inspected was READY. The custom-domain homepage, `/statistics`, `/map`, and `/search` were fetched successfully (HTTP 200) in this run. This does not prove mobile, keyboard, or screen-reader behavior.
+- The active integration branch is PR #14. A ward-level directory category filter and empty-state category submission link were added; its new preview verification is pending.
+
+### Read-only Supabase audit
+- Correct project ref: `tpqwauxufaydzhpkuvtk` (`amadergaibandha`, ACTIVE_HEALTHY). No production data or schema writes.
+- All 11 public tables have RLS enabled; public read policies scope administrative entities, directory entries, census data, boundaries, and education records to published/verified rows and verified parent entities. Submissions permit public INSERT only with pending status; no public SELECT policy.
+- Public verified counts: district 1, upazila 7, union 81, municipality 4, wards 765, directory entries 67, education detail rows 22, census statistics 129, boundaries 129, administrative locations 0.
+- Directory-entry assignment coverage: 37 union-linked, 7 municipality-linked, 4 ward-linked; 0 coordinate pairs. All 67 have source URLs; category distribution is education 22, health 43, government 2.
+- Security/health advisors returned no lints. Performance advisor reported 8 unused indexes; no cleanup attempted. RLS remains unchanged.
+
+### Branch reconciliation
+- PR #14 remains the active integration branch; at the preview-test snapshot it was 14 commits ahead/0 behind main (docs updates follow).
+- PR #2 (`feat/public-directory-data-integration`) was 53 commits ahead/25 behind, diverged, Draft and not mergeable; it removes shared header/footer on several pages. Its useful ward-filter behavior was extracted and verified on PR #14; PR #2 is now closed (not merged) and its branch is preserved.
+- Production/main promotion remains gated; no production merge or deployment was made.
+
+### Verification limits and next step
+- Preview commit `a4b7d16` reached READY; compilation, lint/type checks, and static generation 184/184 succeeded.
+- Preview HTTP 200: `/directory/health` area+ward 5 (hospital found), `/directory/government` area+ward 6 (health office found), `/directory/education` same filter (empty state + submission CTA), area-only health filter, `/statistics` (SVG + metric controls), `/search`, `/map`, `/sitemap.xml`, `/robots.txt`.
+- The first code preview returned 500 for municipality filters. Vercel logs confirmed UUID parsing error from `area.slice(12)` including the colon. Both municipality filter sites were corrected to `slice(13)`; the new preview tests passed.
+- Production `main` still has the old municipality-filter bug: an upazila-only health query finds the hospital, but adding the municipality filter returns no result (HTTP 200). The fix remains in PR #14 only.
+- Keyboard navigation, real mobile viewport and screen-reader testing remain pending.
+
+
+## Preview verification and branch consolidation — 2026-11-22
+
+- PR #14 is the sole active integration PR; it now includes the statistics chart, category ward filters, empty-state CTA and municipality-prefix fix. Preview commit `a4b7d16` is READY; static generation 184/184, compilation, lint/type checks and route smoke tests passed.
+- PR #2 closed as superseded after the useful ward-filter behavior was extracted and verified. Its branch is preserved; no merge or deletion.
+- No production merge or deployment. `main` remains at the verified production baseline until explicit authorization.
+- Remaining verification: keyboard-only interaction, real mobile viewport, screen reader, reduced motion and touch-target audit.
+
+
+## Full branch review — 2026-11-22
+
+- PR #14 is the only open PR and active integration branch (16 commits ahead, 0 behind main at this snapshot). It remains Draft; production merge/deployment is not authorized.
+- PRs #4/#5/#6/#7/#8/#10/#11/#12 are merged and their work is represented on main; #12's PostCSS override is already present in main's package.json. No duplicate merge was needed.
+- PR #1 was closed and superseded by #4; PR #9 was closed as redundant with #7; PR #13 was closed as superseded by the current search implementation; PR #2 was closed after its ward-filter feature was selectively extracted and preview-tested. Their branch refs remain preserved.
+- All remaining refs were compared to main. No other open PR or verified unique, safe change was selected for this integration batch. No branch was deleted or rewritten.
+
+
+## Run 7 — current production and integration evidence (2026-11-22)
+
+- Production routes rechecked through Vercel protected fetch: homepage, statistics, search, map and health-directory category returned HTTP 200. This was server-rendered smoke testing, not device/browser interaction testing.
+- Production main still has the earlier municipality-area UUID parsing bug: a filtered /directory/health request returned HTTP 200 but the empty-state HTML, while Vercel's aggregated runtime error showed 7 UUID parse failures for the leading colon in the UUID. The corrected slice(13) code remains in PR #14; no production merge was made.
+- PR #14 preview (latest inspected commit before the new label fix) returned HTTP 200 for a Gaibandha municipality ward-5 health filter and included the 250-bed General Hospital. The area dropdown was visibly duplicated: the database name already ends with পৌরসভা, and the formatter appends another suffix.
+- [x] UI formatter corrected on the PR #14 branch to normalize municipality suffixes before display; next preview must be checked.
+- Supabase read-only inspection confirmed all four published municipalities include the পৌরসভা suffix in name_bn; the duplicate label is a UI formatting issue, not bad source data.
+- Production runtime logs for the latest 30-minute window returned no records. The 24-hour error aggregation still contains the earlier 7 UUID failures; this is historical aggregation, not proof of a new error in the last hour.
+- Current schema/advisors read: 11 public tables, RLS enabled; security/health lint lists empty; performance advisor shows 8 unused-index notices only. No SQL writes, data changes or index removals.
+- Verification limitation: Vercel Hobby runtime log retention prevented wider historical log queries. Full real-device, screen-reader and keyboard-only testing remain outstanding.
+
+### Roadmap / acceptance criteria
+- [ ] New preview READY after suffix patch.
+- [ ] Area options display exactly one পৌরসভা suffix; preserve upazila context.
+- [ ] Municipality-area and exact ward filter return the same verified directory result as the earlier passing preview.
+- [ ] Empty-state and clear-filter controls remain usable, and filtered URLs remain noindex.
+- [ ] No production merge/deployment without explicit authorization.
+
+
+### Preview verification update — 2026-11-22
+
+- [x] Code preview commit 366f593 is READY and returns HTTP 200 for health ward 5 (the 250-bed General Hospital), government ward 6 (Sadar Upazila Health Office), education empty state with category-specific CTA, area-only health, statistics, search, map, sitemap and robots.
+- [x] The municipality option shows exactly one suffix and upazila context. Ward filters remain exact, filtered pages render noindex, and the tested results are consistent with read-only published/verified database records.
+- The active branch was rebased onto main commit 2b0382de by resetting the ref after creating archive branch `archive/pr14-head-20261122`, then selectively restoring the five PR files. Compare now reports 5 commits ahead and 0 behind; the PR was reopened and remains Draft.
+- Latest reconciled preview commit 42f94 is queued. Final preview verification including the 150×62 header logo inherited from main remains pending.
+
+## Run 8 — accessibility CSS improvement (2026-11-22)
+
+- Added visible `:focus-visible` outlines across interactive elements and a contrasting footer variant.
+- Expanded `prefers-reduced-motion` to reduce animation, transition and smooth-scroll behavior site-wide.
+- Preview commit `c208249` is READY; compilation, lint/type checks and static generation (184/184) passed. Browser route inspection is blocked by Preview SSO. Keyboard-only, mobile viewport and screen-reader testing remain pending; local browser testing was unavailable. No production promotion.
+
+
+
+
+## Run 10 — CSV export verification and current state (2026-11-22)
+
+- Fixed CSV download lifecycle: the object URL is now revoked after a 1-second delay rather than immediately after the synthetic click.
+- Local jsdom harness PASS: download button/filename, UTF-8 BOM, formula-leading text protection, source URL and delayed object-URL cleanup.
+- Latest code Preview for commit `f8d20ce` is READY; Vercel build completed. Local lint and typecheck also passed after the fix. Preview routes remain SSO-protected from this audit environment.
+- Earlier clean sandbox `npm ci`, build (184/184 static pages), lint/typecheck and `npm audit` (0 vulnerabilities) passed using the generated temporary lockfile and existing public Supabase environment values. The lockfile was not committed; reproducibility remains an open priority.
+- Production route smoke: `/`, `/statistics`, `/search`, `/map`, `/robots.txt`, `/sitemap.xml`, `/directory/health`, `/district`, `/data` and `/sources` all returned HTTP 200.
+- Production runtime error/log queries for the last 30 minutes returned no errors and no logs. The 24-hour error aggregation still contains seven historical municipality UUID-parsing errors; the fix is in PR #14 and is not in production.
+- Branch review: PR #14 is the sole open integration PR (Draft). No stale branch was deleted; closed/superseded work remains preserved. No production merge or deployment.
+- Remaining P1/P2 work: commit a lockfile after review, real mobile/keyboard/screen-reader testing, protected-preview route inspection, and DGHS facility source cross-check (no bulk import or inferred coordinates).
+
+
+## Run 7 — 2026-11-22 keyboard-accessible chart scroll and fresh evidence
+
+- [x] The statistics comparison chart's horizontal overflow region now has a keyboard focus target and Bengali region label, so keyboard users can focus the chart viewport and scroll horizontally. Commit: `6b84337`.
+- [ ] Verify the new code preview build and keyboard interaction; deployment was BUILDING at the time of this record.
+- Current production baseline: `main` at `2b0382de0e920e5fe4cabe84246e050814dd3242`; its production deployment is READY.
+- Production runtime logs for the last 30 minutes returned no entries. The 24-hour error aggregation still reports seven historic UUID parsing errors from 2026-11-21 18:38–18:39 UTC; the invalid value included the leading colon in `municipality:`. The corrected `slice(13)` code is in PR #14 only and has not been promoted.
+- Read-only Supabase audit reconfirmed project `tpqwauxufaydzhpkuvtk` is ACTIVE_HEALTHY, 11/11 public tables have RLS, published/verified totals: district 1, upazila 7, union 81, municipality 4, wards 765, directory entries 67, census statistics 129, boundaries 129, administrative locations 0, education records 22.
+- Preview SSO and external DNS access from the run environment prevented direct browser route inspection and a local clone. The local clone attempt failed with DNS resolution for `github.com`; no local clean build is claimed.
+- No schema/data write, branch deletion, production merge or production deployment.
+
+### Acceptance criteria
+- [ ] READY Vercel preview for `6b84337` (or a newer branch commit).
+- [ ] Keyboard Tab can focus the chart scroll region and arrow/page scrolling can reach the chart's right edge.
+- [ ] Chart labels, accessible SVG title/description and data-table alternative remain available.
+- [ ] No regressions in metric switches or CSV download.
+
+
+## Current snapshot refresh — 2026-11-22
+
+- Current production main: 2b0382de0e920e5fe4cabe84246e050814dd3242 (logo-size commit). Previous snapshots above are historical; they do not describe current route status.
+- Production HTTP checks: /, /statistics, /map, /robots.txt, and /sitemap.xml returned 200. Production HTML is accessible through Vercel deployment-aware fetch despite preview protection.
+- Confirmed SEO defect: /statistics, /map, and the directory-category preview were inheriting the global homepage Open Graph title/description and root og:url; route-specific canonical/title did not correct social metadata. PR #14 now contains page-specific OG/Twitter metadata for statistics, map, district and category routes; it awaits Preview verification.
+- Read-only Supabase snapshot: district 1, upazila 7, union 81, municipality 4, wards 765, directory entries 67, education details 22, census statistics 129, administrative boundaries 129, administrative locations 0, submissions 0. These are table totals; public filters remain publication/verification dependent.
+- Published/verified source coverage: education 22/22, health 43/43, government 2/2 with source URL and source-check date; Census 2022 129/129 with population, households, source URL and checked date.
+- RLS is enabled on all 11 public tables. Security and health advisor lints: 0. Performance advisor: 8 INFO unused-index notices; no index removal was performed. Public submission policy is INSERT-only with pending status; no public SELECT policy was found in the policy snapshot.
+- Vercel production error aggregation: 7 historical UUID parsing errors on /directory/[category] (first 2026-11-21 18:38:35Z, last 18:39:02Z); last 30-minute production runtime log window was empty. The slice(13) correction remains in PR #14, not production.
+- Branch consolidation: 16 refs total. Only PR #14 is open; it is Draft, Vercel status success, and 25 commits ahead/0 behind main at the snapshot. Other branch heads are divergent/stale and preserved; no branch deletion or production promotion was performed.
+- Next: verify new social metadata in the READY Preview, continue mobile/keyboard/screen-reader testing, and cross-check the 43 health entries against the official DGHS Facility Registry without bulk-importing unverified data.
+
+
+## Branch consolidation addendum — 2026-11-22
+
+- Closed PR #13 was reviewed against main and PR #14. The ward search feature, Bengali-digit normalization and parent-aware ward result UI are already implemented on main; the old PR branch is not copied wholesale.
+- Selectively incorporated its deterministic ward pagination tie-breaker into PR #14: ward_number.asc,id.asc. This stabilizes PostgREST page boundaries when the same ward_number occurs under different parents.
+- PR #1/#2/#9 are closed unmerged and their relevant header, directory/filter, district/GIS content is either superseded by merged main work or partially included in PR #14; their divergent heads remain preserved. No branch deletion was performed.
+
+
+## Run 11 — shareable statistics chart links
+- Added `metric` query parameter support in the statistics chart, allowing population (clean default), households, male and female comparisons to be shared and restored on load.
+- Metric changes synchronize the URL without a reload and preserve other query parameters and hash. Added clipboard copy and accessible status/selectable fallback.
+- Code commit: c34217e; preview verification pending. No production merge/deployment.
+
+## Run 12 — statistics export and data-source spot-check
+
+- Added seven automated unit tests for the share-link and CSV helper, including CSV formula injection and provenance/encoding checks. Tests pass in the isolated Node runtime.
+- Official DGHS Facility Registry spot-checks (IDs 1237, 1279, 1255) matched facility names and administrative locations for Kanchipara (Fulchhari), Kanchibari (Sundarganj), and Kamdia (Gobindaganj). Registry page updates were 2026-07-28, 2026-05-21 and 2026-08-11 respectively. The sampled matches do not establish full 43-record validation; database source-check dates were not changed.
+- Preview browser testing remains limited by SSO. No database write or production promotion.
+
+
+
+## Run 13 — quality gate and current read-only audit (2026-11-22)
+
+- Added a GitHub Actions quality workflow on the active integration branch. The run for commit `2cbee6c` completed successfully: dependency installation, ESLint, TypeScript checks and the statistics export/share helper regression tests passed.
+- `package-lock.json` remains absent; CI therefore uses `npm install`, and a reproducible `npm ci` gate is not claimed.
+- A fresh read-only SQL check confirms RLS enabled on all 11 public tables and 7/7 upazilas, 81/81 unions, 4/4 municipalities, 765/765 wards, 67/67 directory entries, 129/129 census rows and 129/129 boundary rows are published and verified. This count-level check does not independently validate each factual field or boundary.
+- Supabase security and health advisor lints are empty. The performance advisor lists 8 INFO unused-index notices; no index removal was attempted.
+- Production and Preview Vercel error/warning logs for the latest 30-minute window were empty at the audit time. The latest Preview is still queued; SSO/browser-level interaction checks remain unavailable from this environment.
+- No Supabase write or migration occurred. Production merge/deployment remains gated.
+
+
+## Directory filter input validation — 2026-11-22
+- Area query parameters are now parsed and UUID-validated before ward fetches and filtering. This prevents malformed or truncated union/municipality UUID values from reaching PostgREST.
+- Automated tests cover the municipality 13-character prefix, union prefix, invalid prefixes and malformed IDs. Local lint, type-check, 12 tests and a 184-page build passed; remote CI/Preview verification pending.
+- Lockfile generation and clean `npm ci`/build were locally verified in a Node 22 sandbox, but the sandbox could not push to GitHub; lockfile remains absent from the integration branch.
+
+
+## Directory area-filter verification — 2026-11-22
+- Added exact-prefix and canonical UUID validation before ward lookups/filtering; invalid area values now yield an empty result without a malformed UUID query.
+- Remote CI run #9 passed. Vercel Preview commit `510210e` is READY; Next.js static generation completed 184/184.
+- Preview route probes returned HTTP 200 for Statistics and both valid/malformed municipality filter URLs. Filtered routes retained noindex and the clean category canonical; no UUID error was present in response HTML.
+- Local Node 22/npm 10.9.11 lint, TypeScript, 12 tests, build (184/184) and `npm audit` (0 vulnerabilities) passed.
+- Production main remains at `2b0382de`; no production merge/deployment or database write occurred. Historical 24-hour runtime aggregation still includes 7 UUID errors from the prior deployment (2026-11-21); the latest 30-minute production log window is empty.
+- Lockfile is still absent from the branch: local generation/clean install succeeded, but the sandbox lacked GitHub push credentials. CI still uses `npm install`.
+
+
+## Run 14 — Directory query-context safety (2026-11-22)
+- Confirmed the directory filter options are loaded from the selected published/verified upazila context. A UUID-valid union/municipality query can still refer to an area outside that context.
+- Code change: validate the area against the loaded options and validate the ward against the selected area’s published/verified ward list. Invalid context is ignored with an accessible Bengali status; remaining valid filters continue.
+- Tests added for valid/mismatched area and ward contexts. Preview and CI pending; no production merge, database write, migration, or data changes.
+
+
+### Run 14 CI correction
+- GitHub Actions run #19 failed TypeScript validation: the existing .d.mts declaration did not expose the two new helper exports. The runtime helper and nine focused tests passed in a local Node test harness, but the TypeScript declaration was incomplete.
+- Updated src/lib/directory-area-filter.d.mts to declare both exports and their return types. The follow-up CI and Vercel Preview are pending; completion remains unverified until those checks finish.
+
+
+## Run 14 — Verification complete (2026-11-22)
+- Directory area and ward context guard implemented: a UUID-valid area must also be present in the options for the selected upazila; a ward must belong to the selected area's verified/published ward list. Stale/mismatched selections are ignored with an accessible Bengali status and neutral select values.
+- Local Node regression harness: **16/16 tests passed** (9 directory-area/context tests and 7 statistics export/share tests).
+- GitHub Actions #23: **SUCCESS** on commit `98ce7a77db5f6a3f6cfd50d887df9c92c0cf514f` (install, lint, TypeScript and regression tests). The earlier #19 type declaration failure was corrected.
+- Vercel Preview commit `98ce7a7`: **READY**; Next.js build completed and generated **184/184** pages. Browser route inspection remains blocked by Preview SSO, so keyboard/mobile/screen-reader and direct filter-interaction tests remain outstanding.
+- PR #14 remains Draft/Open/mergeable; integration branch is 52 commits ahead of `main`, 0 behind. The other branches remain preserved; no branch deletion or production promotion.
+- Production is still on main commit `2b0382de`. No database writes, schema changes or migrations. Current audit: 11/11 public tables RLS-enabled; security/health advisors 0 lints; performance 8 INFO unused-index findings.
