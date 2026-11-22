@@ -34,7 +34,7 @@ test("arrow keys pan only when zoomed and the instructions explain the gesture",
 test("selection status and the alternative area list remain available", () => {
   assert.ok(source.includes('aria-live="polite"'));
   assert.ok(source.includes('aria-atomic="true"'));
-  assert.ok(source.includes("<details className="border-t border-[#d8dfd3] pt-4">"));
+  assert.ok(source.includes('<details className="border-t border-[#d8dfd3] pt-4">'));
   assert.ok(source.includes("মানচিত্রের বিকল্প তালিকা"));
   assert.ok(source.includes("setSelectedId(f.id)"));
 });
