@@ -91,7 +91,7 @@ Bengali-only, mobile-first public information platform. This document tracks the
 3. **P1 — Data transparency:** audit source/checked dates and coverage indicators across statistics, area profiles and directory entries; distinguish unavailable data from zero.
 4. **P2 — Statistical exploration:** add comparison filters/drill-down only where source fields and complete coverage support them; consider district-to-upazila, union and municipality comparisons without summing overlapping totals.
 5. **P2 — Directory enhancements:** improve category/location filtering, result sorting and empty states; measure performance and keep publication filters intact.
-6. **P2 — Submission trust & safety:** review abuse prevention, validation, rate limiting and correction workflow; do not expose pending submissions or submitter contacts.
+6. **P2 — Submission trust & safety:** Run 27 adds API-side trimmed Unicode code-point validation for names (2–180) and details (10–3,000), rejecting overflow instead of silently truncating (PR/Preview verification pending). Next: review abuse prevention, rate limiting and correction workflow; do not expose pending submissions or submitter contacts.
 7. **P2 — Search/SEO/route audit:** verify canonical metadata, indexability, sitemap, breadcrumbs, internal linking and route-level empty/error states.
 8. **P3 — Reproducible builds:** resolve the missing lockfile and npm cache configuration warning, then validate clean install/build in an environment with network access.
 9. **P3 — Performance:** evaluate route payloads, caching, images, map payload and Core Web Vitals with actual measurements before optimizing.
