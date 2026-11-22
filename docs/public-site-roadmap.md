@@ -249,7 +249,7 @@ Bengali-only, mobile-first public information platform. This document tracks the
 - No database writes, schema changes, new dependency or production promotion. Browser SSO/mobile/keyboard tests remain outstanding.
 
 
-## Run 12 — automated quality gate (2026-11-22)
+## Run 13 — automated quality gate (2026-11-22)
 
 - Added `.github/workflows/quality-checks.yml` on the active integration branch. Pull requests targeting `main`, pushes to `main` or this integration branch, and manual runs execute dependency installation, ESLint, TypeScript checks and the Node regression tests.
 - This adds CI coverage for the existing statistics share/CSV helper tests without exposing Supabase secrets or touching production data.
