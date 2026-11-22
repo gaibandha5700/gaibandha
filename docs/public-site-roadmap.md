@@ -11,7 +11,7 @@ Bengali-only, mobile-first public information platform. This document tracks the
 - [x] `/district` — district profile added (preview build READY; latest route HTTP probes remain blocked by preview protection)
 - [x] `/map` — GIS page and accessible SVG explorer added; active map layers are district, upazila, union and municipality only; zoom/reset, bounded pointer pan, keyboard pan and list alternative added
 - [x] `/sources`, `/about`, `/privacy`, `/contact` — concise transparency pages added
-- [ ] Route-level error/empty states and accessibility review (custom not-found page added; audit pending)
+- [ ] Route-level empty states and accessibility review (custom not-found page added; shared error boundaries implemented on Run 21)
 - [ ] Verify sitemap and mobile navigation coverage after preview
 - [x] Search matches administrative names in Bengali/English and normalizes Bengali/Arabic digits; numeric ward queries use exact number matches
 
@@ -346,3 +346,11 @@ Bengali-only, mobile-first public information platform. This document tracks the
 - Focus styling uses the existing high-contrast focus-ring rule; the skip link remains visually hidden until keyboard focus.
 - No database/schema changes, data writes, or dependencies.
 - CI and Preview validation pending; verify focus/scroll behavior on desktop and narrow viewports.
+
+
+## Run 21 — Bengali error recovery boundaries (2026-11-22)
+
+- Added shared, accessible Bengali error fallback with a retry action and home link; it does not expose raw exception details.
+- Added App Router segment error and root-layout error boundaries, reusing the fallback and retaining Bengali document language.
+- Added contract regression tests for accessibility semantics, recovery actions, reuse and root document markup.
+- No database/schema/data changes, dependencies or production writes. CI and Preview validation pending.
