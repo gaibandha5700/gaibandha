@@ -99,7 +99,8 @@ export default function StatisticsComparison({ data, sourceName, sourceUrl, sour
       </div>
       <div className="mt-3 flex flex-wrap items-center justify-between gap-3"><p className="text-sm text-slate-600">সর্বোচ্চ মান থেকে নিচের দিকে সাজানো · {label} · জনশুমারি ২০২২</p><div className="flex flex-wrap gap-2"><button type="button" onClick={shareMetric} className="rounded-lg border border-slate-300 bg-white px-4 py-2 text-sm font-semibold text-slate-700 hover:border-[#287154]">তুলনার লিংক কপি</button><button type="button" onClick={downloadCsv} className="rounded-lg border border-[#287154] bg-white px-4 py-2 text-sm font-semibold text-[#19372a] hover:bg-[#eeefe7]">CSV ডাউনলোড</button></div></div>
       {shareStatus && <div className="mt-2 rounded-lg border border-slate-200 bg-slate-50 p-3 text-sm text-slate-700" role="status"><p>{shareStatus}</p>{shareLink && <input className="mt-2 w-full rounded border bg-white p-2 text-xs" type="url" aria-label="তুলনার শেয়ার লিংক" value={shareLink} readOnly onFocus={(event) => event.currentTarget.select()} />}</div>}
-      <div role="region" aria-label="উপজেলা তুলনা বার চার্ট; আড়াআড়ি স্ক্রল করে দেখুন" tabIndex={0} className="mt-3 overflow-x-auto rounded-xl border bg-[#fcfcfa] p-2 sm:p-4">
+      <p id="upazila-chart-scroll-help" className="mt-2 text-xs text-slate-600">চার্টে কিবোর্ড ফোকাস নিয়ে আড়াআড়ি স্ক্রল করতে তীরচিহ্নের কী ব্যবহার করুন। একই তথ্য টেবিলে দেখতে নিচের অংশ খুলুন।</p>
+      <div role="region" aria-label="উপজেলা তুলনা বার চার্ট; আড়াআড়ি স্ক্রল করে দেখুন" tabIndex={0} aria-describedby="upazila-chart-scroll-help" className="mt-3 overflow-x-auto rounded-xl border bg-[#fcfcfa] p-2 sm:p-4">
         <svg
           role="img"
           aria-labelledby="upazila-chart-title upazila-chart-desc"
