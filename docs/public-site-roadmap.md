@@ -338,3 +338,11 @@ Bengali-only, mobile-first public information platform. This document tracks the
 1. Verify active-route state on representative desktop/mobile pages, including nested directory and administrative routes.
 2. Continue accessible navigation, keyboard and small-screen QA.
 3. Review footer freshness behavior and production build after this integration.
+
+
+## Run 19 — Skip navigation (2026-11-22)
+- Added a keyboard-visible skip link in the shared header that moves focus past the topbar and primary navigation to the page-content anchor.
+- The shared anchor is inserted immediately after the header so route pages can reuse the behavior without per-page markup changes.
+- Focus styling uses the existing high-contrast focus-ring rule; the skip link remains visually hidden until keyboard focus.
+- No database/schema changes, data writes, or dependencies.
+- CI and Preview validation pending; verify focus/scroll behavior on desktop and narrow viewports.

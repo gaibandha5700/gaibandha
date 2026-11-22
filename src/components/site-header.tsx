@@ -4,6 +4,7 @@ import { PrimaryNavigation } from "@/components/primary-navigation";
 export function SiteHeader() {
   return (
     <>
+      <a className="site-skip-link" href="#main-content">মূল বিষয়বস্তুতে যান</a>
       <div className="site-topbar">
         <div className="site-topbar-inner">
           <span>গাইবান্ধা জেলার ডিজিটাল তথ্যভান্ডার</span>
@@ -16,6 +17,9 @@ export function SiteHeader() {
           <PrimaryNavigation />
         </div>
       </header>
+      <div id="main-content" tabIndex={-1} className="site-main-content-anchor">
+        <span className="sr-only">মূল বিষয়বস্তু</span>
+      </div>
     </>
   );
 }
