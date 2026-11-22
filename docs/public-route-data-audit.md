@@ -333,3 +333,9 @@ The initial full search-page build for commit `dbddc25` failed the lint gate bec
 - Local Node 22/npm 10.9.11 lint, TypeScript, 12 tests, build (184/184) and `npm audit` (0 vulnerabilities) passed.
 - Production main remains at `2b0382de`; no production merge/deployment or database write occurred. Historical 24-hour runtime aggregation still includes 7 UUID errors from the prior deployment (2026-11-21); the latest 30-minute production log window is empty.
 - Lockfile is still absent from the branch: local generation/clean install succeeded, but the sandbox lacked GitHub push credentials. CI still uses `npm install`.
+
+
+## Run 14 — Directory query-context safety (2026-11-22)
+- Confirmed the directory filter options are loaded from the selected published/verified upazila context. A UUID-valid union/municipality query can still refer to an area outside that context.
+- Code change: validate the area against the loaded options and validate the ward against the selected area’s published/verified ward list. Invalid context is ignored with an accessible Bengali status; remaining valid filters continue.
+- Tests added for valid/mismatched area and ward contexts. Preview and CI pending; no production merge, database write, migration, or data changes.
