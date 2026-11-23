@@ -465,3 +465,5 @@ Bengali-only, mobile-first public information platform. This document tracks the
 - The READY preview built from PR #41's earlier commit `245a56c9` returned HTTP 200 and 85 published/verified union-ward results for `/search?q=3+ward`. The final main commit includes the same parser and a corrected rejection test; the preview route probe was not run against the exact main SHA.
 - The current production route `/search?q=3+ward` returned HTTP 200 but 0 results, confirming that the reverse-order search feature is not yet deployed to production.
 - No database/schema, RLS, publication rules, dependencies or data were changed. Do not promote the preview or bypass the Vercel build limit; retry the normal main deployment after the limit clears and verify the query on the canonical production host.
+
+- **Release follow-up:** the normal main deployment `1134b3e6` reached Vercel `READY`; the canonical production `/search?q=3+ward` now returns 85 results (previously 0 before rollout). Production `/robots.txt` and `/sitemap.xml` both returned HTTP 200. The release gap is resolved; no preview promotion or quota bypass was used.
