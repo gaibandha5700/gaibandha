@@ -3,6 +3,7 @@ import Link from "next/link";
 import { DIRECTORY_CATEGORIES, getAllDirectoryEntries, getAllPublicMunicipalities, getAllPublicUnions, getAllPublicWards, getPublicWardsByNumber, getUpazilas } from "@/lib/directory";
 import { SiteHeader, SiteFooter } from "@/components/site-chrome";
 import { Breadcrumbs } from "@/components/breadcrumbs";
+import { parseExactWardNumberSearch } from "@/lib/ward-number-search.mjs";
 
 export const revalidate = 60;
 export const metadata: Metadata = {
@@ -20,7 +21,7 @@ const containsSearch = (value: string | null | undefined, query: string) => norm
 export default async function SearchPage({ searchParams }: Props) {
   const { q = "" } = await searchParams;
   const query = normalizeSearchText(q);
-  const numericQuery = /^[0-9]+$/.test(query) ? Number(query) : null;
+  const numericQuery = parseExactWardNumberSearch(query);
   let entries: Awaited<ReturnType<typeof getAllDirectoryEntries>> = [];
   let upazilas: Awaited<ReturnType<typeof getUpazilas>> = [];
   let wardRows: Awaited<ReturnType<typeof getAllPublicWards>> = [];
