@@ -5,7 +5,7 @@ export async function readLimitedJsonObject(request, maxBytes = 32 * 1024) {
 
   const contentLength = request.headers.get("content-length");
   if (contentLength !== null) {
-    if (!/^\\d+$/.test(contentLength)) return { ok: false, reason: "invalid" };
+    if (!/^\d+$/.test(contentLength)) return { ok: false, reason: "invalid" };
     const declaredBytes = Number(contentLength);
     if (!Number.isSafeInteger(declaredBytes)) return { ok: false, reason: "invalid" };
     if (declaredBytes > maxBytes) return { ok: false, reason: "too_large" };
