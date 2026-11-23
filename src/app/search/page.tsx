@@ -20,13 +20,21 @@ const containsSearch = (value: string | null | undefined, query: string) => norm
 export default async function SearchPage({ searchParams }: Props) {
   const { q = "" } = await searchParams;
   const query = normalizeSearchText(q);
-  const [entries, upazilas, wardRows, unionRows, municipalityRows] = await Promise.all([
-    getAllDirectoryEntries(),
-    getUpazilas(),
-    getAllPublicWards(),
-    getAllPublicUnions(),
-    getAllPublicMunicipalities(),
-  ]);
+  let entries: Awaited<ReturnType<typeof getAllDirectoryEntries>> = [];
+  let upazilas: Awaited<ReturnType<typeof getUpazilas>> = [];
+  let wardRows: Awaited<ReturnType<typeof getAllPublicWards>> = [];
+  let unionRows: Awaited<ReturnType<typeof getAllPublicUnions>> = [];
+  let municipalityRows: Awaited<ReturnType<typeof getAllPublicMunicipalities>> = [];
+
+  if (query) {
+    [entries, upazilas, wardRows, unionRows, municipalityRows] = await Promise.all([
+      getAllDirectoryEntries(),
+      getUpazilas(),
+      getAllPublicWards(),
+      getAllPublicUnions(),
+      getAllPublicMunicipalities(),
+    ]);
+  }
   const upazilaById = new Map(upazilas.map((item) => [item.id, item] as const));
   const upazilaOrder = new Map<string, number>(upazilas.map((item, index) => [item.id, index] as const));
   const compareByUpazila = (a: { upazila_id: string; name_bn: string }, b: { upazila_id: string; name_bn: string }) =>
