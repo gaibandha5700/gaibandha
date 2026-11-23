@@ -424,3 +424,9 @@ Bengali-only, mobile-first public information platform. This document tracks the
 - Preserved detail/category URL generation, category-only inclusion when records exist, source-backed `lastModified`, and the public/verified query filters.
 - Added source-contract regression tests for the batch helper, pagination, grouping, and date/URL generation. No schema, RLS, data, publication rules or dependencies changed.
 - CI and Preview verification pending.
+
+
+## Exact ward-number search optimization (2026-11-23)
+- Numeric-only search queries now fetch published/verified ward rows by the exact ward number instead of loading the entire ward search dataset. Text queries continue using the full bounded public ward search fetch.
+- Live database audit on 2026-11-23 found 765 published/verified wards across numbers 1–9 (85 per number); the exact-number path reduces ward rows fetched for a numeric search from 765 to 85 (~88.9%) while preserving RLS and publication filters.
+- Added regression contracts for exact-number filtering, input validation and pagination. No database schema/data changes.
