@@ -481,3 +481,5 @@ Bengali-only, mobile-first public information platform. This document tracks the
 - Malformed JSON, non-object payloads, invalid UTF-8 and invalid length headers are rejected; oversized payloads return HTTP 413. Existing text validation, honeypot, categories, consent, URL checks and Supabase RLS remain unchanged.
 - Added isolated Node tests for Bengali payloads, exact byte limits, oversized streaming bodies, malformed/non-object JSON and Content-Length handling, plus a route-contract test.
 - No schema, data, RLS, dependency or publication-policy changes. Local clone/full repository checks and latest-head preview remain unavailable due GitHub DNS and Vercel deployment quota; helper tests were run independently in Node 22 before the API patch.
+
+- **CI follow-up:** the full regression suite identified one stale route-contract assertion that expected the JSON-object guard inline. The guard now lives in the bounded parser; the test was updated to verify parser integration, byte enforcement and validation order instead.
