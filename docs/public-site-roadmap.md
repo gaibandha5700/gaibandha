@@ -508,3 +508,10 @@ Bengali-only, mobile-first public information platform. This document tracks the
 
 ## Submission API content-type guard (2026-11-23)
 - Reject non-`application/json` submission requests with HTTP 415 before consuming the request body; accept the JSON media type with optional parameters. The browser form already sends JSON. No database or publication-policy changes.
+
+## Run 50 — Submission rate-limit response UX and WAF research (2026-11-23)
+- The public submission form now handles HTTP 429 before attempting to parse a response body, showing a Bengali wait-and-retry message even when a platform firewall returns non-JSON content.
+- Added a source-contract regression test for response handling order and the alert surface.
+- Vercel research: the current project has no custom Firewall configuration. Hobby supports a limited rate-limit rule allowance (one rate-limit rule per project in current plan guidance); pricing lists 1M rate-limit requests/month included, with usage limits/caps on Hobby. Rate-limit counters are fixed-window and regional on Hobby, so an IP-based rule can affect shared-network users and can be exceeded across regions.
+- Recommended next step is a generous, log-only observation rule scoped only to `POST /api/submissions`, then evaluate traffic before enforcement. The Vercel connector can inspect and stage config changes but does not expose the Firewall publish action; no live WAF configuration or billing setting was changed in this run.
+- No database/schema, RLS, data, dependency, or publication-rule changes.
