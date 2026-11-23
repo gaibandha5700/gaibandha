@@ -28,7 +28,7 @@ test("parses reverse-order ward queries in Bengali and English", () => {
 });
 
 test("does not treat non-exact or empty text as an exact ward query", () => {
-  assert.equal(parseExactWardNumberSearch("3 ward"), null);
+  assert.equal(parseExactWardNumberSearch("3 ward east"), null);
   assert.equal(parseExactWardNumberSearch("ward"), null);
   assert.equal(parseExactWardNumberSearch("ward 3 east"), null);
   assert.equal(parseExactWardNumberSearch(""), null);
