@@ -4,6 +4,7 @@ import { DIRECTORY_CATEGORIES, getAllDirectoryEntries, getAllPublicMunicipalitie
 import { SiteHeader, SiteFooter } from "@/components/site-chrome";
 import { Breadcrumbs } from "@/components/breadcrumbs";
 import { parseExactWardNumberSearch } from "@/lib/ward-number-search.mjs";
+import { MAX_SEARCH_QUERY_LENGTH, isSearchQueryTooLong, truncateSearchQuery } from "@/lib/search-query-length.mjs";
 
 export const revalidate = 60;
 export const metadata: Metadata = {
@@ -20,8 +21,9 @@ const containsSearch = (value: string | null | undefined, query: string) => norm
 
 export default async function SearchPage({ searchParams }: Props) {
   const { q = "" } = await searchParams;
-  const query = normalizeSearchText(q);
-  const numericQuery = parseExactWardNumberSearch(query);
+  const tooLong = isSearchQueryTooLong(q);
+  const query = tooLong ? "" : normalizeSearchText(q);
+  const numericQuery = query ? parseExactWardNumberSearch(query) : null;
   let entries: Awaited<ReturnType<typeof getAllDirectoryEntries>> = [];
   let upazilas: Awaited<ReturnType<typeof getUpazilas>> = [];
   let wardRows: Awaited<ReturnType<typeof getAllPublicWards>> = [];
@@ -80,8 +82,8 @@ export default async function SearchPage({ searchParams }: Props) {
       <section className="mx-auto max-w-5xl px-4 py-12">
         <Breadcrumbs items={[{ href: "/search", label: "তথ্য খুঁজুন" }]} />
         <p className="text-sm font-bold text-emerald-700">গাইবান্ধা জেলার তথ্যভান্ডার</p><h1 className="mt-2 text-3xl font-extrabold">তথ্য খুঁজুন</h1>
-        <form action="/search" className="mt-6 flex gap-2"><input name="q" type="search" defaultValue={q} placeholder="উপজেলা, ইউনিয়ন, ওয়ার্ড বা প্রতিষ্ঠানের নাম" aria-label="তথ্য খুঁজুন" className="min-w-0 flex-1 rounded-xl border border-slate-300 bg-white px-4 py-3 outline-none focus:border-emerald-600" /><button className="rounded-xl bg-emerald-700 px-5 py-3 font-bold text-white">খুঁজুন</button></form>
-        {!query ? <p className="mt-8 text-slate-600">খোঁজার জন্য কোনো এলাকা, ওয়ার্ড, প্রতিষ্ঠান বা সেবার নাম লিখুন।</p> : <p className="mt-7 text-sm text-slate-600">“{q}” অনুসন্ধানে {resultCount.toLocaleString("bn-BD")}টি ফলাফল পাওয়া গেছে।</p>}
+        <form action="/search" className="mt-6 flex gap-2"><input name="q" type="search" maxLength={MAX_SEARCH_QUERY_LENGTH} defaultValue={truncateSearchQuery(q)} placeholder="উপজেলা, ইউনিয়ন, ওয়ার্ড বা প্রতিষ্ঠানের নাম" aria-label="তথ্য খুঁজুন" className="min-w-0 flex-1 rounded-xl border border-slate-300 bg-white px-4 py-3 outline-none focus:border-emerald-600" /><button className="rounded-xl bg-emerald-700 px-5 py-3 font-bold text-white">খুঁজুন</button></form>
+        {tooLong ? <p role="alert" className="mt-8 rounded-xl border border-amber-300 bg-amber-50 p-4 text-sm text-amber-900">অনুসন্ধানের শব্দ ১২০ অক্ষরের মধ্যে রাখুন। ছোট করে আবার খুঁজুন।</p> : !query ? <p className="mt-8 text-slate-600">খোঁজার জন্য কোনো এলাকা, ওয়ার্ড, প্রতিষ্ঠান বা সেবার নাম লিখুন।</p> : <p className="mt-7 text-sm text-slate-600">“{q}” অনুসন্ধানে {resultCount.toLocaleString("bn-BD")}টি ফলাফল পাওয়া গেছে।</p>}
         {matchingDistrict && <section className="mt-8"><h2 className="text-xl font-bold">জেলা</h2><Link href="/district" className="mt-3 block rounded-xl border bg-white p-4 font-semibold">গাইবান্ধা জেলা · জেলা পরিচিতি</Link></section>}
         {matchingUpazilas.length > 0 && <section className="mt-8"><h2 className="text-xl font-bold">উপজেলা</h2><div className="mt-3 grid gap-3 sm:grid-cols-2">{matchingUpazilas.map((item) => <Link key={item.id} href={`/upazila/${item.slug}`} className="rounded-xl border bg-white p-4 font-semibold">{item.name_bn} উপজেলা</Link>)}</div></section>}
         {matchingMunicipalities.length > 0 && <section className="mt-8"><h2 className="text-xl font-bold">পৌরসভা</h2><div className="mt-3 grid gap-3 sm:grid-cols-2">{matchingMunicipalities.map((item) => <Link key={item.id} href={`/municipality/${item.slug}`} className="rounded-xl border bg-white p-4 font-semibold">{item.name_bn} <span className="block text-xs font-normal text-slate-500">{item.upazilaName} উপজেলা</span></Link>)}</div></section>}
