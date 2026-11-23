@@ -445,3 +445,10 @@ Bengali-only, mobile-first public information platform. This document tracks the
 - The production source-coverage snapshot initially grouped the 36 ward-linked census records under “other” because `census_statistics.ward_id` does not populate its own municipality/union parent fields.
 - Live read-only SQL join confirmed all 36 linked ward records are municipal wards (`wards.municipality_id` populated); no union-ward census records are present.
 - The source metadata fetch now uses the existing PostgREST `ward_id → wards` relationship to read only the linked ward’s municipality/union classification and labels the records correctly. No database writes or schema changes.
+
+
+## Run 35 — Exact ward-number query variants (2026-11-23)
+- Extended the existing exact-number ward lookup to common query forms such as `ward 3`, `Ward No. 3`, `ওয়ার্ড ৩` and `ওয়ার্ড নং ৩`, while retaining pure Bengali/Arabic numeric queries.
+- Parsed prefix-number forms use the same validated, paginated public ward-number helper instead of loading all 765 published/verified ward rows for text matching.
+- Added parser and search-query contract tests. No database/schema, data, RLS, dependencies or publication rules changed.
+- Preview verification is subject to the current Vercel deployment quota; tests, lint, type-check and build validation are tracked separately.
