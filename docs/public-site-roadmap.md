@@ -430,3 +430,12 @@ Bengali-only, mobile-first public information platform. This document tracks the
 - Numeric-only search queries now fetch published/verified ward rows by the exact ward number instead of loading the entire ward search dataset. Text queries continue using the full bounded public ward search fetch.
 - Live database audit on 2026-11-23 found 765 published/verified wards across numbers 1–9 (85 per number); the exact-number path reduces ward rows fetched for a numeric search from 765 to 85 (~88.9%) while preserving RLS and publication filters.
 - Added regression contracts for exact-number filtering, input validation and pagination. No database schema/data changes.
+
+
+## Run 34 — Live source-coverage transparency (2026-11-23)
+- Added a live coverage snapshot to `/sources` for the published/verified census and directory source metadata, showing record counts, source-URL coverage, checked-date coverage, latest source-check date, and census-level/directory-category breakdowns.
+- Uses bounded pagination and only minimal source metadata fields; no names, contact details, submission data, or unpublished records are fetched for the snapshot.
+- The page remains readable when either dataset snapshot is temporarily unavailable and retains the static source/coverage policy content.
+- Live Supabase audit: 129 census records and 67 directory records have source URLs and checked dates (full coverage). Latest checks were 2026-11-16 for census and 2026-11-15 for directory; the UI derives these values at runtime rather than hardcoding them.
+- No schema, RLS, database data, publication rules, dependencies, or production writes changed.
+- CI, Vercel Preview and production route verification pending.
