@@ -416,3 +416,11 @@ Bengali-only, mobile-first public information platform. This document tracks the
 - For the current dataset, the statistics page reduces the initial data-fetch streams from 19 requests to 4 (approximately 79% fewer); the page remains cached/revalidated as before.
 - Added source-contract regression coverage. No schema, RLS, data, publication rules, dependencies or census calculations changed.
 - Preview and production route verification pending.
+
+
+## Run 33 — Batch directory data reads for sitemap (2026-11-23)
+- Replaced the sitemap's per-category directory fetch loop with the existing bounded, paginated `getAllDirectoryEntries()` helper and grouped results by category in memory.
+- The live dataset currently has 67 published/verified records (22 education, 43 health, 2 government); this reduces the sitemap directory read from eight category requests to one page request (87.5% fewer), while retaining pagination for larger datasets.
+- Preserved detail/category URL generation, category-only inclusion when records exist, source-backed `lastModified`, and the public/verified query filters.
+- Added source-contract regression tests for the batch helper, pagination, grouping, and date/URL generation. No schema, RLS, data, publication rules or dependencies changed.
+- CI and Preview verification pending.
