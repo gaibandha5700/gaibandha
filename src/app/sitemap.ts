@@ -6,12 +6,11 @@ import {
   DIRECTORY_CATEGORIES,
   getAllPublicMunicipalities,
   getAllPublicUnions,
-  getDirectoryEntries,
+  getAllDirectoryEntries,
   getUpazilas,
 } from "@/lib/directory";
 
 export const revalidate = 3600;
-const PAGE_SIZE = 500;
 
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
@@ -102,41 +101,29 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     priority: 0.8,
   });
 
-  const directoryUpdates: Array<{ updated_at?: string | null }> = [];
-  // Only publish category and detail URLs that actually contain public, verified records.
-  // Paginate so directories larger than one API response are not silently omitted.
+  const directoryEntries = await getAllDirectoryEntries();
+  const directoryEntriesByCategory = new Map<string, typeof directoryEntries>();
+  for (const item of directoryEntries) {
+    const group = directoryEntriesByCategory.get(item.category) ?? [];
+    group.push(item);
+    directoryEntriesByCategory.set(item.category, group);
+  }
+
+  // Build detail and category URLs from one published/verified paginated read.
   for (const category of DIRECTORY_CATEGORIES) {
-    let offset = 0;
-    let categoryHasEntries = false;
-    const categoryUpdates: Array<{ updated_at?: string | null }> = [];
-
-    while (true) {
-      const page = await getDirectoryEntries({
-        category: category.slug,
-        limit: PAGE_SIZE,
-        offset,
+    const items = directoryEntriesByCategory.get(category.slug) ?? [];
+    for (const item of items) {
+      const itemDate = dateFromTimestamp(latestUpdatedAt([item]));
+      entries.push({
+        url: new URL(`/directory/${category.slug}/${item.slug}`, siteUrl).toString(),
+        ...(itemDate ? { lastModified: itemDate } : {}),
+        changeFrequency: "monthly",
+        priority: 0.6,
       });
-
-      if (page.length > 0) categoryHasEntries = true;
-      categoryUpdates.push(...page.map(({ updated_at }) => ({ updated_at })));
-      directoryUpdates.push(...page.map(({ updated_at }) => ({ updated_at })));
-
-      for (const item of page) {
-        const itemDate = dateFromTimestamp(latestUpdatedAt([item]));
-        entries.push({
-          url: new URL(`/directory/${category.slug}/${item.slug}`, siteUrl).toString(),
-          ...(itemDate ? { lastModified: itemDate } : {}),
-          changeFrequency: "monthly",
-          priority: 0.6,
-        });
-      }
-
-      if (page.length < PAGE_SIZE) break;
-      offset += PAGE_SIZE;
     }
 
-    if (categoryHasEntries) {
-      const categoryDate = dateFromTimestamp(latestUpdatedAt(categoryUpdates));
+    if (items.length > 0) {
+      const categoryDate = dateFromTimestamp(latestUpdatedAt(items));
       entries.push({
         url: new URL(`/directory/${category.slug}`, siteUrl).toString(),
         ...(categoryDate ? { lastModified: categoryDate } : {}),
@@ -146,7 +133,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     }
   }
 
-  const directoryIndexDate = dateFromTimestamp(latestUpdatedAt(directoryUpdates));
+  const directoryIndexDate = dateFromTimestamp(latestUpdatedAt(directoryEntries));
   entries.push({
     url: new URL("/directory", siteUrl).toString(),
     ...(directoryIndexDate ? { lastModified: directoryIndexDate } : {}),
