@@ -4,7 +4,7 @@ import { readFileSync } from "node:fs";
 
 const navigation = readFileSync(new URL("../src/components/primary-navigation.tsx", import.meta.url), "utf8");
 const styles = readFileSync(new URL("../src/app/globals.css", import.meta.url), "utf8");
-const mobilePanel = [...styles.matchAll(/\.site-mobile-panel\s*\{[^}]*\}/g)].at(-1)?.[0] ?? "";
+const mobilePanel = styles.match(/\.site-mobile-panel\s*\{[^}]*max-height:\s*min\(70vh,[^}]*\}/)?.[0] ?? "";
 
 test("mobile navigation closes after route changes and link selection", () => {
   assert.match(navigation, /useEffect\(\(\) => \{\s*if \(mobileMenuRef\.current\) mobileMenuRef\.current\.open = false;\s*\}, \[pathname\]\);/);
