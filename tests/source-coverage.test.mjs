@@ -52,7 +52,7 @@ test("public source metadata helpers select only metadata and preserve publicati
   assert.notEqual(directoryStart, -1);
   const censusHelper = directorySource.slice(censusStart, directoryStart);
   const directoryHelper = directorySource.slice(directoryStart);
-  assert.match(censusHelper, /census_statistics\?select=id,district_id,upazila_id,union_id,municipality_id,ward_id,source_url,source_checked_at/);
+  assert.match(censusHelper, /census_statistics\?select=id,district_id,upazila_id,union_id,municipality_id,ward_id,ward:wards\(municipality_id,union_id\),source_url,source_checked_at/);
   assert.match(censusHelper, /is_published=eq\.true&is_verified=eq\.true/);
   assert.match(censusHelper, /limit=\$\{pageSize\}&offset=\$\{offset\}/);
   assert.match(directoryHelper, /directory_entries\?select=id,category,source_url,source_checked_at/);
