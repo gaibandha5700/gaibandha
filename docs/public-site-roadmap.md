@@ -86,7 +86,7 @@ Bengali-only, mobile-first public information platform. This document tracks the
 - This implementation is in a preview branch; it is not production.
 
 ### Prioritized ongoing feature backlog
-1. **P1 — Search quality and coverage:** validate the ward-search preview against current main; test Bengali/English names, slug, numeral normalization, pagination and exact ward-number matching.
+1. **P1 — Search quality and coverage:** validate the ward-search preview against current main; test Bengali/English names, slug, numeral normalization, pagination and exact ward-number matching. Search-page union and municipality data now use batched, paginated fetches (PR pending CI/Preview validation).
 2. **P1 — Responsive/accessibility verification:** test search, chart, map, tables and navigation with keyboard, screen reader and real mobile viewports; correct contrast, focus, overflow and touch targets.
 3. **P1 — Data transparency:** audit source/checked dates and coverage indicators across statistics, area profiles and directory entries; distinguish unavailable data from zero.
 4. **P2 — Statistical exploration:** add comparison filters/drill-down only where source fields and complete coverage support them; consider district-to-upazila, union and municipality comparisons without summing overlapping totals.

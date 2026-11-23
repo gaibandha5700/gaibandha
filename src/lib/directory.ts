@@ -121,9 +121,11 @@ export async function getUpazilaBySlug(slug: string): Promise<Upazila | null> {
   return rows[0] ?? null;
 }
 
+const unionSelect = "id,upazila_id,name_bn,name_en,slug,description,households_total_2022,households_general_2022,households_institutional_2022,households_other_2022,population_total_2022,population_male_2022,population_female_2022,population_hijra_2022,sex_ratio_2022,census_source_name,census_source_url,census_checked_at,updated_at";
+
 export async function getUnionsByUpazila(upazilaId: string): Promise<Union[]> {
   return directoryFetch<Union[]>(
-    `unions?select=id,upazila_id,name_bn,name_en,slug,description,households_total_2022,households_general_2022,households_institutional_2022,households_other_2022,population_total_2022,population_male_2022,population_female_2022,population_hijra_2022,sex_ratio_2022,census_source_name,census_source_url,census_checked_at,updated_at&upazila_id=eq.${encodeURIComponent(upazilaId)}&is_published=eq.true&is_verified=eq.true&order=name_bn.asc`,
+    `unions?select=${unionSelect}&upazila_id=eq.${encodeURIComponent(upazilaId)}&is_published=eq.true&is_verified=eq.true&order=name_bn.asc`,
   );
 }
 
@@ -279,6 +281,21 @@ export type Municipality = {
 
 const municipalitySelect = "id,upazila_id,name_bn,name_en,slug,municipality_code,wards_count,households_total_2022,population_total_2022,population_male_2022,population_female_2022,population_hijra_2022,sex_ratio_2022,census_source_name,census_source_url,updated_at";
 
+/** Fetch all published and verified municipalities with bounded pagination. */
+export async function getAllPublicMunicipalities(): Promise<Municipality[]> {
+  const pageSize = 500;
+  const rows: Municipality[] = [];
+  let offset = 0;
+  while (true) {
+    const page = await directoryFetch<Municipality[]>(
+      `municipalities?select=${municipalitySelect}&is_published=eq.true&is_verified=eq.true&order=name_bn.asc,id.asc&limit=${pageSize}&offset=${offset}`,
+    );
+    rows.push(...page);
+    if (page.length < pageSize) return rows;
+    offset += pageSize;
+  }
+}
+
 export async function getMunicipalitiesByUpazila(upazilaId: string): Promise<Municipality[]> {
   return directoryFetch<Municipality[]>(`municipalities?select=${municipalitySelect}&upazila_id=eq.${encodeURIComponent(upazilaId)}&is_published=eq.true&is_verified=eq.true&order=name_bn.asc`);
 }
@@ -320,9 +337,17 @@ export async function getAllDirectoryEntries(): Promise<DirectoryEntry[]> {
 
 /** Fetch every public directory record with bounded pagination. */
 export async function getAllPublicUnions(): Promise<Union[]> {
-  const upazilas = await getUpazilas();
-  const groups = await Promise.all(upazilas.map((item) => getUnionsByUpazila(item.id)));
-  return groups.flat();
+  const pageSize = 500;
+  const rows: Union[] = [];
+  let offset = 0;
+  while (true) {
+    const page = await directoryFetch<Union[]>(
+      `unions?select=${unionSelect}&is_published=eq.true&is_verified=eq.true&order=name_bn.asc,id.asc&limit=${pageSize}&offset=${offset}`,
+    );
+    rows.push(...page);
+    if (page.length < pageSize) return rows;
+    offset += pageSize;
+  }
 }
 
 
