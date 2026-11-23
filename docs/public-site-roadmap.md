@@ -490,3 +490,11 @@ Bengali-only, mobile-first public information platform. This document tracks the
 - Added a shared bounded retry helper for directory GET requests: two retries for network failures and transient HTTP 429/502/503/504 responses, exponential backoff (250 ms then 500 ms), and a capped numeric `Retry-After` delay.
 - Existing request filters, Next.js `revalidate: 60`, error handling, schema, RLS and public data are unchanged. Regression tests cover retry behavior and the integration contract.
 - No database/schema/data, dependency or publication-policy changes.
+
+
+## Run 41 — Bound public search query length (2026-11-23)
+- Public `/search` now accepts up to 120 Unicode code points in the query. Overlong query strings are rejected before any search dataset fetches, with an accessible Bengali alert and a bounded input value.
+- Added a shared pure helper and tests for Bengali/Unicode code-point counting, boundary acceptance/rejection, truncation and page integration.
+- The guard avoids the five parallel Supabase read streams for malformed/overlong query URLs. Normal search matching, ward-number parsing, published/verified filters and result rendering are unchanged.
+- No database/schema/data, RLS, publication policy, dependencies or sitemap/SEO changes.
+- CI and Preview validation required; local full-repository checks remain unavailable without a clone.
