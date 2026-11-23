@@ -458,3 +458,10 @@ Bengali-only, mobile-first public information platform. This document tracks the
 - Extended exact ward search to recognize reverse-order forms such as `3 ward`, `3 no. ward`, `৩ নম্বর ওয়ার্ড`, and suffix forms such as `ওয়ার্ড ৩ নম্বর`.
 - These exact queries continue to use the validated, paginated ward-number helper rather than loading all 765 published/verified ward rows.
 - Added regression coverage for Bengali/English reverse-order forms and mixed-text rejection. No database/schema/data, RLS, dependencies or publication rules changed.
+
+
+## Run 37 — Production release verification for reverse-order ward search (2026-11-23)
+- Main commit `d2b602c2` passed GitHub Quality checks, but the latest production deployment remains at `c2c42fd3`; Vercel reported a build-rate-limit failure for the main status.
+- The READY preview built from PR #41's earlier commit `245a56c9` returned HTTP 200 and 85 published/verified union-ward results for `/search?q=3+ward`. The final main commit includes the same parser and a corrected rejection test; the preview route probe was not run against the exact main SHA.
+- The current production route `/search?q=3+ward` returned HTTP 200 but 0 results, confirming that the reverse-order search feature is not yet deployed to production.
+- No database/schema, RLS, publication rules, dependencies or data were changed. Do not promote the preview or bypass the Vercel build limit; retry the normal main deployment after the limit clears and verify the query on the canonical production host.
