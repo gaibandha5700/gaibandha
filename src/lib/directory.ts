@@ -365,3 +365,19 @@ export async function getAllPublicWards(): Promise<Array<Pick<Ward, "id" | "unio
     offset += pageSize;
   }
 }
+
+
+/** Fetch published and verified municipal wards with bounded pagination for statistics. */
+export async function getAllPublicMunicipalWards(): Promise<Ward[]> {
+  const pageSize = 500;
+  const rows: Ward[] = [];
+  let offset = 0;
+  while (true) {
+    const page = await directoryFetch<Ward[]>(
+      `wards?select=${wardSelect}&municipality_id=not.is.null&is_published=eq.true&is_verified=eq.true&order=municipality_id.asc,ward_number.asc,id.asc&limit=${pageSize}&offset=${offset}`,
+    );
+    rows.push(...page);
+    if (page.length < pageSize) return rows;
+    offset += pageSize;
+  }
+}
