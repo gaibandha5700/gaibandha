@@ -2,7 +2,7 @@ import Link from "next/link";
 import { SiteHeader, SiteFooter } from "@/components/site-chrome";
 import { Breadcrumbs } from "@/components/breadcrumbs";
 import StatisticsComparison from "@/components/statistics-comparison";
-import { getUpazilas, getUnionsByUpazila, getMunicipalitiesByUpazila, getWardsByMunicipality } from "@/lib/directory";
+import { getUpazilas, getAllPublicUnions, getAllPublicMunicipalities, getAllPublicMunicipalWards } from "@/lib/directory";
 
 export const revalidate = 3600;
 export const metadata = {
@@ -27,13 +27,16 @@ const fmt = (n: number | null | undefined) => n == null ? "—" : n.toLocaleStri
 const dateFmt = (date: string | null | undefined) => date ? new Date(date).toLocaleDateString("bn-BD") : "তথ্য পাওয়া যায়নি";
 
 export default async function StatisticsPage() {
-  const upazilas = await getUpazilas();
-  const [unionGroups, municipalityGroups] = await Promise.all([
-    Promise.all(upazilas.map(u => getUnionsByUpazila(u.id))),
-    Promise.all(upazilas.map(u => getMunicipalitiesByUpazila(u.id))),
+  const [upazilas, publicUnions, publicMunicipalities, publicMunicipalWards] = await Promise.all([
+    getUpazilas(),
+    getAllPublicUnions(),
+    getAllPublicMunicipalities(),
+    getAllPublicMunicipalWards(),
   ]);
+  const unionGroups = upazilas.map(u => publicUnions.filter(union => union.upazila_id === u.id));
+  const municipalityGroups = upazilas.map(u => publicMunicipalities.filter(municipality => municipality.upazila_id === u.id));
   const municipalities = municipalityGroups.flat();
-  const wardGroups = await Promise.all(municipalities.map(m => getWardsByMunicipality(m.id)));
+  const wardGroups = municipalities.map(municipality => publicMunicipalWards.filter(ward => ward.municipality_id === municipality.id));
   const known = upazilas.filter(u => u.population_total_2022 != null);
   const populationSum = known.reduce((sum, u) => sum + (u.population_total_2022 ?? 0), 0);
   const knownHouseholds = upazilas.filter(u => u.households_total_2022 != null);
