@@ -504,3 +504,7 @@ Bengali-only, mobile-first public information platform. This document tracks the
 - The public submission form uses a visually-hidden honeypot field named `website`, excluded from keyboard focus and the accessibility tree; the API silently returns success for filled traps before contacting Supabase.
 - Added contract tests for field markup and the early-return persistence boundary.
 - Honeypot is a low-cost spam signal, not a substitute for distributed rate limiting. The Vercel Firewall currently has no custom configuration; evaluate a route-specific rate limit after checking plan/pricing and observing traffic.
+
+
+## Submission API content-type guard (2026-11-23)
+- Reject non-`application/json` submission requests with HTTP 415 before consuming the request body; accept the JSON media type with optional parameters. The browser form already sends JSON. No database or publication-policy changes.
