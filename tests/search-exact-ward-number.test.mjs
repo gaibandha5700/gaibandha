@@ -17,7 +17,8 @@ test("exact ward query parser supports digits and common Bengali/English prefixe
   assert.equal(parseExactWardNumberSearch("WARD NO. 1"), 1);
   assert.equal(parseExactWardNumberSearch("ওয়ার্ড নং ১"), 1);
   assert.equal(parseExactWardNumberSearch("ওয়ার্ড-৯"), 9);
-  assert.equal(parseExactWardNumberSearch("1 ward"), null);
+  assert.equal(parseExactWardNumberSearch("1 ward"), 1);
+  assert.equal(parseExactWardNumberSearch("১ নম্বর ওয়ার্ড"), 1);
   assert.equal(parseExactWardNumberSearch("ward"), null);
   assert.equal(parseExactWardNumberSearch(""), null);
 });

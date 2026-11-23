@@ -452,3 +452,9 @@ Bengali-only, mobile-first public information platform. This document tracks the
 - Parsed prefix-number forms use the same validated, paginated public ward-number helper instead of loading all 765 published/verified ward rows for text matching.
 - Added parser and search-query contract tests. No database/schema, data, RLS, dependencies or publication rules changed.
 - Preview verification is subject to the current Vercel deployment quota; tests, lint, type-check and build validation are tracked separately.
+
+
+## Run 36 — Reverse-order ward-number queries (2026-11-23)
+- Extended exact ward search to recognize reverse-order forms such as `3 ward`, `3 no. ward`, `৩ নম্বর ওয়ার্ড`, and suffix forms such as `ওয়ার্ড ৩ নম্বর`.
+- These exact queries continue to use the validated, paginated ward-number helper rather than loading all 765 published/verified ward rows.
+- Added regression coverage for Bengali/English reverse-order forms and mixed-text rejection. No database/schema/data, RLS, dependencies or publication rules changed.
