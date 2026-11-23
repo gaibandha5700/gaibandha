@@ -1,7 +1,8 @@
 import { NextResponse } from "next/server";
-import { isJsonObject } from "@/lib/submission-json-guard.mjs";
 import { validateSubmissionText } from "@/lib/submission-validation.mjs";
+import { readLimitedJsonObject } from "@/lib/submission-body-limit.mjs";
 
+const MAX_SUBMISSION_BODY_BYTES = 32 * 1024;
 const categories = new Set(["education", "health", "police", "government", "business", "tourism", "transport", "community"]);
 const uuidPattern = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
 
@@ -10,16 +11,15 @@ function clean(value: unknown, max: number): string {
 }
 
 export async function POST(request: Request) {
-  let body: Record<string, unknown>;
-  try {
-    const parsed: unknown = await request.json();
-    if (!isJsonObject(parsed)) {
-      return NextResponse.json({ error: "সঠিক তথ্য পাঠানো হয়নি।" }, { status: 400 });
-    }
-    body = parsed;
-  } catch {
-    return NextResponse.json({ error: "সঠিক তথ্য পাঠানো হয়নি।" }, { status: 400 });
+  const bodyResult = await readLimitedJsonObject(request, MAX_SUBMISSION_BODY_BYTES);
+  if (!bodyResult.ok) {
+    const tooLarge = bodyResult.reason === "too_large";
+    return NextResponse.json(
+      { error: tooLarge ? "অনুরোধের তথ্য খুব বড়। নাম ও বিবরণ সংক্ষিপ্ত করুন।" : "সঠিক তথ্য পাঠানো হয়নি।" },
+      { status: tooLarge ? 413 : 400 },
+    );
   }
+  const body: Record<string, unknown> = bodyResult.value;
 
   // Honeypot: quietly accept automated spam without storing it.
   if (clean(body.website, 200)) return NextResponse.json({ ok: true });
