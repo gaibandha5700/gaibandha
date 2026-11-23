@@ -411,6 +411,7 @@ export type PublicCensusSourceRecord = {
   union_id: string | null;
   municipality_id: string | null;
   ward_id: string | null;
+  ward: { municipality_id: string | null; union_id: string | null } | null;
   source_url: string | null;
   source_checked_at: string | null;
 };
@@ -430,7 +431,7 @@ export async function getAllPublicCensusSourceRecords(): Promise<PublicCensusSou
   let offset = 0;
   while (true) {
     const page = await directoryFetch<PublicCensusSourceRecord[]>(
-      `census_statistics?select=id,district_id,upazila_id,union_id,municipality_id,ward_id,source_url,source_checked_at&is_published=eq.true&is_verified=eq.true&order=id.asc&limit=${pageSize}&offset=${offset}`,
+      `census_statistics?select=id,district_id,upazila_id,union_id,municipality_id,ward_id,ward:wards(municipality_id,union_id),source_url,source_checked_at&is_published=eq.true&is_verified=eq.true&order=id.asc&limit=${pageSize}&offset=${offset}`,
     );
     rows.push(...page);
     if (page.length < pageSize) return rows;

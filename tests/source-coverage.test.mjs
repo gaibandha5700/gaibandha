@@ -12,8 +12,8 @@ const sourcesPage = readFileSync(new URL("../src/app/sources/page.tsx", import.m
     { upazila_id: "u", source_url: "https://source.test/u", source_checked_at: "2026-11-16T00:00:00Z" },
     { union_id: "un", source_url: "https://source.test/un", source_checked_at: "2026-11-15T12:00:00Z" },
     { municipality_id: "m", source_url: "https://source.test/m", source_checked_at: "2026-11-15T00:00:00Z" },
-    { ward_id: "w", municipality_id: "m", source_url: "https://source.test/w", source_checked_at: "2026-11-15T00:00:00Z" },
-    { ward_id: "uw", union_id: "un", source_url: null, source_checked_at: null },
+    { ward_id: "w", ward: { municipality_id: "m", union_id: null }, source_url: "https://source.test/w", source_checked_at: "2026-11-15T00:00:00Z" },
+    { ward_id: "uw", ward: { municipality_id: null, union_id: "un" }, source_url: null, source_checked_at: null },
   ];
   const directory = [
     { category: "education", source_url: "https://source.test/e", source_checked_at: "2026-11-15T00:00:00Z" },
@@ -52,7 +52,7 @@ test("public source metadata helpers select only metadata and preserve publicati
   assert.notEqual(directoryStart, -1);
   const censusHelper = directorySource.slice(censusStart, directoryStart);
   const directoryHelper = directorySource.slice(directoryStart);
-  assert.match(censusHelper, /census_statistics\?select=id,district_id,upazila_id,union_id,municipality_id,ward_id,source_url,source_checked_at/);
+  assert.match(censusHelper, /census_statistics\?select=id,district_id,upazila_id,union_id,municipality_id,ward_id,ward:wards\(municipality_id,union_id\),source_url,source_checked_at/);
   assert.match(censusHelper, /is_published=eq\.true&is_verified=eq\.true/);
   assert.match(censusHelper, /limit=\$\{pageSize\}&offset=\$\{offset\}/);
   assert.match(directoryHelper, /directory_entries\?select=id,category,source_url,source_checked_at/);

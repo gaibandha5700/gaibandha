@@ -4,6 +4,7 @@ export type PublicCensusSourceRecord = {
   union_id?: string | null;
   municipality_id?: string | null;
   ward_id?: string | null;
+  ward?: { municipality_id?: string | null; union_id?: string | null } | null;
   source_url?: string | null;
   source_checked_at?: string | null;
 };
