@@ -17,7 +17,8 @@ test("rejects declared content length above the limit before reading", async () 
 });
 
 test("rejects streamed body bytes above the limit", async () => {
-  const stream = new ReadableStream({ start(controller) { controller.enqueue(new TextEncoder().encode("{\\"a\\":\\"long\\"}")); controller.close(); } });
+  const oversizedPayload = JSON.stringify({ a: "long" });
+  const stream = new ReadableStream({ start(controller) { controller.enqueue(new TextEncoder().encode(oversizedPayload)); controller.close(); } });
   const request = new Request("https://example.test/api/submissions", { method: "POST", body: stream, duplex: "half" });
   const result = await readLimitedJsonObject(request, 5);
   assert.deepEqual(result, { ok: false, reason: "too_large" });
