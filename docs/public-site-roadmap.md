@@ -467,3 +467,10 @@ Bengali-only, mobile-first public information platform. This document tracks the
 - No database/schema, RLS, publication rules, dependencies or data were changed. Do not promote the preview or bypass the Vercel build limit; retry the normal main deployment after the limit clears and verify the query on the canonical production host.
 
 - **Release follow-up:** the normal main deployment `1134b3e6` reached Vercel `READY`; the canonical production `/search?q=3+ward` now returns 85 results (previously 0 before rollout). Production `/robots.txt` and `/sitemap.xml` both returned HTTP 200. The release gap is resolved; no preview promotion or quota bypass was used.
+
+
+## Run 38 — Mobile navigation overflow and route-close (2026-11-23)
+- Constrained the mobile navigation panel to the viewport and made its contents vertically scrollable with contained overscroll, so the complete menu remains reachable on short screens.
+- Close the native mobile menu after link selection and whenever the pathname changes; desktop navigation remains unchanged.
+- Added source-contract tests for viewport scrollability and close behavior. No database, publication rules, dependencies or SEO behavior changed.
+- Full repository lint/type-check/build and Vercel Preview verification remain gated by remote CI/deployment availability.
