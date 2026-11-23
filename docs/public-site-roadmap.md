@@ -388,3 +388,9 @@ Bengali-only, mobile-first public information platform. This document tracks the
 - Grouped fetched records by parent upazila while preserving URL generation and record-level/index-level `lastModified` behavior.
 - Added source-contract regression coverage for batched helper use and parent grouping; no sitemap URL policy, publication filter, database schema, data, or dependencies changed.
 - PR #30 search batching was merged after CI and its Preview `/search` route returned HTTP 200.
+
+
+## Run 29 — Reject non-object JSON submissions (2026-11-23)
+- The public submission route now rejects JSON primitives, `null`, and arrays with a Bengali HTTP 400 response before accessing submission fields; previously the route assumed a record and could throw on valid non-object JSON.
+- Added a pure JSON-object guard and dependency-free tests. No schema, RLS, data, dependencies, or publication rules changed.
+- GitHub CI and Vercel Preview are required. Submission-validation PRs #28 and #29 remain blocked on exact-head Preview quota failures.

@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { isJsonObject } from "@/lib/submission-json-guard.mjs";
 
 const categories = new Set(["education", "health", "police", "government", "business", "tourism", "transport", "community"]);
 const uuidPattern = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
@@ -10,7 +11,11 @@ function clean(value: unknown, max: number): string {
 export async function POST(request: Request) {
   let body: Record<string, unknown>;
   try {
-    body = await request.json();
+    const parsed: unknown = await request.json();
+    if (!isJsonObject(parsed)) {
+      return NextResponse.json({ error: "সঠিক তথ্য পাঠানো হয়নি।" }, { status: 400 });
+    }
+    body = parsed;
   } catch {
     return NextResponse.json({ error: "সঠিক তথ্য পাঠানো হয়নি।" }, { status: 400 });
   }
