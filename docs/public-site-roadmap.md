@@ -498,3 +498,9 @@ Bengali-only, mobile-first public information platform. This document tracks the
 - The guard avoids the five parallel Supabase read streams for malformed/overlong query URLs. Normal search matching, ward-number parsing, published/verified filters and result rendering are unchanged.
 - No database/schema/data, RLS, publication policy, dependencies or sitemap/SEO changes.
 - CI and Preview validation required; local full-repository checks remain unavailable without a clone.
+
+
+## Submission honeypot hardening (2026-11-23)
+- The public submission form uses a visually-hidden honeypot field named `website`, excluded from keyboard focus and the accessibility tree; the API silently returns success for filled traps before contacting Supabase.
+- Added contract tests for field markup and the early-return persistence boundary.
+- Honeypot is a low-cost spam signal, not a substitute for distributed rate limiting. The Vercel Firewall currently has no custom configuration; evaluate a route-specific rate limit after checking plan/pricing and observing traffic.
