@@ -515,3 +515,9 @@ Bengali-only, mobile-first public information platform. This document tracks the
 - Vercel research: the current project has no custom Firewall configuration. Hobby supports a limited rate-limit rule allowance (one rate-limit rule per project in current plan guidance); pricing lists 1M rate-limit requests/month included, with usage limits/caps on Hobby. Rate-limit counters are fixed-window and regional on Hobby, so an IP-based rule can affect shared-network users and can be exceeded across regions.
 - Recommended next step is a generous, log-only observation rule scoped only to `POST /api/submissions`, then evaluate traffic before enforcement. The Vercel connector can inspect and stage config changes but does not expose the Firewall publish action; no live WAF configuration or billing setting was changed in this run.
 - No database/schema, RLS, data, dependency, or publication-rule changes.
+
+
+## Run 51 — Submission type/reference consistency (2026-11-24)
+- Require a directory-entry reference for correction submissions and reject a reference on new-entry submissions, preventing unlinked corrections and incorrectly attached new-entry requests before any database write.
+- Added route-contract regression coverage for both guards and their early placement.
+- No database/schema, data, RLS, dependency or publication-policy changes.
