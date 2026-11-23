@@ -401,3 +401,54 @@ export async function getAllPublicMunicipalWards(): Promise<Ward[]> {
     offset += pageSize;
   }
 }
+
+
+/** Minimal public census source metadata for the transparency page. */
+export type PublicCensusSourceRecord = {
+  id: string;
+  district_id: string | null;
+  upazila_id: string | null;
+  union_id: string | null;
+  municipality_id: string | null;
+  ward_id: string | null;
+  source_url: string | null;
+  source_checked_at: string | null;
+};
+
+/** Minimal public directory source metadata; no names or contact fields are fetched. */
+export type PublicDirectorySourceRecord = {
+  id: string;
+  category: DirectoryCategory;
+  source_url: string | null;
+  source_checked_at: string | null;
+};
+
+/** Fetch published and verified census source metadata with bounded pagination. */
+export async function getAllPublicCensusSourceRecords(): Promise<PublicCensusSourceRecord[]> {
+  const pageSize = 500;
+  const rows: PublicCensusSourceRecord[] = [];
+  let offset = 0;
+  while (true) {
+    const page = await directoryFetch<PublicCensusSourceRecord[]>(
+      `census_statistics?select=id,district_id,upazila_id,union_id,municipality_id,ward_id,source_url,source_checked_at&is_published=eq.true&is_verified=eq.true&order=id.asc&limit=${pageSize}&offset=${offset}`,
+    );
+    rows.push(...page);
+    if (page.length < pageSize) return rows;
+    offset += pageSize;
+  }
+}
+
+/** Fetch only public directory source metadata with bounded pagination. */
+export async function getAllPublicDirectorySourceRecords(): Promise<PublicDirectorySourceRecord[]> {
+  const pageSize = 500;
+  const rows: PublicDirectorySourceRecord[] = [];
+  let offset = 0;
+  while (true) {
+    const page = await directoryFetch<PublicDirectorySourceRecord[]>(
+      `directory_entries?select=id,category,source_url,source_checked_at&is_published=eq.true&is_verified=eq.true&order=category.asc,id.asc&limit=${pageSize}&offset=${offset}`,
+    );
+    rows.push(...page);
+    if (page.length < pageSize) return rows;
+    offset += pageSize;
+  }
+}
