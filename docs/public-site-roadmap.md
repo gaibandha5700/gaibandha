@@ -439,3 +439,9 @@ Bengali-only, mobile-first public information platform. This document tracks the
 - Live Supabase audit: 129 census records and 67 directory records have source URLs and checked dates (full coverage). Latest checks were 2026-11-16 for census and 2026-11-15 for directory; the UI derives these values at runtime rather than hardcoding them.
 - No schema, RLS, database data, publication rules, dependencies, or production writes changed.
 - CI, Vercel Preview and production route verification pending.
+
+
+## Run 34 — Classification correction (2026-11-23)
+- The production source-coverage snapshot initially grouped the 36 ward-linked census records under “other” because `census_statistics.ward_id` does not populate its own municipality/union parent fields.
+- Live read-only SQL join confirmed all 36 linked ward records are municipal wards (`wards.municipality_id` populated); no union-ward census records are present.
+- The source metadata fetch now uses the existing PostgREST `ward_id → wards` relationship to read only the linked ward’s municipality/union classification and labels the records correctly. No database writes or schema changes.

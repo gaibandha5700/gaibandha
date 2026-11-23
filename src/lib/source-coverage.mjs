@@ -21,7 +21,11 @@ function countSourceCoverage(records) {
 }
 
 function censusLevel(record) {
-  if (record?.ward_id) return record.municipality_id ? "municipal_ward" : record.union_id ? "union_ward" : "other";
+  if (record?.ward_id) {
+    if (record.ward?.municipality_id || record.municipality_id) return "municipal_ward";
+    if (record.ward?.union_id || record.union_id) return "union_ward";
+    return "other";
+  }
   if (record?.municipality_id) return "municipality";
   if (record?.union_id) return "union";
   if (record?.upazila_id) return "upazila";
