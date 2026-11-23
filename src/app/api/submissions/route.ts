@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { validateSubmissionText } from "@/lib/submission-validation.mjs";
 import { readLimitedJsonObject } from "@/lib/submission-body-limit.mjs";
+import { isJsonContentType } from "@/lib/submission-content-type.mjs";
 
 const MAX_SUBMISSION_BODY_BYTES = 32 * 1024;
 const categories = new Set(["education", "health", "police", "government", "business", "tourism", "transport", "community"]);
@@ -11,6 +12,10 @@ function clean(value: unknown, max: number): string {
 }
 
 export async function POST(request: Request) {
+  if (!isJsonContentType(request.headers.get("content-type"))) {
+    return NextResponse.json({ error: "সঠিক JSON format-এ তথ্য পাঠানো হয়নি।" }, { status: 415 });
+  }
+
   const bodyResult = await readLimitedJsonObject(request, MAX_SUBMISSION_BODY_BYTES);
   if (!bodyResult.ok) {
     const tooLarge = bodyResult.reason === "too_large";
