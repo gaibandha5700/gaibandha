@@ -4,10 +4,10 @@ import { getLatestPublicDataUpdatedAt } from "@/lib/public-data-update";
 import { dateFromTimestamp, latestUpdatedAt } from "@/lib/sitemap-lastmod.mjs";
 import {
   DIRECTORY_CATEGORIES,
+  getAllPublicMunicipalities,
+  getAllPublicUnions,
   getDirectoryEntries,
-  getMunicipalitiesByUpazila,
   getUpazilas,
-  getUnionsByUpazila,
 } from "@/lib/directory";
 
 export const revalidate = 3600;
@@ -34,7 +34,24 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { url: new URL("/data", siteUrl).toString(), changeFrequency: "weekly", priority: 0.7 },
   ];
 
-  const upazilas = await getUpazilas();
+  const [upazilas, unionRows, municipalityRows] = await Promise.all([
+    getUpazilas(),
+    getAllPublicUnions(),
+    getAllPublicMunicipalities(),
+  ]);
+  const unionsByUpazila = new Map<string, typeof unionRows>();
+  for (const union of unionRows) {
+    const group = unionsByUpazila.get(union.upazila_id) ?? [];
+    group.push(union);
+    unionsByUpazila.set(union.upazila_id, group);
+  }
+  const municipalitiesByUpazila = new Map<string, typeof municipalityRows>();
+  for (const municipality of municipalityRows) {
+    const group = municipalitiesByUpazila.get(municipality.upazila_id) ?? [];
+    group.push(municipality);
+    municipalitiesByUpazila.set(municipality.upazila_id, group);
+  }
+
   const upazilaIndexDate = dateFromTimestamp(latestUpdatedAt(upazilas));
   entries.push({
     url: new URL("/upazila", siteUrl).toString(),
@@ -43,7 +60,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     priority: 0.9,
   });
 
-  const municipalityUpdates: Array<{ updated_at?: string | null }> = [];
+  const municipalityUpdates: Array<{ updated_at?: string | null }> = municipalityRows.map(({ updated_at }) => ({ updated_at }));
   for (const upazila of upazilas) {
     const upazilaDate = dateFromTimestamp(latestUpdatedAt([upazila]));
     entries.push({
@@ -53,11 +70,8 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       priority: 0.8,
     });
 
-    const [unions, municipalities] = await Promise.all([
-      getUnionsByUpazila(upazila.id),
-      getMunicipalitiesByUpazila(upazila.id),
-    ]);
-    municipalityUpdates.push(...municipalities.map(({ updated_at }) => ({ updated_at })));
+    const unions = unionsByUpazila.get(upazila.id) ?? [];
+    const municipalities = municipalitiesByUpazila.get(upazila.id) ?? [];
 
     for (const union of unions) {
       const unionDate = dateFromTimestamp(latestUpdatedAt([union]));
