@@ -394,3 +394,10 @@ Bengali-only, mobile-first public information platform. This document tracks the
 - The public submission route now rejects JSON primitives, `null`, and arrays with a Bengali HTTP 400 response before accessing submission fields; previously the route assumed a record and could throw on valid non-object JSON.
 - Added a pure JSON-object guard and dependency-free tests. No schema, RLS, data, dependencies, or publication rules changed.
 - GitHub CI and Vercel Preview are required. Submission-validation PRs #28 and #29 remain blocked on exact-head Preview quota failures.
+
+
+## Run 30 — Skip search data reads on the empty search landing (2026-11-23)
+- The `/search` page now leaves all directory collections empty until a non-empty normalized query is supplied, avoiding five Supabase data reads when users first open search without entering a term.
+- Search result behavior and existing verified/public filters remain unchanged for non-empty queries. Added source-contract regression coverage for the guard.
+- No database/schema/data changes, dependencies or publication rules changed.
+- CI and Preview validation pending.
