@@ -483,3 +483,10 @@ Bengali-only, mobile-first public information platform. This document tracks the
 - No schema, data, RLS, dependency or publication-policy changes. Local clone/full repository checks and latest-head preview remain unavailable due GitHub DNS and Vercel deployment quota; helper tests were run independently in Node 22 before the API patch.
 
 - **CI follow-up:** the full regression suite identified one stale route-contract assertion that expected the JSON-object guard inline. The guard now lives in the bounded parser; the test was updated to verify parser integration, byte enforcement and validation order instead.
+
+
+## Run 40 — Retry transient directory API failures (2026-11-23)
+- Root cause: the main build for commit `87148e7d` failed during static generation of `/upazila/sundarganj/dahabanda` after a Supabase/PostgREST 502; `directoryFetch` previously failed immediately on any network error or non-2xx response.
+- Added a shared bounded retry helper for directory GET requests: two retries for network failures and transient HTTP 429/502/503/504 responses, exponential backoff (250 ms then 500 ms), and a capped numeric `Retry-After` delay.
+- Existing request filters, Next.js `revalidate: 60`, error handling, schema, RLS and public data are unchanged. Regression tests cover retry behavior and the integration contract.
+- No database/schema/data, dependency or publication-policy changes.
