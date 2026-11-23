@@ -352,13 +352,33 @@ export async function getAllPublicUnions(): Promise<Union[]> {
 
 
 /** Fetch all published and verified administrative wards for the public search index. */
-export async function getAllPublicWards(): Promise<Array<Pick<Ward, "id" | "union_id" | "municipality_id" | "ward_number" | "name_bn" | "name_en">>> {
+export type PublicSearchWard = Pick<Ward, "id" | "union_id" | "municipality_id" | "ward_number" | "name_bn" | "name_en">;
+
+export async function getAllPublicWards(): Promise<PublicSearchWard[]> {
   const pageSize = 500;
-  const rows: Array<Pick<Ward, "id" | "union_id" | "municipality_id" | "ward_number" | "name_bn" | "name_en">> = [];
+  const rows: PublicSearchWard[] = [];
   let offset = 0;
   while (true) {
-    const page = await directoryFetch<typeof rows>(
+    const page = await directoryFetch<PublicSearchWard[]>(
       `wards?select=id,union_id,municipality_id,ward_number,name_bn,name_en&is_published=eq.true&is_verified=eq.true&order=ward_number.asc,id.asc&limit=${pageSize}&offset=${offset}`,
+    );
+    rows.push(...page);
+    if (page.length < pageSize) return rows;
+    offset += pageSize;
+  }
+}
+
+
+/** Fetch published and verified search wards for one exact ward number. */
+export async function getPublicWardsByNumber(wardNumber: number): Promise<PublicSearchWard[]> {
+  if (!Number.isSafeInteger(wardNumber) || wardNumber < 1) return [];
+
+  const pageSize = 500;
+  const rows: PublicSearchWard[] = [];
+  let offset = 0;
+  while (true) {
+    const page = await directoryFetch<PublicSearchWard[]>(
+      `wards?select=id,union_id,municipality_id,ward_number,name_bn,name_en&ward_number=eq.${wardNumber}&is_published=eq.true&is_verified=eq.true&order=ward_number.asc,id.asc&limit=${pageSize}&offset=${offset}`,
     );
     rows.push(...page);
     if (page.length < pageSize) return rows;

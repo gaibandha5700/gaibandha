@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { DIRECTORY_CATEGORIES, getAllDirectoryEntries, getAllPublicMunicipalities, getAllPublicUnions, getAllPublicWards, getUpazilas } from "@/lib/directory";
+import { DIRECTORY_CATEGORIES, getAllDirectoryEntries, getAllPublicMunicipalities, getAllPublicUnions, getAllPublicWards, getPublicWardsByNumber, getUpazilas } from "@/lib/directory";
 import { SiteHeader, SiteFooter } from "@/components/site-chrome";
 import { Breadcrumbs } from "@/components/breadcrumbs";
 
@@ -20,6 +20,7 @@ const containsSearch = (value: string | null | undefined, query: string) => norm
 export default async function SearchPage({ searchParams }: Props) {
   const { q = "" } = await searchParams;
   const query = normalizeSearchText(q);
+  const numericQuery = /^[0-9]+$/.test(query) ? Number(query) : null;
   let entries: Awaited<ReturnType<typeof getAllDirectoryEntries>> = [];
   let upazilas: Awaited<ReturnType<typeof getUpazilas>> = [];
   let wardRows: Awaited<ReturnType<typeof getAllPublicWards>> = [];
@@ -30,7 +31,7 @@ export default async function SearchPage({ searchParams }: Props) {
     [entries, upazilas, wardRows, unionRows, municipalityRows] = await Promise.all([
       getAllDirectoryEntries(),
       getUpazilas(),
-      getAllPublicWards(),
+      numericQuery !== null ? getPublicWardsByNumber(numericQuery) : getAllPublicWards(),
       getAllPublicUnions(),
       getAllPublicMunicipalities(),
     ]);
@@ -56,7 +57,6 @@ export default async function SearchPage({ searchParams }: Props) {
   const matchingUpazilas = query ? upazilas.filter((item) => [item.name_bn, item.name_en, item.slug].some((value) => containsSearch(value, query))) : [];
   const matchingUnions = query ? unions.filter((item) => [item.name_bn, item.name_en, item.slug].some((value) => containsSearch(value, query))) : [];
   const matchingDistrict = query && ["গাইবান্ধা", "gaibandha", "gaibandha district", "জেলা"].some((name) => containsSearch(name, query) || query.includes(normalizeSearchText(name)));
-  const numericQuery = query && /^[0-9]+$/.test(query) ? Number(query) : null;
   const matchingWards = query ? wardRows.filter((ward) => numericQuery !== null
     ? ward.ward_number === numericQuery
     : [ward.name_bn, ward.name_en, `ওয়ার্ড ${ward.ward_number.toLocaleString("bn-BD")}`, `ward ${ward.ward_number}`, String(ward.ward_number)].some((value) => containsSearch(value, query))
