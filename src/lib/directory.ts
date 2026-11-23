@@ -1,4 +1,5 @@
 import { notFound } from "next/navigation";
+import { fetchWithTransientRetry } from "./fetch-retry.mjs";
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
 const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
@@ -80,10 +81,14 @@ async function directoryFetch<T>(resource: string): Promise<T> {
     throw new Error("Supabase public environment variables are not configured.");
   }
 
-  const response = await fetch(`${supabaseUrl}/rest/v1/${resource}`, {
-    headers: { apikey: supabaseKey, Authorization: `Bearer ${supabaseKey}` },
-    next: { revalidate: 60 },
-  });
+  const response = await fetchWithTransientRetry(
+    `${supabaseUrl}/rest/v1/${resource}`,
+    {
+      headers: { apikey: supabaseKey, Authorization: `Bearer ${supabaseKey}` },
+      next: { revalidate: 60 },
+    },
+    { maxRetries: 2, baseDelayMs: 250 },
+  );
 
   if (!response.ok) {
     const errorBody = await response.text();
