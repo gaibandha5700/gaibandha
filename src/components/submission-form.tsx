@@ -62,6 +62,9 @@ export default function SubmissionForm({ initialType = "new_entry", initialEntry
           website,
         }),
       });
+      if (response.status === 429) {
+        throw new Error("অল্প সময়ে অনেকবার তথ্য জমা দেওয়ার চেষ্টা হয়েছে। কিছুক্ষণ অপেক্ষা করে আবার চেষ্টা করুন।");
+      }
       const result = await response.json();
       if (!response.ok) throw new Error(result.error || "জমা দেওয়া যায়নি।");
       setStatus({ ok: true, text: "আপনার তথ্য জমা হয়েছে। যাচাই শেষে উপযুক্ত হলে প্রকাশ করা হবে।" });
