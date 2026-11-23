@@ -42,6 +42,12 @@ export async function POST(request: Request) {
   if (!submissionType || !textValidation.itemNameValid || !textValidation.messageValid || body.consent !== true) {
     return NextResponse.json({ error: "নাম ২–১৮০ অক্ষর, বিবরণ ১০–৩,০০০ অক্ষর এবং সম্মতি প্রয়োজন।" }, { status: 400 });
   }
+  if (submissionType === "correction" && !entryId) {
+    return NextResponse.json({ error: "সংশোধনের জন্য বর্তমান প্রতিষ্ঠানের রেফারেন্স প্রয়োজন।" }, { status: 400 });
+  }
+  if (submissionType === "new_entry" && entryId) {
+    return NextResponse.json({ error: "নতুন তথ্যের সঙ্গে বিদ্যমান প্রতিষ্ঠানের রেফারেন্স দেওয়া যাবে না।" }, { status: 400 });
+  }
   if (submissionType === "new_entry" && !category) {
     return NextResponse.json({ error: "নতুন তথ্যের জন্য বিভাগ নির্বাচন করুন।" }, { status: 400 });
   }
