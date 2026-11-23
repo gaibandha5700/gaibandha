@@ -86,7 +86,7 @@ Bengali-only, mobile-first public information platform. This document tracks the
 - This implementation is in a preview branch; it is not production.
 
 ### Prioritized ongoing feature backlog
-1. **P1 — Search quality and coverage:** validate the ward-search preview against current main; test Bengali/English names, slug, numeral normalization, pagination and exact ward-number matching. Search-page union and municipality data now use batched, paginated fetches (PR pending CI/Preview validation).
+1. **P1 — Search quality and coverage:** validate the ward-search preview against current main; test Bengali/English names, slug, numeral normalization, pagination and exact ward-number matching. Search-page union and municipality data now use batched, paginated fetches (PR #30 merged; Preview `/search` returned HTTP 200).
 2. **P1 — Responsive/accessibility verification:** test search, chart, map, tables and navigation with keyboard, screen reader and real mobile viewports; correct contrast, focus, overflow and touch targets.
 3. **P1 — Data transparency:** audit source/checked dates and coverage indicators across statistics, area profiles and directory entries; distinguish unavailable data from zero.
 4. **P2 — Statistical exploration:** add comparison filters/drill-down only where source fields and complete coverage support them; consider district-to-upazila, union and municipality comparisons without summing overlapping totals.
@@ -381,3 +381,10 @@ Bengali-only, mobile-first public information platform. This document tracks the
 - Added regression coverage for the map layer/zoom control labels, SVG group instructions, keyboard-operable boundary paths, zoomed arrow-key panning, selected-area live region and alternative area list.
 - Tests verify source-level accessibility contracts only; browser, screen-reader and real-device interaction testing remain separate validation.
 - No map behavior, database, dependencies or production data changed.
+
+
+## Run 28 — Sitemap administrative-data batching (2026-11-23)
+- Reused the published/verified paginated union and municipality batch helpers in `/sitemap.xml`, replacing the per-upazila fetch loop (14 requests for the current seven upazilas) with two batch-query streams.
+- Grouped fetched records by parent upazila while preserving URL generation and record-level/index-level `lastModified` behavior.
+- Added source-contract regression coverage for batched helper use and parent grouping; no sitemap URL policy, publication filter, database schema, data, or dependencies changed.
+- PR #30 search batching was merged after CI and its Preview `/search` route returned HTTP 200.
