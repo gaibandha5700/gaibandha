@@ -408,3 +408,11 @@ Bengali-only, mobile-first public information platform. This document tracks the
 - The form normalizes before POST, shows code-point counts and precise min/max errors, and removes browser UTF-16 maxLength limits that could disagree with code-point validation.
 - The API rejects invalid/oversized names (2–180) and details (10–3,000) without truncating them. No schema, RLS, data, dependencies or publication changes.
 - Adds helper boundary/non-string tests and source-contract coverage for the form and API route. Preview and full CI verification pending.
+
+
+## Run 32 — Batch statistics page data fetches (2026-11-23)
+- Replaced per-upazila union and municipality requests plus per-municipality ward requests on `/statistics` with four parallel bounded data streams: upazilas, all published/verified unions, all published/verified municipalities and published/verified municipal wards.
+- Added a reusable paginated municipal-ward helper and grouped fetched records by their parent IDs to preserve the existing display hierarchy and data filters.
+- For the current dataset, the statistics page reduces the initial data-fetch streams from 19 requests to 4 (approximately 79% fewer); the page remains cached/revalidated as before.
+- Added source-contract regression coverage. No schema, RLS, data, publication rules, dependencies or census calculations changed.
+- Preview and production route verification pending.
